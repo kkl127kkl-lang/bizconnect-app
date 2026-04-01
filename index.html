@@ -231,11 +231,12 @@ function PB({p,sm}){const x=gP(p);return<span className="badge" style={{backgrou
 function BB({onClick}){return<button onClick={onClick} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:14,padding:"4px 0",marginBottom:16,fontFamily:"var(--font)"}}><Ic.Al z={18}/> 뒤로</button>;}
 function ES({ic,tl,ds,act,al}){return<div className="fi" style={{textAlign:"center",padding:"56px 20px",color:"var(--text2)"}}><div style={{fontSize:52,marginBottom:12}}>{ic}</div><div style={{fontSize:16,fontWeight:700,color:"var(--text)",marginBottom:8}}>{tl}</div><div style={{fontSize:13,lineHeight:1.6,marginBottom:act?20:0}}>{ds}</div>{act&&<button className="bp" onClick={act} style={{padding:"12px 24px",fontSize:14}}>{al}</button>}</div>;}
 
-function Nav(){const{pg,setPg,setSu,setSr,pi,ur}=useA();
-const its=[{id:"home",ic:Ic.H,lb:"홈"},{id:"inbox",ic:Ic.In,lb:"수신함",bg:pi},{id:"contacts",ic:Ic.Bk,lb:"주소록"},{id:"notifs",ic:Ic.Bl,lb:"알림",bg:ur},{id:"me",ic:Ic.Us,lb:"내 정보"}];
+function Nav(){const{pg,setPg,setSu,setSr,pi,ur,sigs}=useA();
+const sigCnt=sigs.filter(s=>s.active).length;
+const its=[{id:"home",ic:Ic.S,lb:"검색"},{id:"signals",ic:Ic.Bl,lb:"구매신호",bg:sigCnt},{id:"inbox",ic:Ic.In,lb:"수신함",bg:pi},{id:"contacts",ic:Ic.Bk,lb:"주소록"},{id:"me",ic:Ic.Us,lb:"내 정보"}];
 return<nav style={{position:"absolute",bottom:0,left:0,right:0,height:"var(--nav-h)",background:"rgba(11,11,18,.94)",backdropFilter:"blur(24px)",borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-around",alignItems:"flex-start",paddingTop:10,zIndex:100}}>
 {its.map(it=>{const a=pg===it.id||(pg==="profile"&&it.id==="home");return<button key={it.id} onClick={()=>{setPg(it.id);setSu(null);setSr(null);}} style={{background:"none",border:"none",color:a?"var(--accent)":"var(--text3)",display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:"pointer",padding:"2px 14px",fontFamily:"var(--font)",position:"relative"}}>
-<div style={{position:"relative"}}><it.ic z={22}/>{it.bg>0&&<span style={{position:"absolute",top:-5,right:-9,background:"var(--red)",color:"#fff",fontSize:9,fontWeight:800,borderRadius:10,minWidth:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",border:"2px solid var(--bg)"}}>{it.bg>9?"9+":it.bg}</span>}</div>
+<div style={{position:"relative"}}>{it.id==="signals"?<span style={{fontSize:20}}>🔥</span>:<it.ic z={22}/>}{it.bg>0&&<span style={{position:"absolute",top:-5,right:-9,background:it.id==="signals"?"var(--orange)":"var(--red)",color:"#fff",fontSize:9,fontWeight:800,borderRadius:10,minWidth:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",border:"2px solid var(--bg)"}}>{it.bg>9?"9+":it.bg}</span>}</div>
 <span style={{fontSize:10,fontWeight:a?700:500}}>{it.lb}</span></button>;})}</nav>;}
 
 function UC({u,onClick,cls=""}){return<div className={"fi "+cls} onClick={onClick} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,cursor:"pointer",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:14,transition:"all .15s"}} onMouseEnter={e=>{e.currentTarget.style.background="var(--card-h)";e.currentTarget.style.borderColor="var(--accent-border)"}} onMouseLeave={e=>{e.currentTarget.style.background="var(--card)";e.currentTarget.style.borderColor="var(--border)"}}>
@@ -330,38 +331,138 @@ return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:
 <p style={{textAlign:"center",fontSize:11,color:"var(--text3)",marginTop:8}}>가입 시 이용약관 및 개인정보처리방침에 동의합니다.</p></div>;
 }
 
-// === HOME ===
-function Home(){const{me,us,myS,myC,setPg,setSu,gU,sigs,addSignal,delSignal,intros}=useA();const[q,setQ]=useState("");const[rs,setRs]=useState([]);const[sd,setSd]=useState(false);const[fi,setFi]=useState("");const[sf,setSf]=useState(false);const[showSig,setShowSig]=useState(false);const[sigCat,setSigCat]=useState("");const[sigDesc,setSigDesc]=useState("");
+// === HOME (검색 중심) ===
+function Home(){const{me,us,setPg,setSu}=useA();const[q,setQ]=useState("");const[rs,setRs]=useState([]);const[sd,setSd]=useState(false);const[fi,setFi]=useState("");const[sf,setSf]=useState(false);
 const inds=useMemo(()=>[...new Set(us.map(u=>u.ind).filter(Boolean))],[us]);
-const tgs=["삼성전자","네이버","구매팀","영업","카카오","토스","기술개발","마케팅"];
+const companies=useMemo(()=>{const m={};us.filter(u=>u.sd&&u.vis).forEach(u=>{if(!m[u.company])m[u.company]={name:u.company,logo:u.cl,ind:u.ind,cnt:0};m[u.company].cnt++;});return Object.values(m).sort((a,b)=>b.cnt-a.cnt);},[us]);
 const doS=(s)=>{const v=(s||q).toLowerCase().trim();if(!v){setSd(false);setRs([]);return;}setSd(true);setRs(us.filter(u=>{if(u.id===me?.id||!u.vis)return false;if(fi&&u.ind!==fi)return false;return u.name.includes(v)||u.company.toLowerCase().includes(v)||u.dept.includes(v)||u.pos.includes(v)||(u.ind&&u.ind.toLowerCase().includes(v));}));};
+// Group results by company > department
+const grouped=useMemo(()=>{const m={};rs.forEach(u=>{const k=u.company;if(!m[k])m[k]={name:k,logo:u.cl,ind:u.ind,depts:{}};if(!m[k].depts[u.dept])m[k].depts[u.dept]=[];m[k].depts[u.dept].push(u);});return Object.values(m);},[rs]);
 
-return<div style={{padding:"0 20px",paddingTop:16}}>
-<div className="fi" style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}><div><div style={{fontSize:13,color:"var(--text2)"}}>안녕하세요, {me.name}님</div><h1 style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8,marginTop:4}}>누구를 찾고 계세요?</h1></div><Av n={me.name} l={me.cl} sz={40} st={{border:"2px solid var(--accent-border)"}}/></div>
-<div className="fi1" style={{display:"flex",gap:8,marginBottom:14}}><div style={{flex:1,display:"flex",alignItems:"center",gap:10,background:"var(--card)",borderRadius:"var(--radius)",padding:"12px 16px",border:"1px solid var(--border)"}}><Ic.S z={18} style={{color:"var(--text3)",flexShrink:0}}/><input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doS()} placeholder="회사명, 부서, 이름, 직책..." style={{background:"none",border:"none",color:"var(--text)",fontSize:14,outline:"none",flex:1,fontFamily:"var(--font)"}}/>{q&&<button onClick={()=>{setQ("");setSd(false);setRs([])}} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",padding:0}}><Ic.X z={16}/></button>}</div><button onClick={()=>setSf(!sf)} style={{background:sf?"var(--accent-bg)":"var(--card)",border:"1px solid "+(sf?"var(--accent-border)":"var(--border)"),borderRadius:"var(--radius)",width:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:sf?"var(--accent)":"var(--text3)"}}><Ic.Fl/></button></div>
-{sf&&<div className="fi" style={{marginBottom:14}}><div style={{fontSize:11,fontWeight:700,color:"var(--text2)",marginBottom:8}}>산업 필터</div><div style={{display:"flex",flexWrap:"wrap",gap:6}}><button onClick={()=>setFi("")} style={{background:!fi?"var(--accent)":"var(--card)",color:!fi?"#0b0b12":"var(--text2)",border:"1px solid "+(fi?"var(--border)":"var(--accent)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>전체</button>{inds.map(ind=><button key={ind} onClick={()=>setFi(ind===fi?"":ind)} style={{background:fi===ind?"var(--accent)":"var(--card)",color:fi===ind?"#0b0b12":"var(--text2)",border:"1px solid "+(fi===ind?"var(--accent)":"var(--border)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>{ind}</button>)}</div></div>}
-{!sd&&<><div className="fi2" style={{marginBottom:28}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>인기 검색어</div><div style={{display:"flex",flexWrap:"wrap",gap:7}}>{tgs.map(t=><button key={t} onClick={()=>{setQ(t);doS(t)}} style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:"var(--radius-sm)",padding:"8px 14px",fontSize:13,color:"var(--text)",cursor:"pointer",fontWeight:500,fontFamily:"var(--font)"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent-border)";e.currentTarget.style.color="var(--accent)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border)";e.currentTarget.style.color="var(--text)"}}>{t}</button>)}</div></div>
-<div className="fi2" style={{marginBottom:28}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1}}>🔥 구매 신호 — 지금 찾고 있어요</div><button onClick={()=>setShowSig(true)} style={{background:"var(--accent-bg)",border:"1px solid var(--accent-border)",borderRadius:8,padding:"4px 10px",fontSize:11,color:"var(--accent)",cursor:"pointer",fontWeight:700,fontFamily:"var(--font)"}}>+ 등록</button></div>
-{sigs.length===0?<div style={{background:"var(--card)",borderRadius:"var(--radius)",padding:20,border:"1px solid var(--border)",textAlign:"center"}}><div style={{fontSize:28,marginBottom:8}}>📢</div><div style={{fontSize:13,color:"var(--text2)",lineHeight:1.6}}>아직 구매 신호가 없어요.<br/>필요한 업체를 찾고 있다면 <span onClick={()=>setShowSig(true)} style={{color:"var(--accent)",cursor:"pointer",fontWeight:700}}>신호를 등록</span>해보세요!</div></div>
-:<div style={{display:"flex",flexDirection:"column",gap:8}}>{sigs.filter(s=>s.active).slice(0,5).map(s=>{const owner=gU(s.uid);if(!owner)return null;return<div key={s.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--orange-bg)",cursor:"pointer"}} onClick={()=>{setSu(owner);setPg("profile");}}>
-<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><Av n={owner.name} l={owner.cl} sz={36}/><div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{owner.name} <span style={{color:"var(--text2)",fontWeight:400,fontSize:12}}>{owner.company} {owner.dept}</span></div><div style={{fontSize:11,color:"var(--text3)"}}>{tAgo(s.at)}</div></div>{s.uid===me.id&&<button onClick={e=>{e.stopPropagation();delSignal(s.id);}} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",fontSize:12}}>삭제</button>}</div>
-<div style={{display:"flex",alignItems:"center",gap:6}}><span style={{background:"var(--orange-bg)",color:"var(--orange)",padding:"3px 10px",borderRadius:8,fontSize:12,fontWeight:700}}>🔥 {s.cat}</span><span style={{fontSize:13,color:"var(--text)"}}>{s.desc}</span></div></div>})}</div>}
+return<div style={{padding:"0 20px",paddingTop:20}}>
+{/* Header */}
+<div className="fi" style={{textAlign:"center",marginBottom:28}}>
+<div style={{fontSize:13,color:"var(--text2)",marginBottom:6}}>동의 기반 비즈니스 연락처</div>
+<h1 style={{fontFamily:"var(--font-d)",fontSize:26,fontWeight:900,letterSpacing:-1}}>어떤 회사든 <span style={{color:"var(--accent)"}}>검색</span>하세요</h1>
+<div style={{fontSize:13,color:"var(--text3)",marginTop:6}}>등록된 <strong style={{color:"var(--text2)"}}>{us.filter(u=>u.sd).length}명</strong>의 담당자를 찾을 수 있어요</div>
 </div>
 
-{/* Signal Creation Modal */}
-{showSig&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowSig(false)}><div onClick={e=>e.stopPropagation()} style={{background:"var(--bg)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .3s ease"}}><div style={{width:40,height:4,borderRadius:2,background:"var(--border)",margin:"0 auto 22px"}}/><h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,letterSpacing:-.5,margin:"0 0 6px"}}>🔥 구매 신호 등록</h3><p style={{fontSize:13,color:"var(--text2)",margin:"0 0 22px"}}>"지금 이런 업체를 찾고 있어요"를 알리면<br/>관련 영업 담당자가 알아서 찾아옵니다</p>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>어떤 분야? *</div>
-<div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:18}}>{["포장재","IT솔루션","원자재","물류","마케팅","디자인","법률자문","HR/채용","컨설팅","기타"].map(c=><button key={c} onClick={()=>setSigCat(c)} style={{background:sigCat===c?"var(--orange-bg)":"var(--card)",color:sigCat===c?"var(--orange)":"var(--text2)",border:"1px solid "+(sigCat===c?"transparent":"var(--border)"),borderRadius:"var(--radius-sm)",padding:"8px 14px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"var(--font)"}}>{c}</button>)}</div>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>구체적으로 *</div>
-<textarea className="inp" value={sigDesc} onChange={e=>setSigDesc(e.target.value.slice(0,120))} placeholder="예) 친환경 포장재 공급업체를 찾고 있습니다. 월 500박스 규모" style={{height:80,resize:"none",marginBottom:4}}/>
-<div style={{fontSize:11,color:"var(--text3)",textAlign:"right",marginBottom:18}}>{sigDesc.length}/120</div>
-<button className="bp" onClick={()=>{if(!sigCat||!sigDesc){fl("분야와 상세 내용을 입력해주세요.","err");return;}addSignal(sigCat,sigDesc);setShowSig(false);setSigCat("");setSigDesc("");}} style={{width:"100%",fontSize:15}}>🔥 신호 등록하기</button></div></div>}
+{/* Search Bar */}
+<div className="fi1" style={{display:"flex",gap:8,marginBottom:16}}>
+<div style={{flex:1,display:"flex",alignItems:"center",gap:10,background:"var(--card)",borderRadius:"var(--radius)",padding:"14px 16px",border:"1px solid var(--border)"}}>
+<Ic.S z={18} style={{color:"var(--text3)",flexShrink:0}}/>
+<input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doS()} placeholder="회사명, 부서, 이름, 직책..." style={{background:"none",border:"none",color:"var(--text)",fontSize:15,outline:"none",flex:1,fontFamily:"var(--font)"}}/>
+{q&&<button onClick={()=>{setQ("");setSd(false);setRs([])}} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",padding:0}}><Ic.X z={16}/></button>}
+</div>
+<button onClick={()=>setSf(!sf)} style={{background:sf?"var(--accent-bg)":"var(--card)",border:"1px solid "+(sf?"var(--accent-border)":"var(--border)"),borderRadius:"var(--radius)",width:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:sf?"var(--accent)":"var(--text3)"}}><Ic.Fl/></button>
+</div>
+{sf&&<div className="fi" style={{marginBottom:14}}><div style={{fontSize:11,fontWeight:700,color:"var(--text2)",marginBottom:8}}>산업 필터</div><div style={{display:"flex",flexWrap:"wrap",gap:6}}><button onClick={()=>setFi("")} style={{background:!fi?"var(--accent)":"var(--card)",color:!fi?"#0b0b12":"var(--text2)",border:"1px solid "+(fi?"var(--border)":"var(--accent)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>전체</button>{inds.map(ind=><button key={ind} onClick={()=>setFi(ind===fi?"":ind)} style={{background:fi===ind?"var(--accent)":"var(--card)",color:fi===ind?"#0b0b12":"var(--text2)",border:"1px solid "+(fi===ind?"var(--accent)":"var(--border)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>{ind}</button>)}</div></div>}
 
-<div className="fi2" style={{marginBottom:28}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1}}>🔥 추천 프로필</div><span style={{fontSize:11,color:"var(--accent)",fontWeight:600}}>{us.filter(u=>u.sd).length}명 등록</span></div><div style={{display:"flex",flexDirection:"column",gap:8}}>{us.filter(u=>u.sd&&u.id!==me?.id&&u.vis).slice(0,5).map(u=><UC key={u.id} u={u} onClick={()=>{setSu(u);setPg("profile");}}/>)}</div></div>
-{myC.length>0&&<div className="fi3" style={{marginBottom:28}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>최근 연결</div><div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:6}}>{myC.slice(0,6).map(c=>{const u=gU(c.cu);if(!u)return null;return<div key={c.id} onClick={()=>{setSu(u);setPg("profile")}} style={{minWidth:100,background:"var(--card)",borderRadius:"var(--radius)",padding:14,textAlign:"center",border:"1px solid var(--border)",cursor:"pointer",flexShrink:0}}><Av n={u.name} l={u.cl} sz={36} st={{margin:"0 auto 6px"}}/><div style={{fontSize:13,fontWeight:700,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.name}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.company}</div></div>})}</div></div>}
-<div className="fi4" style={{background:"linear-gradient(135deg,var(--accent-bg),rgba(167,139,250,.06))",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--accent-border)",marginBottom:28}}><div style={{fontSize:14,fontWeight:800,marginBottom:14}}>📊 내 활동</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>{[{n:myS.length,l:"보낸 요청",c:"var(--accent)"},{n:myS.filter(r=>r.st==="A").length,l:"승인됨",c:"var(--green)"},{n:myC.length,l:"연결됨",c:"var(--blue)"}].map((s,i)=><div key={i} style={{textAlign:"center"}}><div style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,color:s.c}}>{s.n}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:2}}>{s.l}</div></div>)}</div></div>
-<div className="fi4" style={{background:"var(--card)",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--border)",marginBottom:20}}><div style={{fontSize:14,fontWeight:800,marginBottom:8}}>💡 LinkedIn과 다른 점</div><div style={{fontSize:13,color:"var(--text2)",lineHeight:1.7}}>LinkedIn에서 "삼성전자 구매팀 김과장 직통번호"를 알 수 있나요?<br/><strong style={{color:"var(--accent)"}}>절대 못합니다.</strong> 그게 BizConnect의 핵심입니다.</div></div></>}
-{sd&&<div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}><span style={{fontSize:14,fontWeight:700}}>검색 결과 <span style={{color:"var(--accent)"}}>{rs.length}명</span></span><button onClick={()=>{setSd(false);setQ("");setRs([])}} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",fontSize:13,fontFamily:"var(--font)"}}>초기화</button></div>{rs.length===0?<ES ic="🔍" tl="검색 결과가 없어요" ds="다른 키워드로 시도해보세요"/>:<div style={{display:"flex",flexDirection:"column",gap:8}}>{rs.slice(0,30).map((u,i)=><UC key={u.id} u={u} onClick={()=>{setSu(u);setPg("profile");}}/>)}{rs.length>30&&<div style={{textAlign:"center",padding:16,color:"var(--text3)",fontSize:13}}>+{rs.length-30}명 더</div>}</div>}</div>}
+{/* Before search: Show company directory */}
+{!sd&&<>
+<div className="fi2" style={{marginBottom:24}}>
+<div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:12}}>등록 기업 디렉토리</div>
+<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+{companies.map(co=><div key={co.name} onClick={()=>{setQ(co.name);doS(co.name);}}
+style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",cursor:"pointer",transition:"all .15s"}}
+onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent-border)"}}
+onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border)"}}>
+<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+<span style={{fontSize:20}}>{co.logo}</span>
+<span style={{fontWeight:700,fontSize:14,flex:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{co.name}</span>
+</div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+<span style={{fontSize:11,color:"var(--text3)"}}>{co.ind}</span>
+<span style={{fontSize:12,color:"var(--accent)",fontWeight:700}}>{co.cnt}명</span>
+</div>
+</div>)}
+</div>
+</div>
+<div className="fi3" style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)"}}>
+<div style={{fontSize:13,color:"var(--text2)",lineHeight:1.7,textAlign:"center"}}>
+💡 회사명을 검색하면 <strong style={{color:"var(--text)"}}>부서별 담당자</strong>를 한눈에 볼 수 있어요
+</div>
+</div>
+</>}
+
+{/* Search Results: Grouped by Company > Department */}
+{sd&&<div>
+<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+<span style={{fontSize:15,fontWeight:800}}>검색 결과 <span style={{color:"var(--accent)"}}>{rs.length}명</span></span>
+<button onClick={()=>{setSd(false);setQ("");setRs([]);setFi("")}} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",fontSize:13,fontFamily:"var(--font)"}}>초기화</button>
+</div>
+{rs.length===0?<ES ic="🔍" tl="검색 결과가 없어요" ds="다른 회사명이나 부서를 검색해보세요"/>
+:<div style={{display:"flex",flexDirection:"column",gap:16}}>
+{grouped.map(co=><div key={co.name} className="fi">
+<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+<span style={{fontSize:18}}>{co.logo}</span>
+<span style={{fontFamily:"var(--font-d)",fontWeight:800,fontSize:16}}>{co.name}</span>
+<span style={{fontSize:11,color:"var(--text3)"}}>{co.ind}</span>
+</div>
+{Object.entries(co.depts).map(([dept,users])=><div key={dept} style={{marginBottom:12}}>
+<div style={{fontSize:12,fontWeight:700,color:"var(--accent)",marginBottom:6,paddingLeft:4}}>📂 {dept}</div>
+<div style={{display:"flex",flexDirection:"column",gap:6}}>
+{users.map(u=><UC key={u.id} u={u} onClick={()=>{setSu(u);setPg("profile");}}/>)}
+</div>
+</div>)}
+</div>)}
+</div>}
+</div>}
+</div>;}
+
+// === SIGNALS (구매 신호 전용 페이지) ===
+function Sigs(){const{me,us,sigs,addSignal,delSignal,gU,setSu,setPg,fl}=useA();
+const[showNew,setShowNew]=useState(false);const[cat,setCat]=useState("");const[desc,setDesc]=useState("");
+const mySigs=sigs.filter(s=>s.uid===me?.id);const otherSigs=sigs.filter(s=>s.uid!==me?.id&&s.active);
+const cats=["포장재","IT솔루션","원자재","물류","마케팅","디자인","법률자문","HR/채용","컨설팅","SaaS","제조","기타"];
+
+return<div style={{padding:"0 20px",paddingTop:16}}>
+<div className="fi" style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+<h2 style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8}}>🔥 구매 신호</h2>
+<button onClick={()=>setShowNew(true)} className="bp" style={{padding:"8px 16px",fontSize:13}}>+ 신호 등록</button>
+</div>
+
+<div className="fi1" style={{background:"var(--accent-bg)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--accent-border)",marginBottom:20}}>
+<div style={{fontSize:13,color:"var(--accent)",fontWeight:600,lineHeight:1.6}}>💡 "지금 이런 업체를 찾고 있어요"를 알리면 관련 담당자가 먼저 연락해요. 구매 목적 수락률 <strong>80~95%</strong></div>
+</div>
+
+{/* My signals */}
+{mySigs.length>0&&<div className="fi1" style={{marginBottom:24}}>
+<div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>내가 올린 신호</div>
+{mySigs.map(s=><div key={s.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--orange-bg)",marginBottom:8,display:"flex",alignItems:"flex-start",gap:12}}>
+<div style={{flex:1}}><div style={{display:"inline-flex",background:"var(--orange-bg)",color:"var(--orange)",padding:"3px 10px",borderRadius:8,fontSize:12,fontWeight:700,marginBottom:6}}>🔥 {s.cat}</div><div style={{fontSize:13,color:"var(--text)",lineHeight:1.5}}>{s.desc}</div><div style={{fontSize:10,color:"var(--text3)",marginTop:4}}>{tAgo(s.at)}</div></div>
+<button onClick={()=>delSignal(s.id)} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",fontSize:12,fontFamily:"var(--font)",flexShrink:0}}>삭제</button>
+</div>)}
+</div>}
+
+{/* Other people's signals */}
+<div className="fi2">
+<div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>지금 업체를 찾고 있는 분들</div>
+{otherSigs.length===0?<div style={{textAlign:"center",padding:"32px 0",color:"var(--text3)"}}><div style={{fontSize:36,marginBottom:8}}>📢</div><div style={{fontSize:13}}>아직 등록된 신호가 없어요</div></div>
+:otherSigs.map(s=>{const owner=gU(s.uid);if(!owner)return null;return<div key={s.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",marginBottom:8,cursor:"pointer"}} onClick={()=>{setSu(owner);setPg("profile");}}>
+<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+<Av n={owner.name} l={owner.cl} sz={36}/>
+<div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{owner.name}</div><div style={{fontSize:11,color:"var(--text2)"}}>{owner.company} · {owner.dept}</div></div>
+<span style={{fontSize:10,color:"var(--text3)"}}>{tAgo(s.at)}</span>
+</div>
+<div style={{display:"inline-flex",background:"var(--orange-bg)",color:"var(--orange)",padding:"3px 10px",borderRadius:8,fontSize:12,fontWeight:700,marginBottom:6}}>🔥 {s.cat}</div>
+<div style={{fontSize:13,color:"var(--text)",lineHeight:1.5}}>{s.desc}</div>
+<div style={{fontSize:11,color:"var(--accent)",marginTop:8,fontWeight:600}}>→ 프로필 보기 · 연락처 요청</div>
+</div>})}
+</div>
+
+{/* New Signal Modal */}
+{showNew&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowNew(false)}><div onClick={e=>e.stopPropagation()} style={{background:"var(--bg)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .3s ease",maxHeight:"85vh",overflowY:"auto"}}>
+<div style={{width:40,height:4,borderRadius:2,background:"var(--border)",margin:"0 auto 22px"}}/>
+<h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,letterSpacing:-.5,margin:"0 0 6px"}}>🔥 구매 신호 등록</h3>
+<p style={{fontSize:13,color:"var(--text2)",margin:"0 0 22px"}}>"지금 이런 업체를 찾고 있어요"를 알리세요</p>
+<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>어떤 분야? *</div>
+<div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:18}}>{cats.map(c=><button key={c} onClick={()=>setCat(c)} style={{background:cat===c?"var(--orange-bg)":"var(--card)",color:cat===c?"var(--orange)":"var(--text2)",border:"1px solid "+(cat===c?"transparent":"var(--border)"),borderRadius:"var(--radius-sm)",padding:"8px 14px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"var(--font)"}}>{c}</button>)}</div>
+<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>구체적으로 *</div>
+<textarea className="inp" value={desc} onChange={e=>setDesc(e.target.value.slice(0,150))} placeholder="예) 친환경 포장재 공급업체. 월 500박스 규모" style={{height:80,resize:"none",marginBottom:4}}/>
+<div style={{fontSize:11,color:"var(--text3)",textAlign:"right",marginBottom:18}}>{desc.length}/150</div>
+<button className="bp" onClick={()=>{if(!cat||!desc){fl("분야와 상세 내용을 입력해주세요.","err");return;}addSignal(cat,desc);setShowNew(false);setCat("");setDesc("");}} style={{width:"100%",fontSize:15,background:"var(--orange)"}}>🔥 신호 등록하기</button>
+</div></div>}
 </div>;}
 
 // === PROFILE ===
@@ -489,7 +590,7 @@ return<div style={{padding:"0 20px",paddingTop:16}}>
 function App(){const{me,pg,su,rdy}=useA();
 if(!rdy)return<div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100dvh",flexDirection:"column",gap:12}}><div style={{fontSize:52,animation:"pulse 1.5s infinite"}}>🤝</div><div style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900}}><span style={{color:"var(--accent)"}}>Biz</span>Connect</div><div style={{fontSize:12,color:"var(--text3)"}}>로딩 중...</div></div>;
 if(!me)return<><Toast/><Land/></>;
-const pm={home:su?<Prof/>:<Home/>,profile:su?<Prof/>:<Home/>,inbox:<Ibx/>,contacts:<Cts/>,notifs:<Ntf/>,me:<Me/>};
+const pm={home:su?<Prof/>:<Home/>,profile:su?<Prof/>:<Home/>,signals:<Sigs/>,inbox:<Ibx/>,contacts:<Cts/>,notifs:<Ntf/>,me:<Me/>};
 return<><Toast/><div style={{height:"100dvh",display:"flex",flexDirection:"column"}}><div style={{flex:1,overflowY:"auto",paddingBottom:"var(--nav-h)"}}>{pm[pg]||<Home/>}</div><Nav/></div></>;}
 
 ReactDOM.createRoot(document.getElementById("root")).render(<Prov><App/></Prov>);
