@@ -175,7 +175,7 @@ function UC({u,onClick,cls=""}){return<div className={"fi "+cls} onClick={onClic
 <Av n={u.name} l={u.cl} sz={46}/><div style={{flex:1,minWidth:0}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontWeight:700,fontSize:15,letterSpacing:-.3}}>{u.name}</span>{u.vf?<Ic.Vf z={13}/>:null}<span style={{fontSize:12,color:"var(--text2)"}}>{u.pos}</span></div><div style={{fontSize:13,color:"var(--text2)",marginTop:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.company} · {u.dept}</div><div style={{fontSize:12,color:"var(--text3)",marginTop:2,letterSpacing:.5}}>{mPh(u.phone)}</div></div><Ic.Cr z={14} style={{color:"var(--text3)",flexShrink:0}}/></div>;}
 
 // === LANDING ===
-function Land(){const{signup,login,fl,us}=useA();const[md,setMd]=useState("land");const[em,setEm]=useState("");const[pw,setPw]=useState("");const[nm,setNm]=useState("");const[co,setCo]=useState("");const[dp,setDp]=useState("");const[ps,setPs]=useState("");const[ph,setPh]=useState("");const[sp,setSp]=useState(false);
+function Land(){const{signup,login,fl,us,pM,setPg}=useA();const[md,setMd]=useState("land");const[em,setEm]=useState("");const[pw,setPw]=useState("");const[nm,setNm]=useState("");const[co,setCo]=useState("");const[dp,setDp]=useState("");const[ps,setPs]=useState("");const[ph,setPh]=useState("");const[sp,setSp]=useState(false);
 
 if(md==="land")return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24px"}}>
 <div className="fi" style={{paddingTop:56,textAlign:"center"}}><div style={{fontSize:56,marginBottom:6,filter:"drop-shadow(0 0 24px rgba(201,164,76,.2))"}}>🤝</div><h1 style={{fontFamily:"var(--font-d)",fontSize:36,fontWeight:900,letterSpacing:-2,lineHeight:1.1}}><span style={{color:"var(--accent)"}}>Biz</span>Connect</h1><p style={{color:"var(--text2)",fontSize:15,marginTop:14,lineHeight:1.7}}>모든 회사의 모든 부서 담당자를<br/><strong style={{color:"var(--text)"}}>동의 하에</strong> 찾아 연락하는 플랫폼</p></div>
@@ -183,7 +183,62 @@ if(md==="land")return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24
 <div className="fi2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:32}}>{[{n:us.length+"+",l:"등록 전문가"},{n:COS.length,l:"등록 기업"},{n:"100%",l:"동의 기반"},{n:"0건",l:"스팸 연락"}].map((s,i)=><div key={i} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:"16px 12px",textAlign:"center",border:"1px solid var(--border)"}}><div style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,color:"var(--accent)"}}>{s.n}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:4}}>{s.l}</div></div>)}</div>
 <div className="fi3" style={{marginTop:32}}><div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>수락률 예상</div>{PU.map(p=><div key={p.id} style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:18,width:28,textAlign:"center"}}>{p.ic}</span><span style={{fontSize:13,flex:1,fontWeight:600}}>{p.lb}</span><span style={{fontSize:13,color:p.cl,fontWeight:800,fontFamily:"var(--font-d)"}}>{p.rt}</span></div>)}</div>
 <div className="fi3" style={{marginTop:32,background:"var(--card)",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--border)"}}><div style={{fontSize:14,fontWeight:800,marginBottom:14}}>기존 서비스 vs BizConnect</div><table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}><thead><tr style={{color:"var(--text2)"}}><th style={{textAlign:"left",padding:"6px 0",borderBottom:"1px solid var(--border)"}}></th><th style={{textAlign:"center",padding:"6px",borderBottom:"1px solid var(--border)"}}>ZoomInfo</th><th style={{textAlign:"center",padding:"6px",borderBottom:"1px solid var(--border)"}}>LinkedIn</th><th style={{textAlign:"center",padding:"6px",borderBottom:"1px solid var(--border)",color:"var(--accent)",fontWeight:800}}>BizConnect</th></tr></thead><tbody>{[{l:"연락 동의",a:"❌",b:"❌",c:"✅"},{l:"전화번호",a:"💰유료",b:"❌없음",c:"✅상호"},{l:"스팸",a:"😰높음",b:"😐높음",c:"😊제로"},{l:"규제",a:"⚠️위험",b:"⚠️중간",c:"✅완전"}].map((r,i)=><tr key={i}><td style={{padding:"8px 0",fontWeight:600,borderBottom:"1px solid var(--border)"}}>{r.l}</td><td style={{textAlign:"center",padding:"8px 4px",borderBottom:"1px solid var(--border)",fontSize:11}}>{r.a}</td><td style={{textAlign:"center",padding:"8px 4px",borderBottom:"1px solid var(--border)",fontSize:11}}>{r.b}</td><td style={{textAlign:"center",padding:"8px 4px",borderBottom:"1px solid var(--border)",fontSize:11,fontWeight:700}}>{r.c}</td></tr>)}</tbody></table></div>
-<div className="fi4" style={{marginTop:36,display:"flex",flexDirection:"column",gap:12,paddingBottom:40}}><button className="bp" onClick={()=>setMd("signup")} style={{fontSize:16,padding:"17px 28px",animation:"glow 3s infinite"}}>무료로 시작하기</button><button className="bs" onClick={()=>setMd("login")}>이미 계정이 있어요</button><div style={{textAlign:"center",fontSize:11,color:"var(--text3)",marginTop:8}}>🔒 개인정보 암호화 · PIPA/GDPR 준수</div></div></div>;
+{/* Example Business Cards */}
+<div className="fi4" style={{marginTop:32}}>
+<div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>등록된 명함 예시</div>
+<div style={{display:"flex",flexDirection:"column",gap:8}}>
+{(()=>{const samples=us.filter(u=>u.sd).slice(0,6);return samples.map((u,i)=>
+<div key={u.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12,animation:"fadeIn .4s ease "+(i*.06)+"s both"}}>
+<div style={{width:42,height:42,borderRadius:13,background:"linear-gradient(135deg,rgba(201,164,76,.15),rgba(167,139,250,.12))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{u.cl}</div>
+<div style={{flex:1,minWidth:0}}>
+<div style={{display:"flex",alignItems:"center",gap:5}}><span style={{fontWeight:700,fontSize:14}}>{u.name}</span>{u.vf?<Ic.Vf z={12}/>:null}<span style={{fontSize:11,color:"var(--text2)"}}>{u.pos}</span></div>
+<div style={{fontSize:12,color:"var(--text2)",marginTop:2}}>{u.company} · {u.dept}</div>
+<div style={{fontSize:11,color:"var(--text3)",marginTop:1,letterSpacing:.5}}>010-••••-••••</div>
+</div>
+<div style={{fontSize:10,color:"var(--text3)",background:"var(--accent-bg)",padding:"3px 8px",borderRadius:6,fontWeight:600,flexShrink:0}}>🔒 수락 시 공개</div>
+</div>);})()}
+</div>
+<div style={{textAlign:"center",marginTop:12,fontSize:12,color:"var(--text2)"}}>총 <strong style={{color:"var(--accent)"}}>{us.length}명</strong>의 전문가가 등록되어 있어요</div>
+</div>
+
+{/* Use Cases */}
+<div className="fi4" style={{marginTop:28}}>
+<div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>실제 사용 시나리오</div>
+<div style={{display:"flex",flexDirection:"column",gap:8}}>
+{[
+{from:"A식품 박대리",fromD:"영업팀",to:"B프랜차이즈 김과장",toD:"구매팀",pu:"영업",rs:"🛒 구매 목적 → 수락률 80~95%",cl:"var(--blue)"},
+{from:"C스타트업 이대표",fromD:"경영",to:"D벤처캐피탈 정심사역",toD:"투자심사",pu:"투자",rs:"💰 투자 관련 → 수락률 60~80%",cl:"var(--pink)"},
+{from:"E전자 최과장",fromD:"구매팀",to:"F소재 박팀장",toD:"영업팀",pu:"구매",rs:"🛒 구매 문의 → 거의 항상 수락",cl:"var(--green)"},
+].map((sc,i)=>
+<div key={i} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)"}}>
+<div style={{display:"flex",alignItems:"center",gap:6,fontSize:13,marginBottom:8}}>
+<span style={{fontWeight:700}}>{sc.from}</span><span style={{color:"var(--text3)",fontSize:11}}>({sc.fromD})</span>
+<span style={{color:"var(--accent)"}}>→</span>
+<span style={{fontWeight:700}}>{sc.to}</span><span style={{color:"var(--text3)",fontSize:11}}>({sc.toD})</span>
+</div>
+<div style={{fontSize:12,color:sc.cl,fontWeight:700}}>{sc.rs}</div>
+</div>)}
+</div>
+</div>
+
+{/* Testimonials */}
+<div className="fi4" style={{marginTop:28}}>
+<div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>기대 효과</div>
+<div style={{display:"flex",flexDirection:"column",gap:8}}>
+{[
+{q:"수락한 사람 = 관심 있는 사람. 거부당하면 시간 낭비 없음",who:"영업 담당자 관점",ic:"💼"},
+{q:"내가 원하는 연락만 받음. 스팸 제로",who:"연락 수신자 관점",ic:"🛡️"},
+{q:"내 명함을 먼저 주고, 상대가 허락해야 받는다",who:"핵심 원칙",ic:"🤝"},
+].map((t,i)=>
+<div key={i} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)"}}>
+<div style={{fontSize:20,marginBottom:8}}>{t.ic}</div>
+<div style={{fontSize:13,color:"var(--text)",lineHeight:1.6,fontWeight:600}}>"{t.q}"</div>
+<div style={{fontSize:11,color:"var(--text3)",marginTop:6}}>— {t.who}</div>
+</div>)}
+</div>
+</div>
+
+<div className="fi4" style={{marginTop:36,display:"flex",flexDirection:"column",gap:12,paddingBottom:40}}><button className="bp" onClick={()=>{const tu={email:'test@bizconnect.kr',pw:'1234',name:'김테스트',company:'BizConnect',cl:'🤝',dept:'제품기획',pos:'팀장',phone:'010-1234-5678',bio:'BizConnect 제품기획 팀장. 테스트 계정입니다.'};const ex=us.find(u=>u.email===tu.email);if(ex){pM(ex);fl(ex.name+"님, 환영합니다!");setPg("home");}else{signup(tu);}}} style={{fontSize:16,padding:"17px 28px",animation:"glow 3s infinite"}}>⚡ 바로 체험하기 (원클릭)</button><button className="bs" onClick={()=>setMd("signup")} style={{fontSize:15}}>직접 가입하기</button><button onClick={()=>setMd("login")} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",fontSize:14,fontFamily:"var(--font)",padding:"10px 0"}}>이미 계정이 있어요</button><div style={{textAlign:"center",fontSize:11,color:"var(--text3)",marginTop:8}}>🔒 개인정보 암호화 · PIPA/GDPR 준수</div></div></div>;
 
 if(md==="login")return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32}}>
 <BB onClick={()=>setMd("land")}/><div className="fi"><div style={{fontSize:32,marginBottom:8}}>👋</div><h2 style={{fontFamily:"var(--font-d)",fontSize:28,fontWeight:900,letterSpacing:-1.5,margin:"0 0 8px"}}>돌아오셨군요</h2><p style={{color:"var(--text2)",fontSize:14,margin:"0 0 32px"}}>계정 정보를 입력해주세요</p></div>
@@ -219,6 +274,7 @@ return<div style={{padding:"0 20px",paddingTop:16}}>
 <div className="fi1" style={{display:"flex",gap:8,marginBottom:14}}><div style={{flex:1,display:"flex",alignItems:"center",gap:10,background:"var(--card)",borderRadius:"var(--radius)",padding:"12px 16px",border:"1px solid var(--border)"}}><Ic.S z={18} style={{color:"var(--text3)",flexShrink:0}}/><input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doS()} placeholder="회사명, 부서, 이름, 직책..." style={{background:"none",border:"none",color:"var(--text)",fontSize:14,outline:"none",flex:1,fontFamily:"var(--font)"}}/>{q&&<button onClick={()=>{setQ("");setSd(false);setRs([])}} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",padding:0}}><Ic.X z={16}/></button>}</div><button onClick={()=>setSf(!sf)} style={{background:sf?"var(--accent-bg)":"var(--card)",border:"1px solid "+(sf?"var(--accent-border)":"var(--border)"),borderRadius:"var(--radius)",width:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:sf?"var(--accent)":"var(--text3)"}}><Ic.Fl/></button></div>
 {sf&&<div className="fi" style={{marginBottom:14}}><div style={{fontSize:11,fontWeight:700,color:"var(--text2)",marginBottom:8}}>산업 필터</div><div style={{display:"flex",flexWrap:"wrap",gap:6}}><button onClick={()=>setFi("")} style={{background:!fi?"var(--accent)":"var(--card)",color:!fi?"#0b0b12":"var(--text2)",border:"1px solid "+(fi?"var(--border)":"var(--accent)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>전체</button>{inds.map(ind=><button key={ind} onClick={()=>setFi(ind===fi?"":ind)} style={{background:fi===ind?"var(--accent)":"var(--card)",color:fi===ind?"#0b0b12":"var(--text2)",border:"1px solid "+(fi===ind?"var(--accent)":"var(--border)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>{ind}</button>)}</div></div>}
 {!sd&&<><div className="fi2" style={{marginBottom:28}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>인기 검색어</div><div style={{display:"flex",flexWrap:"wrap",gap:7}}>{tgs.map(t=><button key={t} onClick={()=>{setQ(t);doS(t)}} style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:"var(--radius-sm)",padding:"8px 14px",fontSize:13,color:"var(--text)",cursor:"pointer",fontWeight:500,fontFamily:"var(--font)"}} onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent-border)";e.currentTarget.style.color="var(--accent)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border)";e.currentTarget.style.color="var(--text)"}}>{t}</button>)}</div></div>
+<div className="fi2" style={{marginBottom:28}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1}}>🔥 추천 프로필</div><span style={{fontSize:11,color:"var(--accent)",fontWeight:600}}>{us.filter(u=>u.sd).length}명 등록</span></div><div style={{display:"flex",flexDirection:"column",gap:8}}>{us.filter(u=>u.sd&&u.id!==me?.id&&u.vis).slice(0,5).map(u=><UC key={u.id} u={u} onClick={()=>{setSu(u);setPg("profile");}}/>)}</div></div>
 {myC.length>0&&<div className="fi3" style={{marginBottom:28}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>최근 연결</div><div style={{display:"flex",gap:10,overflowX:"auto",paddingBottom:6}}>{myC.slice(0,6).map(c=>{const u=gU(c.cu);if(!u)return null;return<div key={c.id} onClick={()=>{setSu(u);setPg("profile")}} style={{minWidth:100,background:"var(--card)",borderRadius:"var(--radius)",padding:14,textAlign:"center",border:"1px solid var(--border)",cursor:"pointer",flexShrink:0}}><Av n={u.name} l={u.cl} sz={36} st={{margin:"0 auto 6px"}}/><div style={{fontSize:13,fontWeight:700,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.name}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:2,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.company}</div></div>})}</div></div>}
 <div className="fi4" style={{background:"linear-gradient(135deg,var(--accent-bg),rgba(167,139,250,.06))",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--accent-border)",marginBottom:28}}><div style={{fontSize:14,fontWeight:800,marginBottom:14}}>📊 내 활동</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>{[{n:myS.length,l:"보낸 요청",c:"var(--accent)"},{n:myS.filter(r=>r.st==="A").length,l:"승인됨",c:"var(--green)"},{n:myC.length,l:"연결됨",c:"var(--blue)"}].map((s,i)=><div key={i} style={{textAlign:"center"}}><div style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,color:s.c}}>{s.n}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:2}}>{s.l}</div></div>)}</div></div>
 <div className="fi4" style={{background:"var(--card)",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--border)",marginBottom:20}}><div style={{fontSize:14,fontWeight:800,marginBottom:8}}>💡 LinkedIn과 다른 점</div><div style={{fontSize:13,color:"var(--text2)",lineHeight:1.7}}>LinkedIn에서 "삼성전자 구매팀 김과장 직통번호"를 알 수 있나요?<br/><strong style={{color:"var(--accent)"}}>절대 못합니다.</strong> 그게 BizConnect의 핵심입니다.</div></div></>}
