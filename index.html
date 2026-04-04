@@ -2,598 +2,1284 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BizConnect — 동의 기반 비즈니스 연락처 디렉토리</title>
-<meta name="description" content="모든 회사의 모든 부서 담당자를 합법적으로 찾아, 동의하에 연락하는 세계 최초의 플랫폼">
-<meta name="theme-color" content="#0b0b12">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>BizConnect — 동의 기반 비즈니스 연락처</title>
+<meta name="description" content="모든 회사의 모든 부서 담당자를 동의하에 연락하는 플랫폼">
+<meta name="theme-color" content="#0D1F35">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤝</text></svg>">
-<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════════════════
+   SECTION: CSS Reset & Variables
+   BizConnect Color: Navy + Emerald (지시서 4-1)
+   ═══════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
---bg:#0b0b12;--bg2:#10101a;--card:#151522;--card-h:#1a1a2e;
---border:#1e1e34;--border-h:#2a2a48;
---text:#e4e4f0;--text2:#8080a0;--text3:#55556e;
---accent:#c9a44c;--accent2:#e8c665;--accent-bg:rgba(201,164,76,.08);--accent-border:rgba(201,164,76,.18);
---green:#22c55e;--green-bg:rgba(34,197,94,.1);
---red:#ef4444;--red-bg:rgba(239,68,68,.1);
---blue:#3b82f6;--blue-bg:rgba(59,130,246,.1);
---purple:#a78bfa;--purple-bg:rgba(167,139,250,.1);
---orange:#f59e0b;--orange-bg:rgba(245,158,11,.1);
---pink:#ec4899;--pink-bg:rgba(236,72,153,.1);
---gray:#6b7280;
---radius:14px;--radius-sm:10px;--radius-lg:20px;--radius-xl:24px;
---font:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
---font-d:'Outfit','Pretendard',sans-serif;
---nav-h:72px;
+  /* Primary Colors */
+  --navy:#0D1F35;--navy-light:#1A3150;--navy-50:rgba(13,31,53,.05);--navy-10:rgba(13,31,53,.1);
+  --emerald:#10B981;--emerald-light:#34D399;--emerald-bg:rgba(16,185,129,.08);--emerald-border:rgba(16,185,129,.2);
+  /* Status */
+  --orange:#F59E0B;--orange-bg:rgba(245,158,11,.08);
+  --red:#EF4444;--red-bg:rgba(239,68,68,.08);
+  --blue:#3B82F6;--blue-bg:rgba(59,130,246,.08);
+  --purple:#8B5CF6;--purple-bg:rgba(139,92,246,.08);
+  --pink:#EC4899;--pink-bg:rgba(236,72,153,.08);
+  /* Neutrals */
+  --bg:#F8FAFC;--white:#FFFFFF;
+  --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;--gray-300:#D1D5DB;
+  --gray-400:#9CA3AF;--gray-500:#6B7280;--gray-600:#4B5563;--gray-700:#374151;--gray-800:#1F2937;
+  /* Sizing */
+  --radius:12px;--radius-sm:8px;--radius-lg:16px;--radius-xl:20px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.05);
+  /* Font */
+  --font:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  /* Safe Areas */
+  --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px);
+  --nav-h:calc(64px + var(--sab));
 }
-html{-webkit-text-size-adjust:100%}
-body{font-family:var(--font);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow:hidden;height:100dvh}
-input,textarea,select,button{font-family:var(--font);outline:none}
-::placeholder{color:var(--text3)}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--navy);-webkit-font-smoothing:antialiased;overflow:hidden;height:100dvh;font-size:15px;line-height:1.6}
+input,textarea,select,button{font-family:var(--font);outline:none;-webkit-appearance:none}
+::placeholder{color:var(--gray-400)}
 ::-webkit-scrollbar{width:0;height:0}
 a{text-decoration:none;color:inherit}
 #root{max-width:480px;margin:0 auto;height:100dvh;position:relative;overflow:hidden;background:var(--bg)}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══════ Focus Indicators (지시서 1-3 접근성) ═══════ */
+:focus-visible{outline:3px solid var(--emerald);outline-offset:2px;border-radius:4px}
+button:focus:not(:focus-visible){outline:none}
+
+/* ═══════ Animations (지시서 1-1, 4-5) — transform/opacity only ═══════ */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-@keyframes glow{0%,100%{box-shadow:0 0 12px rgba(201,164,76,.15)}50%{box-shadow:0 0 24px rgba(201,164,76,.3)}}
-.fi{animation:fadeIn .4s ease both}.fi1{animation:fadeIn .4s ease .06s both}.fi2{animation:fadeIn .4s ease .12s both}.fi3{animation:fadeIn .4s ease .18s both}.fi4{animation:fadeIn .4s ease .24s both}
-.inp{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;font-size:14px;color:var(--text);width:100%;transition:border-color .2s}
-.inp:focus{border-color:var(--accent)}
-.bp{background:linear-gradient(135deg,var(--accent),#d4a843);color:#0b0b12;border:none;border-radius:var(--radius);padding:15px 28px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-.3px;transition:transform .1s}
-.bp:active{transform:scale(.97)}
-.bs{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--radius);padding:15px 28px;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
-.bs:hover{border-color:var(--accent-border)}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:700}
-.noise::before{content:'';position:fixed;inset:0;opacity:.02;pointer-events:none;z-index:9998;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@keyframes slideRight{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes skeletonPulse{0%,100%{opacity:.6}50%{opacity:.3}}
+@keyframes checkmark{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+.fi{animation:fadeIn .35s ease both}
+.fi1{animation:fadeIn .35s ease .05s both}
+.fi2{animation:fadeIn .35s ease .1s both}
+.fi3{animation:fadeIn .35s ease .15s both}
+.fi4{animation:fadeIn .35s ease .2s both}
+.skel{background:var(--gray-200);border-radius:var(--radius-sm);animation:skeletonPulse 1.5s ease-in-out infinite}
+
+/* ═══════ Common Components ═══════ */
+.input-field{
+  background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--radius);
+  padding:14px 16px;font-size:15px;color:var(--navy);width:100%;transition:border-color .15s;
+}
+.input-field:focus{border-color:var(--emerald);box-shadow:0 0 0 3px var(--emerald-bg)}
+.input-error{border-color:var(--red)!important}
+.input-error-text{color:var(--red);font-size:12px;margin-top:4px;font-weight:500}
+
+.btn-primary{
+  background:var(--emerald);color:#fff;border:none;border-radius:var(--radius);
+  padding:15px 28px;font-size:15px;font-weight:700;cursor:pointer;
+  transition:transform .1s,opacity .1s;display:flex;align-items:center;justify-content:center;gap:8px;
+  min-height:48px;
+}
+.btn-primary:active{transform:scale(.97);opacity:.85}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.btn-secondary{
+  background:var(--white);color:var(--navy);border:1.5px solid var(--gray-200);
+  border-radius:var(--radius);padding:15px 28px;font-size:15px;font-weight:600;
+  cursor:pointer;transition:all .15s;min-height:48px;
+}
+.btn-secondary:hover{border-color:var(--emerald-border);background:var(--emerald-bg)}
+.btn-secondary:active{transform:scale(.97)}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:var(--radius-sm);font-size:12px;font-weight:700}
+.card{background:var(--white);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s}
+.card:hover{box-shadow:var(--shadow-md)}
+.card-sm{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm)}
+
+/* ═══════ Safe Area Padding ═══════ */
+.safe-top{padding-top:var(--sat)}
+.safe-bottom{padding-bottom:calc(var(--nav-h) + 8px)}
 </style>
 </head>
-<body class="noise">
-<div id="root"></div>
+<body>
+<div id="root" role="application" aria-label="BizConnect 비즈니스 연락처 앱"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 <script type="text/babel">
-const{useState,useEffect,useCallback,useMemo,createContext,useContext}=React;
-const LS={U:'bc_u',C:'bc_c',R:'bc_r',CT:'bc_ct',N:'bc_n',I:'bc_i5',SG:'bc_sig',IT:'bc_itr'};
-const ld=(k,f=null)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):f}catch{return f}};
-const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
-const COS=[
-{n:"삼성전자",i:"IT/반도체",l:"🏢",v:1},{n:"현대자동차",i:"자동차",l:"🚗",v:1},{n:"네이버",i:"IT/인터넷",l:"🟢",v:1},
-{n:"카카오",i:"IT/인터넷",l:"💛",v:1},{n:"LG에너지솔루션",i:"에너지",l:"🔋",v:1},{n:"SK하이닉스",i:"IT/반도체",l:"💾",v:1},
-{n:"쿠팡",i:"이커머스",l:"🚀",v:1},{n:"토스",i:"핀테크",l:"💙",v:1},{n:"당근마켓",i:"플랫폼",l:"🥕",v:1},
-{n:"배달의민족",i:"O2O",l:"🍔",v:1},{n:"하이브",i:"엔터",l:"🎵",v:0},{n:"크래프톤",i:"게임",l:"🎮",v:1},
-{n:"야놀자",i:"여행",l:"🏨",v:0},{n:"리디",i:"콘텐츠",l:"📚",v:0},{n:"뱅크샐러드",i:"핀테크",l:"🥗",v:0},
-{n:"오늘의집",i:"인테리어",l:"🏠",v:1},{n:"직방",i:"부동산",l:"🔑",v:0},{n:"센드버드",i:"SaaS",l:"🐦",v:1},
-{n:"스포카",i:"SaaS",l:"📊",v:0},{n:"무신사",i:"패션",l:"👕",v:1},
-];
-const DS=["경영기획","영업","마케팅","구매","인사","재무","기술개발","제품기획","디자인","법무","IR","CS","데이터","보안"];
-const PS=["대표이사","부사장","이사","본부장","부장","차장","과장","대리","사원","팀장","파트장","리드"];
-const SN=["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","홍"];
-const NM=["영호","수진","민수","지혜","현우","은지","준혁","서연","도윤","하은","시우","지우","예준","서윤","하준","지민","건우","소율","유준","다은","승현","채원","태민","나윤","재현","서준","민서","예은","도현","수빈"];
-const BS=["데이터 기반 의사결정을 추구합니다.","새로운 비즈니스 기회를 발굴합니다.","고객 중심 솔루션을 만듭니다.","효율적 프로세스를 설계합니다.","글로벌 시장 확장을 담당합니다.","기술로 혁신을 주도합니다.","파트너십으로 시너지를 창출합니다.","최적의 공급망을 구축합니다."];
-const PU=[
-{id:"SALES",lb:"영업/세일즈",ic:"💼",cl:"var(--orange)",bg:"var(--orange-bg)",rt:"20~40%"},
-{id:"PURCHASE",lb:"구매/발주",ic:"🛒",cl:"var(--blue)",bg:"var(--blue-bg)",rt:"80~95%"},
-{id:"COLLAB",lb:"파트너십/협업",ic:"🤝",cl:"var(--purple)",bg:"var(--purple-bg)",rt:"40~60%"},
-{id:"INVEST",lb:"투자 관련",ic:"💰",cl:"var(--pink)",bg:"var(--pink-bg)",rt:"60~80%"},
-{id:"RECRUIT",lb:"채용",ic:"👤",cl:"var(--gray)",bg:"rgba(107,114,128,.1)",rt:"30~50%"},
-];
-function genSeed(){const u=[];let id=100;COS.forEach(co=>{const dc=3+~~(Math.random()*3);const ds=[...DS].sort(()=>Math.random()-.5).slice(0,dc);ds.forEach(d=>{const c=1+~~(Math.random()*2);for(let j=0;j<c;j++){const s=SN[~~(Math.random()*SN.length)];const n=NM[~~(Math.random()*NM.length)];const p=PS[3+~~(Math.random()*6)];u.push({id:'s'+(id++),email:'u'+(id)+'@ex.com',name:s+n,company:co.n,cl:co.l,ind:co.i,dept:d,pos:p,phone:'010-'+(1000+~~(Math.random()*9000))+'-'+(1000+~~(Math.random()*9000)),bio:co.n+' '+d+' '+p+'. '+BS[~~(Math.random()*BS.length)],vis:1,plan:'FREE',vf:co.v,jn:new Date(Date.now()-Math.random()*120*864e5).toISOString(),sd:1});}});});return u;}
-function tAgo(d){const ms=Date.now()-new Date(d).getTime();const m=~~(ms/6e4);if(m<1)return"방금 전";if(m<60)return m+"분 전";const h=~~(m/60);if(h<24)return h+"시간 전";const dy=~~(h/24);if(dy<7)return dy+"일 전";return new Date(d).toLocaleDateString("ko-KR",{month:"short",day:"numeric"});}
-function mPh(p){return p?p.replace(/(\d{3})-(\d{4})-(\d{4})/,"$1-••••-••••"):"010-••••-••••";}
-function gP(id){return PU.find(p=>p.id===id)||PU[0];}
+/* ═══════════════════════════════════════════════════════════
+   SECTION: React Imports & Constants
+   ═══════════════════════════════════════════════════════════ */
+const {useState,useEffect,useCallback,useMemo,createContext,useContext,useRef}=React;
 
-// Icons
-const Ic={
-S:({z=20})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
-H:({z=22})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-In:({z=22})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>,
-Bk:({z=22})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
-Us:({z=22})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
-Bl:({z=22})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
-Sd:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
-Ck:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>,
-X:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-Cr:({z=16})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>,
-Al:({z=20})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
-Ph:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
-Fl:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
-Lo:({z=20})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
-Vf:({z=14})=><svg width={z} height={z} viewBox="0 0 24 24" fill="var(--accent)"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-Ey:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
-Eo:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
-Mg:({z=18})=><svg width={z} height={z} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
+// ═══════ Storage Keys (지시서 1-6 데이터 지속성) ═══════
+const STORAGE_KEYS={
+  USERS:'bc2_users', CURRENT:'bc2_current', REQUESTS:'bc2_requests',
+  CONTACTS:'bc2_contacts', NOTIFICATIONS:'bc2_notifs',
+  SIGNALS:'bc2_signals', INTROS:'bc2_intros',
+  RECENT_SEARCHES:'bc2_recent', INITIALIZED:'bc2_init_v1'
 };
 
-// Context
-const Ctx=createContext();
-function Prov({children}){
-const[us,setUs]=useState([]);const[me,setMe]=useState(null);const[rq,setRq]=useState([]);
-const[ct,setCt]=useState([]);const[nt,setNt]=useState([]);const[pg,setPg]=useState("home");
-const[su,setSu]=useState(null);const[sr,setSr]=useState(null);const[ts,setTs]=useState(null);const[rdy,setRdy]=useState(false);
-const[sigs,setSigs]=useState([]);const[intros,setIntros]=useState([]);
+function loadFromStorage(key, fallback=null){
+  try{const val=localStorage.getItem(key);return val?JSON.parse(val):fallback}catch{return fallback}
+}
+function saveToStorage(key, value){
+  try{localStorage.setItem(key,JSON.stringify(value))}catch(e){console.warn('Storage save failed:',e)}
+}
 
-useEffect(()=>{let u=ld(LS.U,[]);if(!ld(LS.I)){u=genSeed();sv(LS.U,u);sv(LS.I,1);
-// Seed buying signals
-const seedSigs=[
-{id:'sg_s1',uid:u.find(x=>x.company==="쿠팡"&&x.dept==="구매")?.id||u[0].id,cat:"포장재/박스 공급업체",desc:"로켓배송용 친환경 포장재 대량 공급 가능한 업체를 찾고 있습니다. 월 50만개 이상 납품 가능해야 합니다.",active:1,at:new Date(Date.now()-2*864e5).toISOString()},
-{id:'sg_s2',uid:u.find(x=>x.company==="토스"&&x.dept==="기술개발")?.id||u[1].id,cat:"보안 솔루션 / 모의해킹",desc:"금융 서비스 보안 점검을 위한 화이트해커 / 모의침투 테스트 업체가 필요합니다.",active:1,at:new Date(Date.now()-1*864e5).toISOString()},
-{id:'sg_s3',uid:u.find(x=>x.company==="당근마켓"&&x.dept==="마케팅")?.id||u[2].id,cat:"영상 제작 / 광고 에이전시",desc:"숏폼 바이럴 영상 제작 전문 에이전시를 찾습니다. 월 10편 이상 제작 가능해야 합니다.",active:1,at:new Date(Date.now()-3*36e5).toISOString()},
-{id:'sg_s4',uid:u.find(x=>x.company==="배달의민족"&&x.dept==="인사")?.id||u[3].id,cat:"기업 교육 / 리더십 코칭",desc:"중간관리자 대상 리더십 교육 프로그램 운영 업체를 찾고 있습니다. 100명 규모.",active:1,at:new Date(Date.now()-5*36e5).toISOString()},
-{id:'sg_s5',uid:u.find(x=>x.company==="네이버"&&x.dept==="구매")?.id||u[4].id,cat:"클라우드 인프라 / IDC",desc:"AI 학습용 GPU 클러스터 호스팅이 가능한 IDC 또는 클라우드 업체를 찾습니다.",active:1,at:new Date(Date.now()-12*36e5).toISOString()},
+// ═══════ Company & Seed Data (지시서 2-1 핵심 데이터) ═══════
+const COMPANIES=[
+  {name:"삼성전자",industry:"IT/반도체",logo:"🏢",verified:true},
+  {name:"현대자동차",industry:"자동차",logo:"🚗",verified:true},
+  {name:"네이버",industry:"IT/인터넷",logo:"🟢",verified:true},
+  {name:"카카오",industry:"IT/인터넷",logo:"💛",verified:true},
+  {name:"LG에너지솔루션",industry:"에너지",logo:"🔋",verified:true},
+  {name:"SK하이닉스",industry:"IT/반도체",logo:"💾",verified:true},
+  {name:"쿠팡",industry:"이커머스",logo:"🚀",verified:true},
+  {name:"토스",industry:"핀테크",logo:"💙",verified:true},
+  {name:"당근마켓",industry:"플랫폼",logo:"🥕",verified:true},
+  {name:"배달의민족",industry:"O2O",logo:"🍔",verified:true},
+  {name:"하이브",industry:"엔터테인먼트",logo:"🎵",verified:false},
+  {name:"크래프톤",industry:"게임",logo:"🎮",verified:true},
+  {name:"야놀자",industry:"여행/숙박",logo:"🏨",verified:false},
+  {name:"리디",industry:"콘텐츠",logo:"📚",verified:false},
+  {name:"뱅크샐러드",industry:"핀테크",logo:"🥗",verified:false},
+  {name:"오늘의집",industry:"인테리어",logo:"🏠",verified:true},
+  {name:"직방",industry:"부동산",logo:"🔑",verified:false},
+  {name:"센드버드",industry:"SaaS",logo:"🐦",verified:true},
+  {name:"무신사",industry:"패션",logo:"👕",verified:true},
+  {name:"마켓컬리",industry:"이커머스",logo:"🟣",verified:true},
 ];
-sv(LS.SG,seedSigs);setSigs(seedSigs);
-}else{setSigs(ld(LS.SG,[]));}
-setUs(u);
-const c=ld(LS.C);if(c)setMe(c);setRq(ld(LS.R,[]));setCt(ld(LS.CT,[]));setNt(ld(LS.N,[]));setIntros(ld(LS.IT,[]));setRdy(true);},[]);
 
-const pU=useCallback(v=>{setUs(v);sv(LS.U,v)},[]);
-const pM=useCallback(v=>{setMe(v);if(v)sv(LS.C,v);else localStorage.removeItem(LS.C)},[]);
-const pR=useCallback(v=>{setRq(v);sv(LS.R,v)},[]);
-const pCt=useCallback(v=>{setCt(v);sv(LS.CT,v)},[]);
-const pN=useCallback(v=>{setNt(v);sv(LS.N,v)},[]);
-const pSg=useCallback(v=>{setSigs(v);sv(LS.SG,v)},[]);
-const pIt=useCallback(v=>{setIntros(v);sv(LS.IT,v)},[]);
-const fl=useCallback((m,t="ok")=>{setTs({m,t});setTimeout(()=>setTs(null),2800)},[]);
+const DEPARTMENTS=["경영기획","영업","마케팅","구매","인사","재무","기술개발","제품기획","디자인","법무","IR","CS","데이터","보안"];
+const POSITIONS=["대표이사","부사장","이사","본부장","부장","차장","과장","대리","사원","팀장","파트장","리드"];
+const SURNAMES=["김","이","박","최","정","강","조","윤","장","임","한","오","서","신","권","황","안","송","류","홍"];
+const GIVEN_NAMES=["영호","수진","민수","지혜","현우","은지","준혁","서연","도윤","하은","시우","지우","예준","서윤","하준","지민","건우","소율","유준","다은","승현","채원","태민","나윤","재현","서준","민서","예은","도현","수빈"];
+const BIOS=["데이터 기반 의사결정을 추구합니다.","새로운 비즈니스 기회를 발굴합니다.","고객 중심 솔루션을 만듭니다.","효율적 프로세스를 설계합니다.","글로벌 시장 확장을 담당합니다.","기술로 혁신을 주도합니다.","파트너십으로 시너지를 창출합니다.","최적의 공급망을 구축합니다."];
 
-const signup=useCallback(d=>{if(us.find(u=>u.email===d.email)){fl("이미 가입된 이메일입니다.","err");return 0;}
-const nu={...d,id:'u'+Date.now(),plan:'FREE',vis:1,vf:0,jn:new Date().toISOString()};pU([...us,nu]);pM(nu);fl("환영합니다! 🎉");setPg("home");return 1;},[us,pU,pM,fl]);
+const PURPOSE_OPTIONS=[
+  {id:"SALES",label:"영업/세일즈",icon:"💼",color:"var(--orange)",bgColor:"var(--orange-bg)",rate:"20~40%"},
+  {id:"PURCHASE",label:"구매/발주",icon:"🛒",color:"var(--blue)",bgColor:"var(--blue-bg)",rate:"80~95%"},
+  {id:"COLLAB",label:"파트너십/협업",icon:"🤝",color:"var(--purple)",bgColor:"var(--purple-bg)",rate:"40~60%"},
+  {id:"INVEST",label:"투자 관련",icon:"💰",color:"var(--pink)",bgColor:"var(--pink-bg)",rate:"60~80%"},
+  {id:"RECRUIT",label:"채용",icon:"👤",color:"var(--gray-500)",bgColor:"var(--gray-50)",rate:"30~50%"},
+];
 
-const login=useCallback((e,p)=>{const u=us.find(x=>x.email===e&&x.pw===p);if(!u){fl("이메일 또는 비밀번호를 확인해주세요.","err");return 0;}pM(u);fl(u.name+"님, 환영합니다!");setPg("home");return 1;},[us,pM,fl]);
+const SIGNAL_CATEGORIES=["포장재","IT솔루션","원자재","물류","마케팅","디자인","법률자문","HR/채용","컨설팅","SaaS","제조","보안","데이터","기타"];
 
-const logout=useCallback(()=>{pM(null);setPg("home");fl("로그아웃 되었습니다.")},[pM,fl]);
-
-const sendReq=useCallback((tid,pu,mg)=>{if(!me)return;if(rq.find(r=>r.f===me.id&&r.t===tid&&r.st==="P")){fl("이미 요청을 보냈어요.","err");return;}
-const nr={id:'r'+Date.now(),f:me.id,t:tid,pu,mg,st:"P",at:new Date().toISOString()};const p=gP(pu);
-const nn={id:'n'+Date.now(),u:tid,tp:"REQ",tl:"연락처 요청",bd:me.name+"("+me.company+" "+me.dept+")님이 "+p.lb+" 목적으로 연락처를 요청했어요.",rd:0,ri:nr.id,at:new Date().toISOString()};
-pR([...rq,nr]);pN([...nt,nn]);fl("요청을 보냈습니다!");setSu(null);setPg("home");},[me,rq,nt,pR,pN,fl]);
-
-const respond=useCallback((rid,acc)=>{const req=rq.find(r=>r.id===rid);if(!req)return;
-pR(rq.map(r=>r.id===rid?{...r,st:acc?"A":"R",ra:new Date().toISOString()}:r));
-if(acc){pCt([...ct,{id:'c'+Date.now()+'a',u:me.id,cu:req.f,ri:rid,mm:"",fv:0,at:new Date().toISOString()},{id:'c'+Date.now()+'b',u:req.f,cu:me.id,ri:rid,mm:"",fv:0,at:new Date().toISOString()}]);
-pN([...nt,{id:'n'+Date.now(),u:req.f,tp:"OK",tl:"요청 승인!",bd:me.name+"님이 연락처 요청을 수락했어요! 🎉",rd:0,ri:rid,at:new Date().toISOString()}]);fl("연락처가 교환되었습니다! 🤝");}
-else{pN([...nt,{id:'n'+Date.now(),u:req.f,tp:"NO",tl:"요청 미연결",bd:"이번에는 연결이 되지 않았어요.",rd:0,ri:rid,at:new Date().toISOString()}]);fl("요청을 거부했습니다.");}
-setSr(null);},[me,rq,ct,nt,pR,pCt,pN,fl]);
-
-const gU=useCallback(id=>us.find(u=>u.id===id),[us]);
-
-// === FEATURE 1: 구매 신호 (Buying Signal) ===
-const addSignal=useCallback((cat,desc)=>{if(!me)return;
-const ns={id:'sg'+Date.now(),uid:me.id,cat,desc,active:1,at:new Date().toISOString()};
-pSg([ns,...sigs]);
-// Notify relevant users (seed users in matching industry)
-const matches=us.filter(u=>u.sd&&u.id!==me.id&&u.vis).slice(0,3);
-const newNots=matches.map((u,i)=>({id:'n'+Date.now()+i,u:u.id,tp:"SIG",tl:"🔥 새 구매 신호!",bd:me.name+"("+me.company+")님이 '"+cat+"' 관련 업체를 찾고 있어요.",rd:0,ri:ns.id,at:new Date().toISOString()}));
-pN([...nt,...newNots]);
-fl("구매 신호가 등록되었습니다! 🔥");},[me,sigs,us,nt,pSg,pN,fl]);
-
-const delSignal=useCallback((sid)=>{pSg(sigs.filter(s=>s.id!==sid));fl("신호를 삭제했습니다.")},[sigs,pSg,fl]);
-
-// === FEATURE 2: 소개 체인 (Intro Chain) ===
-const sendIntro=useCallback((bridgeId,targetId,msg)=>{if(!me)return;
-if(intros.find(i=>i.f===me.id&&i.b===bridgeId&&i.t===targetId&&i.st==="P")){fl("이미 소개를 요청했어요.","err");return;}
-const ni={id:'it'+Date.now(),f:me.id,b:bridgeId,t:targetId,msg,st:"P",at:new Date().toISOString()};
-const bridge=gU(bridgeId);const target=gU(targetId);
-pIt([...intros,ni]);
-pN([...nt,{id:'n'+Date.now(),u:bridgeId,tp:"INTRO",tl:"🤝 소개 요청",bd:me.name+"님이 "+target?.name+"님에 대한 소개를 요청했어요.",rd:0,ri:ni.id,at:new Date().toISOString()}]);
-fl("소개 요청을 보냈습니다!");},[me,intros,nt,gU,pIt,pN,fl]);
-
-const respondIntro=useCallback((iid,acc)=>{const intro=intros.find(i=>i.id===iid);if(!intro)return;
-pIt(intros.map(i=>i.id===iid?{...i,st:acc?"A":"R"}:i));
-const requester=gU(intro.f);const target=gU(intro.t);
-if(acc){
-// Create a warm contact request from requester to target
-const warmReq={id:'r'+Date.now(),f:intro.f,t:intro.t,pu:"COLLAB",mg:"["+me.name+"님 소개] "+intro.msg,st:"P",at:new Date().toISOString(),intro:1};
-pR([...rq,warmReq]);
-pN([...nt,
-{id:'n'+Date.now()+'a',u:intro.f,tp:"OK",tl:"소개 승인!",bd:me.name+"님이 "+target?.name+"님에 대한 소개를 수락했어요! 🎉 요청이 전달됩니다.",rd:0,ri:iid,at:new Date().toISOString()},
-{id:'n'+Date.now()+'b',u:intro.t,tp:"REQ",tl:"🤝 소개 연락",bd:requester?.name+"님이 "+me.name+"님의 소개로 연락처를 요청했어요.",rd:0,ri:warmReq.id,at:new Date().toISOString()}
-]);fl("소개를 승인했습니다! 🤝");}
-else{pN([...nt,{id:'n'+Date.now(),u:intro.f,tp:"NO",tl:"소개 미성사",bd:"이번 소개는 성사되지 않았어요.",rd:0,ri:iid,at:new Date().toISOString()}]);fl("소개 요청을 거절했습니다.");}
-},[me,intros,rq,nt,gU,pIt,pR,pN,fl]);
-
-// === FEATURE 3: 담당자 변경 알림 ===
-const updateProfile=useCallback((newData)=>{if(!me)return;
-const changed=[];
-if(newData.company&&newData.company!==me.company)changed.push("회사: "+me.company+" → "+newData.company);
-if(newData.dept&&newData.dept!==me.dept)changed.push("부서: "+me.dept+" → "+newData.dept);
-if(newData.pos&&newData.pos!==me.pos)changed.push("직책: "+me.pos+" → "+newData.pos);
-const updated={...me,...newData};
-const u2=us.map(u=>u.id===me.id?updated:u);sv(LS.U,u2);pU(u2);pM(updated);
-// If company/dept/position changed, notify all connected contacts
-if(changed.length>0){
-const myContacts=ct.filter(c=>c.u===me.id);
-const newNots=myContacts.map((c,i)=>({id:'n'+Date.now()+i,u:c.cu,tp:"CHG",tl:"⚡ 담당자 정보 변경",
-bd:me.name+"님의 정보가 변경되었어요: "+changed.join(", "),rd:0,ri:me.id,at:new Date().toISOString()}));
-if(newNots.length>0)pN([...nt,...newNots]);
-fl("프로필 업데이트! 연결된 "+myContacts.length+"명에게 알림을 보냈습니다.");}
-else{fl("프로필이 업데이트되었습니다!");}
-},[me,us,ct,nt,pU,pM,pN,fl]);
-const myR=useMemo(()=>me?rq.filter(r=>r.t===me.id):[],[me,rq]);
-const myS=useMemo(()=>me?rq.filter(r=>r.f===me.id):[],[me,rq]);
-const myC=useMemo(()=>me?ct.filter(c=>c.u===me.id):[],[me,ct]);
-const myN=useMemo(()=>me?nt.filter(n=>n.u===me.id).sort((a,b)=>new Date(b.at)-new Date(a.at)):[],[me,nt]);
-const ur=useMemo(()=>myN.filter(n=>!n.rd).length,[myN]);
-const pi=useMemo(()=>myR.filter(r=>r.st==="P").length,[myR]);
-
-return <Ctx.Provider value={{us,me,rq,ct,nt,pg,su,sr,ts,rdy,sigs,intros,myR,myS,myC,myN,ur,pi,setPg,setSu,setSr,pU,pM,pN,pCt,pR,fl,signup,login,logout,sendReq,respond,gU,addSignal,delSignal,sendIntro,respondIntro,updateProfile}}>{children}</Ctx.Provider>;
-}
-const useA=()=>useContext(Ctx);
-
-// Shared
-function Toast(){const{ts}=useA();if(!ts)return null;return<div style={{position:"fixed",top:16,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:ts.t==="err"?"var(--red)":"var(--green)",color:"#fff",padding:"12px 24px",borderRadius:14,fontSize:14,fontWeight:700,boxShadow:"0 8px 32px rgba(0,0,0,.4)",animation:"slideDown .25s ease",maxWidth:340,textAlign:"center"}}>{ts.m}</div>;}
-function Av({n,l,sz=44,st={}}){return<div style={{width:sz,height:sz,borderRadius:sz*.32,flexShrink:0,background:"linear-gradient(135deg,rgba(201,164,76,.15),rgba(167,139,250,.12))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:sz*.45,...st}}>{l||n?.[0]||"?"}</div>;}
-function PB({p,sm}){const x=gP(p);return<span className="badge" style={{background:x.bg,color:x.cl,fontSize:sm?10:11,padding:sm?"2px 7px":"3px 10px"}}>{x.ic} {x.lb}</span>;}
-function BB({onClick}){return<button onClick={onClick} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:14,padding:"4px 0",marginBottom:16,fontFamily:"var(--font)"}}><Ic.Al z={18}/> 뒤로</button>;}
-function ES({ic,tl,ds,act,al}){return<div className="fi" style={{textAlign:"center",padding:"56px 20px",color:"var(--text2)"}}><div style={{fontSize:52,marginBottom:12}}>{ic}</div><div style={{fontSize:16,fontWeight:700,color:"var(--text)",marginBottom:8}}>{tl}</div><div style={{fontSize:13,lineHeight:1.6,marginBottom:act?20:0}}>{ds}</div>{act&&<button className="bp" onClick={act} style={{padding:"12px 24px",fontSize:14}}>{al}</button>}</div>;}
-
-function Nav(){const{pg,setPg,setSu,setSr,pi,ur,sigs}=useA();
-const sigCnt=sigs.filter(s=>s.active).length;
-const its=[{id:"home",ic:Ic.S,lb:"검색"},{id:"signals",ic:Ic.Bl,lb:"구매신호",bg:sigCnt},{id:"inbox",ic:Ic.In,lb:"수신함",bg:pi},{id:"contacts",ic:Ic.Bk,lb:"주소록"},{id:"me",ic:Ic.Us,lb:"내 정보"}];
-return<nav style={{position:"absolute",bottom:0,left:0,right:0,height:"var(--nav-h)",background:"rgba(11,11,18,.94)",backdropFilter:"blur(24px)",borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-around",alignItems:"flex-start",paddingTop:10,zIndex:100}}>
-{its.map(it=>{const a=pg===it.id||(pg==="profile"&&it.id==="home");return<button key={it.id} onClick={()=>{setPg(it.id);setSu(null);setSr(null);}} style={{background:"none",border:"none",color:a?"var(--accent)":"var(--text3)",display:"flex",flexDirection:"column",alignItems:"center",gap:3,cursor:"pointer",padding:"2px 14px",fontFamily:"var(--font)",position:"relative"}}>
-<div style={{position:"relative"}}>{it.id==="signals"?<span style={{fontSize:20}}>🔥</span>:<it.ic z={22}/>}{it.bg>0&&<span style={{position:"absolute",top:-5,right:-9,background:it.id==="signals"?"var(--orange)":"var(--red)",color:"#fff",fontSize:9,fontWeight:800,borderRadius:10,minWidth:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",border:"2px solid var(--bg)"}}>{it.bg>9?"9+":it.bg}</span>}</div>
-<span style={{fontSize:10,fontWeight:a?700:500}}>{it.lb}</span></button>;})}</nav>;}
-
-function UC({u,onClick,cls=""}){return<div className={"fi "+cls} onClick={onClick} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,cursor:"pointer",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:14,transition:"all .15s"}} onMouseEnter={e=>{e.currentTarget.style.background="var(--card-h)";e.currentTarget.style.borderColor="var(--accent-border)"}} onMouseLeave={e=>{e.currentTarget.style.background="var(--card)";e.currentTarget.style.borderColor="var(--border)"}}>
-<Av n={u.name} l={u.cl} sz={46}/><div style={{flex:1,minWidth:0}}><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontWeight:700,fontSize:15,letterSpacing:-.3}}>{u.name}</span>{u.vf?<Ic.Vf z={13}/>:null}<span style={{fontSize:12,color:"var(--text2)"}}>{u.pos}</span></div><div style={{fontSize:13,color:"var(--text2)",marginTop:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{u.company} · {u.dept}</div><div style={{fontSize:12,color:"var(--text3)",marginTop:2,letterSpacing:.5}}>{mPh(u.phone)}</div></div><Ic.Cr z={14} style={{color:"var(--text3)",flexShrink:0}}/></div>;}
-
-// === LANDING ===
-function Land(){const{signup,login,fl,us,pM,setPg}=useA();const[md,setMd]=useState("land");const[em,setEm]=useState("");const[pw,setPw]=useState("");const[nm,setNm]=useState("");const[co,setCo]=useState("");const[dp,setDp]=useState("");const[ps,setPs]=useState("");const[ph,setPh]=useState("");const[sp,setSp]=useState(false);
-
-if(md==="land")return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24px"}}>
-<div className="fi" style={{paddingTop:56,textAlign:"center"}}><div style={{fontSize:56,marginBottom:6,filter:"drop-shadow(0 0 24px rgba(201,164,76,.2))"}}>🤝</div><h1 style={{fontFamily:"var(--font-d)",fontSize:36,fontWeight:900,letterSpacing:-2,lineHeight:1.1}}><span style={{color:"var(--accent)"}}>Biz</span>Connect</h1><p style={{color:"var(--text2)",fontSize:15,marginTop:14,lineHeight:1.7}}>모든 회사의 모든 부서 담당자를<br/><strong style={{color:"var(--text)"}}>동의 하에</strong> 찾아 연락하는 플랫폼</p></div>
-<div className="fi1" style={{marginTop:36}}><div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:16}}>HOW IT WORKS</div>{[{s:"01",t:"담당자 검색",d:"회사·부서·직책으로 정확히",ic:"🔍"},{s:"02",t:"명함 전달",d:"목적을 밝히고 내 명함을 먼저",ic:"📤"},{s:"03",t:"상대방 판단",d:"수락 또는 거부는 받는 사람의 권리",ic:"⚖️"},{s:"04",t:"상호 공개",d:"수락 시 연락처 동시 공개",ic:"✅"}].map((it,i)=><div key={i} style={{display:"flex",gap:14,alignItems:"center",padding:"14px 0",borderBottom:i<3?"1px solid var(--border)":"none"}}><div style={{width:44,height:44,borderRadius:12,background:"var(--accent-bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{it.ic}</div><div style={{flex:1}}><div style={{display:"flex",alignItems:"baseline",gap:8}}><span style={{fontFamily:"var(--font-d)",fontSize:11,fontWeight:700,color:"var(--accent)",opacity:.6}}>{it.s}</span><span style={{fontWeight:700,fontSize:14}}>{it.t}</span></div><div style={{fontSize:12,color:"var(--text2)",marginTop:2}}>{it.d}</div></div></div>)}</div>
-<div className="fi2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:32}}>{[{n:us.length+"+",l:"등록 전문가"},{n:COS.length,l:"등록 기업"},{n:"100%",l:"동의 기반"},{n:"0건",l:"스팸 연락"}].map((s,i)=><div key={i} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:"16px 12px",textAlign:"center",border:"1px solid var(--border)"}}><div style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,color:"var(--accent)"}}>{s.n}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:4}}>{s.l}</div></div>)}</div>
-<div className="fi3" style={{marginTop:32}}><div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>수락률 예상</div>{PU.map(p=><div key={p.id} style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:18,width:28,textAlign:"center"}}>{p.ic}</span><span style={{fontSize:13,flex:1,fontWeight:600}}>{p.lb}</span><span style={{fontSize:13,color:p.cl,fontWeight:800,fontFamily:"var(--font-d)"}}>{p.rt}</span></div>)}</div>
-<div className="fi3" style={{marginTop:32,background:"var(--card)",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--border)"}}><div style={{fontSize:14,fontWeight:800,marginBottom:14}}>기존 서비스 vs BizConnect</div><table style={{width:"100%",borderCollapse:"collapse",fontSize:12}}><thead><tr style={{color:"var(--text2)"}}><th style={{textAlign:"left",padding:"6px 0",borderBottom:"1px solid var(--border)"}}></th><th style={{textAlign:"center",padding:"6px",borderBottom:"1px solid var(--border)"}}>ZoomInfo</th><th style={{textAlign:"center",padding:"6px",borderBottom:"1px solid var(--border)"}}>LinkedIn</th><th style={{textAlign:"center",padding:"6px",borderBottom:"1px solid var(--border)",color:"var(--accent)",fontWeight:800}}>BizConnect</th></tr></thead><tbody>{[{l:"연락 동의",a:"❌",b:"❌",c:"✅"},{l:"전화번호",a:"💰유료",b:"❌없음",c:"✅상호"},{l:"스팸",a:"😰높음",b:"😐높음",c:"😊제로"},{l:"규제",a:"⚠️위험",b:"⚠️중간",c:"✅완전"}].map((r,i)=><tr key={i}><td style={{padding:"8px 0",fontWeight:600,borderBottom:"1px solid var(--border)"}}>{r.l}</td><td style={{textAlign:"center",padding:"8px 4px",borderBottom:"1px solid var(--border)",fontSize:11}}>{r.a}</td><td style={{textAlign:"center",padding:"8px 4px",borderBottom:"1px solid var(--border)",fontSize:11}}>{r.b}</td><td style={{textAlign:"center",padding:"8px 4px",borderBottom:"1px solid var(--border)",fontSize:11,fontWeight:700}}>{r.c}</td></tr>)}</tbody></table></div>
-{/* Example Business Cards */}
-<div className="fi4" style={{marginTop:32}}>
-<div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>등록된 명함 예시</div>
-<div style={{display:"flex",flexDirection:"column",gap:8}}>
-{(()=>{const samples=us.filter(u=>u.sd).slice(0,6);return samples.map((u,i)=>
-<div key={u.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12,animation:"fadeIn .4s ease "+(i*.06)+"s both"}}>
-<div style={{width:42,height:42,borderRadius:13,background:"linear-gradient(135deg,rgba(201,164,76,.15),rgba(167,139,250,.12))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:18,flexShrink:0}}>{u.cl}</div>
-<div style={{flex:1,minWidth:0}}>
-<div style={{display:"flex",alignItems:"center",gap:5}}><span style={{fontWeight:700,fontSize:14}}>{u.name}</span>{u.vf?<Ic.Vf z={12}/>:null}<span style={{fontSize:11,color:"var(--text2)"}}>{u.pos}</span></div>
-<div style={{fontSize:12,color:"var(--text2)",marginTop:2}}>{u.company} · {u.dept}</div>
-<div style={{fontSize:11,color:"var(--text3)",marginTop:1,letterSpacing:.5}}>010-••••-••••</div>
-</div>
-<div style={{fontSize:10,color:"var(--text3)",background:"var(--accent-bg)",padding:"3px 8px",borderRadius:6,fontWeight:600,flexShrink:0}}>🔒 수락 시 공개</div>
-</div>);})()}
-</div>
-<div style={{textAlign:"center",marginTop:12,fontSize:12,color:"var(--text2)"}}>총 <strong style={{color:"var(--accent)"}}>{us.length}명</strong>의 전문가가 등록되어 있어요</div>
-</div>
-
-{/* Use Cases */}
-<div className="fi4" style={{marginTop:28}}>
-<div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>실제 사용 시나리오</div>
-<div style={{display:"flex",flexDirection:"column",gap:8}}>
-{[
-{from:"A식품 박대리",fromD:"영업팀",to:"B프랜차이즈 김과장",toD:"구매팀",pu:"영업",rs:"🛒 구매 목적 → 수락률 80~95%",cl:"var(--blue)"},
-{from:"C스타트업 이대표",fromD:"경영",to:"D벤처캐피탈 정심사역",toD:"투자심사",pu:"투자",rs:"💰 투자 관련 → 수락률 60~80%",cl:"var(--pink)"},
-{from:"E전자 최과장",fromD:"구매팀",to:"F소재 박팀장",toD:"영업팀",pu:"구매",rs:"🛒 구매 문의 → 거의 항상 수락",cl:"var(--green)"},
-].map((sc,i)=>
-<div key={i} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)"}}>
-<div style={{display:"flex",alignItems:"center",gap:6,fontSize:13,marginBottom:8}}>
-<span style={{fontWeight:700}}>{sc.from}</span><span style={{color:"var(--text3)",fontSize:11}}>({sc.fromD})</span>
-<span style={{color:"var(--accent)"}}>→</span>
-<span style={{fontWeight:700}}>{sc.to}</span><span style={{color:"var(--text3)",fontSize:11}}>({sc.toD})</span>
-</div>
-<div style={{fontSize:12,color:sc.cl,fontWeight:700}}>{sc.rs}</div>
-</div>)}
-</div>
-</div>
-
-{/* Testimonials */}
-<div className="fi4" style={{marginTop:28}}>
-<div style={{fontSize:11,fontWeight:800,color:"var(--accent)",letterSpacing:3,marginBottom:14}}>기대 효과</div>
-<div style={{display:"flex",flexDirection:"column",gap:8}}>
-{[
-{q:"수락한 사람 = 관심 있는 사람. 거부당하면 시간 낭비 없음",who:"영업 담당자 관점",ic:"💼"},
-{q:"내가 원하는 연락만 받음. 스팸 제로",who:"연락 수신자 관점",ic:"🛡️"},
-{q:"내 명함을 먼저 주고, 상대가 허락해야 받는다",who:"핵심 원칙",ic:"🤝"},
-].map((t,i)=>
-<div key={i} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)"}}>
-<div style={{fontSize:20,marginBottom:8}}>{t.ic}</div>
-<div style={{fontSize:13,color:"var(--text)",lineHeight:1.6,fontWeight:600}}>"{t.q}"</div>
-<div style={{fontSize:11,color:"var(--text3)",marginTop:6}}>— {t.who}</div>
-</div>)}
-</div>
-</div>
-
-<div className="fi4" style={{marginTop:36,display:"flex",flexDirection:"column",gap:12,paddingBottom:40}}><button className="bp" onClick={()=>{const tu={email:'test@bizconnect.kr',pw:'1234',name:'김테스트',company:'BizConnect',cl:'🤝',dept:'제품기획',pos:'팀장',phone:'010-1234-5678',bio:'BizConnect 제품기획 팀장. 테스트 계정입니다.'};const ex=us.find(u=>u.email===tu.email);if(ex){pM(ex);fl(ex.name+"님, 환영합니다!");setPg("home");}else{signup(tu);}}} style={{fontSize:16,padding:"17px 28px",animation:"glow 3s infinite"}}>⚡ 바로 체험하기 (원클릭)</button><button className="bs" onClick={()=>setMd("signup")} style={{fontSize:15}}>직접 가입하기</button><button onClick={()=>setMd("login")} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",fontSize:14,fontFamily:"var(--font)",padding:"10px 0"}}>이미 계정이 있어요</button><div style={{textAlign:"center",fontSize:11,color:"var(--text3)",marginTop:8}}>🔒 개인정보 암호화 · PIPA/GDPR 준수</div></div></div>;
-
-if(md==="login")return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32}}>
-<BB onClick={()=>setMd("land")}/><div className="fi"><div style={{fontSize:32,marginBottom:8}}>👋</div><h2 style={{fontFamily:"var(--font-d)",fontSize:28,fontWeight:900,letterSpacing:-1.5,margin:"0 0 8px"}}>돌아오셨군요</h2><p style={{color:"var(--text2)",fontSize:14,margin:"0 0 32px"}}>계정 정보를 입력해주세요</p></div>
-<div className="fi1" style={{display:"flex",flexDirection:"column",gap:14}}><input className="inp" placeholder="이메일" type="email" value={em} onChange={e=>setEm(e.target.value)}/><div style={{position:"relative"}}><input className="inp" placeholder="비밀번호" type={sp?"text":"password"} value={pw} onChange={e=>setPw(e.target.value)} style={{paddingRight:44}}/><button onClick={()=>setSp(!sp)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"var(--text3)",cursor:"pointer"}}>{sp?<Ic.Eo z={18}/>:<Ic.Ey z={18}/>}</button></div><button className="bp" onClick={()=>login(em,pw)} style={{marginTop:4}}>로그인</button></div>
-<p style={{textAlign:"center",marginTop:28,fontSize:13,color:"var(--text2)"}}>계정이 없으신가요? <span onClick={()=>setMd("signup")} style={{color:"var(--accent)",cursor:"pointer",fontWeight:700}}>가입하기</span></p></div>;
-
-return<div style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32,paddingBottom:40}}>
-<BB onClick={()=>setMd("land")}/><div className="fi"><h2 style={{fontFamily:"var(--font-d)",fontSize:28,fontWeight:900,letterSpacing:-1.5,margin:"0 0 6px"}}>회원가입</h2><p style={{color:"var(--text2)",fontSize:14,margin:"0 0 28px"}}>60초면 시작할 수 있어요</p></div>
-<div className="fi1" style={{display:"flex",flexDirection:"column",gap:12}}>
-<input className="inp" placeholder="이메일 *" value={em} onChange={e=>setEm(e.target.value)}/>
-<div style={{position:"relative"}}><input className="inp" placeholder="비밀번호 *" type={sp?"text":"password"} value={pw} onChange={e=>setPw(e.target.value)} style={{paddingRight:44}}/><button onClick={()=>setSp(!sp)} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"var(--text3)",cursor:"pointer"}}>{sp?<Ic.Eo z={18}/>:<Ic.Ey z={18}/>}</button></div>
-<input className="inp" placeholder="이름 (실명) *" value={nm} onChange={e=>setNm(e.target.value)}/>
-<input className="inp" placeholder="회사명 *" value={co} onChange={e=>setCo(e.target.value)}/>
-<div style={{display:"flex",gap:10}}>
-<select className="inp" value={dp} onChange={e=>setDp(e.target.value)} style={{flex:1}}><option value="">부서</option>{DS.map(d=><option key={d} value={d}>{d}</option>)}</select>
-<select className="inp" value={ps} onChange={e=>setPs(e.target.value)} style={{flex:1}}><option value="">직책</option>{PS.map(p=><option key={p} value={p}>{p}</option>)}</select>
-</div>
-<input className="inp" placeholder="전화번호 (010-0000-0000)" value={ph} onChange={e=>setPh(e.target.value)}/>
-<button className="bp" onClick={()=>{if(!em||!pw||!nm||!co){fl("필수 항목(*)을 입력해주세요.","err");return;}if(pw.length<4){fl("비밀번호 4자 이상 입력해주세요.","err");return;}signup({email:em,pw,name:nm,company:co,cl:co[0],dept:dp,pos:ps,phone:ph,bio:co+" "+(dp||"")+" "+(ps||"")});}} style={{marginTop:4}}>가입 완료</button>
-</div>
-<p style={{textAlign:"center",marginTop:24,fontSize:13,color:"var(--text2)"}}>이미 계정이 있으신가요? <span onClick={()=>setMd("login")} style={{color:"var(--accent)",cursor:"pointer",fontWeight:700}}>로그인</span></p>
-<p style={{textAlign:"center",fontSize:11,color:"var(--text3)",marginTop:8}}>가입 시 이용약관 및 개인정보처리방침에 동의합니다.</p></div>;
+// ═══════ Utility Functions (지시서 5-2 약어 금지) ═══════
+function generateSeedUsers(){
+  const users=[];let idCounter=100;
+  COMPANIES.forEach(company=>{
+    const deptCount=3+Math.floor(Math.random()*3);
+    const depts=[...DEPARTMENTS].sort(()=>Math.random()-.5).slice(0,deptCount);
+    depts.forEach(dept=>{
+      const count=1+Math.floor(Math.random()*2);
+      for(let j=0;j<count;j++){
+        const surname=SURNAMES[Math.floor(Math.random()*SURNAMES.length)];
+        const givenName=GIVEN_NAMES[Math.floor(Math.random()*GIVEN_NAMES.length)];
+        const position=POSITIONS[3+Math.floor(Math.random()*6)];
+        users.push({
+          id:'seed_'+(idCounter++),
+          email:`user${idCounter}@example.com`,
+          name:surname+givenName,
+          company:company.name,
+          companyLogo:company.logo,
+          industry:company.industry,
+          department:dept,
+          position:position,
+          phone:`010-${1000+Math.floor(Math.random()*9000)}-${1000+Math.floor(Math.random()*9000)}`,
+          bio:`${company.name} ${dept} ${position}. ${BIOS[Math.floor(Math.random()*BIOS.length)]}`,
+          isSearchable:true,
+          plan:'FREE',
+          isVerified:company.verified,
+          joinedAt:new Date(Date.now()-Math.random()*120*86400000).toISOString(),
+          lastActive:new Date(Date.now()-Math.random()*7*86400000).toISOString(),
+          responseRate:60+Math.floor(Math.random()*35),
+          isSeeded:true,
+        });
+      }
+    });
+  });
+  return users;
 }
 
-// === HOME (검색 중심) ===
-function Home(){const{me,us,setPg,setSu}=useA();const[q,setQ]=useState("");const[rs,setRs]=useState([]);const[sd,setSd]=useState(false);const[fi,setFi]=useState("");const[sf,setSf]=useState(false);
-const inds=useMemo(()=>[...new Set(us.map(u=>u.ind).filter(Boolean))],[us]);
-const companies=useMemo(()=>{const m={};us.filter(u=>u.sd&&u.vis).forEach(u=>{if(!m[u.company])m[u.company]={name:u.company,logo:u.cl,ind:u.ind,cnt:0};m[u.company].cnt++;});return Object.values(m).sort((a,b)=>b.cnt-a.cnt);},[us]);
-const doS=(s)=>{const v=(s||q).toLowerCase().trim();if(!v){setSd(false);setRs([]);return;}setSd(true);setRs(us.filter(u=>{if(u.id===me?.id||!u.vis)return false;if(fi&&u.ind!==fi)return false;return u.name.includes(v)||u.company.toLowerCase().includes(v)||u.dept.includes(v)||u.pos.includes(v)||(u.ind&&u.ind.toLowerCase().includes(v));}));};
-// Group results by company > department
-const grouped=useMemo(()=>{const m={};rs.forEach(u=>{const k=u.company;if(!m[k])m[k]={name:k,logo:u.cl,ind:u.ind,depts:{}};if(!m[k].depts[u.dept])m[k].depts[u.dept]=[];m[k].depts[u.dept].push(u);});return Object.values(m);},[rs]);
+function generateSeedSignals(users){
+  const signalData=[
+    {company:"쿠팡",dept:"구매",cat:"포장재",desc:"로켓배송용 친환경 포장재 대량 공급 가능한 업체. 월 50만개 이상 납품."},
+    {company:"토스",dept:"기술개발",cat:"보안",desc:"금융 서비스 보안 점검 모의해킹 업체. ISMS 인증 보유 필수."},
+    {company:"당근마켓",dept:"마케팅",cat:"마케팅",desc:"숏폼 바이럴 영상 제작 에이전시. 월 10편 이상 제작."},
+    {company:"배달의민족",dept:"인사",cat:"HR/채용",desc:"중간관리자 리더십 교육 프로그램 운영 업체. 100명 규모."},
+    {company:"네이버",dept:"구매",cat:"IT솔루션",desc:"AI 학습용 GPU 클러스터 호스팅 가능한 IDC/클라우드."},
+  ];
+  return signalData.map((sd,i)=>{
+    const owner=users.find(u=>u.company===sd.company&&u.department===sd.dept)||users[i];
+    return{id:'sig_seed_'+i,userId:owner?.id||users[0].id,category:sd.cat,description:sd.desc,isActive:true,createdAt:new Date(Date.now()-(i+1)*12*3600000).toISOString(),expiresAt:new Date(Date.now()+30*86400000).toISOString()};
+  });
+}
 
-return<div style={{padding:"0 20px",paddingTop:20}}>
-{/* Header */}
-<div className="fi" style={{textAlign:"center",marginBottom:28}}>
-<div style={{fontSize:13,color:"var(--text2)",marginBottom:6}}>동의 기반 비즈니스 연락처</div>
-<h1 style={{fontFamily:"var(--font-d)",fontSize:26,fontWeight:900,letterSpacing:-1}}>어떤 회사든 <span style={{color:"var(--accent)"}}>검색</span>하세요</h1>
-<div style={{fontSize:13,color:"var(--text3)",marginTop:6}}>등록된 <strong style={{color:"var(--text2)"}}>{us.filter(u=>u.sd).length}명</strong>의 담당자를 찾을 수 있어요</div>
-</div>
+function formatTimeAgo(dateStr){
+  const ms=Date.now()-new Date(dateStr).getTime();
+  const minutes=Math.floor(ms/60000);
+  if(minutes<1)return"방금 전";if(minutes<60)return`${minutes}분 전`;
+  const hours=Math.floor(minutes/60);if(hours<24)return`${hours}시간 전`;
+  const days=Math.floor(hours/24);
+  if(days<7)return`${days}일 전`;if(days<30)return`${Math.floor(days/7)}주 전`;
+  return new Date(dateStr).toLocaleDateString("ko-KR",{month:"short",day:"numeric"});
+}
 
-{/* Search Bar */}
-<div className="fi1" style={{display:"flex",gap:8,marginBottom:16}}>
-<div style={{flex:1,display:"flex",alignItems:"center",gap:10,background:"var(--card)",borderRadius:"var(--radius)",padding:"14px 16px",border:"1px solid var(--border)"}}>
-<Ic.S z={18} style={{color:"var(--text3)",flexShrink:0}}/>
-<input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>e.key==="Enter"&&doS()} placeholder="회사명, 부서, 이름, 직책..." style={{background:"none",border:"none",color:"var(--text)",fontSize:15,outline:"none",flex:1,fontFamily:"var(--font)"}}/>
-{q&&<button onClick={()=>{setQ("");setSd(false);setRs([])}} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",padding:0}}><Ic.X z={16}/></button>}
-</div>
-<button onClick={()=>setSf(!sf)} style={{background:sf?"var(--accent-bg)":"var(--card)",border:"1px solid "+(sf?"var(--accent-border)":"var(--border)"),borderRadius:"var(--radius)",width:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:sf?"var(--accent)":"var(--text3)"}}><Ic.Fl/></button>
-</div>
-{sf&&<div className="fi" style={{marginBottom:14}}><div style={{fontSize:11,fontWeight:700,color:"var(--text2)",marginBottom:8}}>산업 필터</div><div style={{display:"flex",flexWrap:"wrap",gap:6}}><button onClick={()=>setFi("")} style={{background:!fi?"var(--accent)":"var(--card)",color:!fi?"#0b0b12":"var(--text2)",border:"1px solid "+(fi?"var(--border)":"var(--accent)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>전체</button>{inds.map(ind=><button key={ind} onClick={()=>setFi(ind===fi?"":ind)} style={{background:fi===ind?"var(--accent)":"var(--card)",color:fi===ind?"#0b0b12":"var(--text2)",border:"1px solid "+(fi===ind?"var(--accent)":"var(--border)"),borderRadius:8,padding:"6px 12px",fontSize:12,fontWeight:600,cursor:"pointer"}}>{ind}</button>)}</div></div>}
+function maskPhoneNumber(phone){return phone?phone.replace(/(\d{3})-(\d{4})-(\d{4})/,"$1-••••-••••"):"010-••••-••••";}
+function getPurposeById(id){return PURPOSE_OPTIONS.find(p=>p.id===id)||PURPOSE_OPTIONS[0];}
 
-{/* Before search: Show company directory */}
-{!sd&&<>
-<div className="fi2" style={{marginBottom:24}}>
-<div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:12}}>등록 기업 디렉토리</div>
-<div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
-{companies.map(co=><div key={co.name} onClick={()=>{setQ(co.name);doS(co.name);}}
-style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",cursor:"pointer",transition:"all .15s"}}
-onMouseEnter={e=>{e.currentTarget.style.borderColor="var(--accent-border)"}}
-onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border)"}}>
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
-<span style={{fontSize:20}}>{co.logo}</span>
-<span style={{fontWeight:700,fontSize:14,flex:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{co.name}</span>
-</div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-<span style={{fontSize:11,color:"var(--text3)"}}>{co.ind}</span>
-<span style={{fontSize:12,color:"var(--accent)",fontWeight:700}}>{co.cnt}명</span>
-</div>
-</div>)}
-</div>
-</div>
-<div className="fi3" style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)"}}>
-<div style={{fontSize:13,color:"var(--text2)",lineHeight:1.7,textAlign:"center"}}>
-💡 회사명을 검색하면 <strong style={{color:"var(--text)"}}>부서별 담당자</strong>를 한눈에 볼 수 있어요
-</div>
-</div>
-</>}
+// 초성 검색 지원 (지시서 2-2)
+const CHOSUNG=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function getChosung(str){return[...str].map(ch=>{const code=ch.charCodeAt(0)-44032;return code>=0&&code<11172?CHOSUNG[Math.floor(code/588)]:ch}).join('');}
+function matchesChosung(text,query){
+  if(!query)return false;
+  const isChosungQuery=[...query].every(ch=>CHOSUNG.includes(ch)||/[ㄱ-ㅎ]/.test(ch));
+  if(!isChosungQuery)return false;
+  const textChosung=getChosung(text);
+  return textChosung.includes(query);
+}
 
-{/* Search Results: Grouped by Company > Department */}
-{sd&&<div>
-<div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-<span style={{fontSize:15,fontWeight:800}}>검색 결과 <span style={{color:"var(--accent)"}}>{rs.length}명</span></span>
-<button onClick={()=>{setSd(false);setQ("");setRs([]);setFi("")}} style={{background:"none",border:"none",color:"var(--text2)",cursor:"pointer",fontSize:13,fontFamily:"var(--font)"}}>초기화</button>
-</div>
-{rs.length===0?<ES ic="🔍" tl="검색 결과가 없어요" ds="다른 회사명이나 부서를 검색해보세요"/>
-:<div style={{display:"flex",flexDirection:"column",gap:16}}>
-{grouped.map(co=><div key={co.name} className="fi">
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-<span style={{fontSize:18}}>{co.logo}</span>
-<span style={{fontFamily:"var(--font-d)",fontWeight:800,fontSize:16}}>{co.name}</span>
-<span style={{fontSize:11,color:"var(--text3)"}}>{co.ind}</span>
-</div>
-{Object.entries(co.depts).map(([dept,users])=><div key={dept} style={{marginBottom:12}}>
-<div style={{fontSize:12,fontWeight:700,color:"var(--accent)",marginBottom:6,paddingLeft:4}}>📂 {dept}</div>
-<div style={{display:"flex",flexDirection:"column",gap:6}}>
-{users.map(u=><UC key={u.id} u={u} onClick={()=>{setSu(u);setPg("profile");}}/>)}
-</div>
-</div>)}
-</div>)}
-</div>}
-</div>}
-</div>;}
+/* ═══════════════════════════════════════════════════════════
+   SECTION: SVG Icons (지시서 1-3 aria-label 포함)
+   ═══════════════════════════════════════════════════════════ */
+const Icon={
+  Search:({size=20,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+  Home:({size=22,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+  Inbox:({size=22,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>,
+  Book:({size=22,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
+  User:({size=22,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+  Bell:({size=22,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
+  Send:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+  Check:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><polyline points="20 6 9 17 4 12"/></svg>,
+  Close:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+  ChevronRight:({size=16,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><polyline points="9 18 15 12 9 6"/></svg>,
+  ArrowLeft:({size=20,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>,
+  Phone:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>,
+  Filter:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+  LogOut:({size=20,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
+  Verified:({size=14,...p})=><svg width={size} height={size} viewBox="0 0 24 24" fill="var(--emerald)" aria-label="인증됨" {...p}><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
+  Message:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>,
+  Eye:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+  EyeOff:({size=18,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><line x1="1" y1="1" x2="23" y2="23"/></svg>,
+  Clock:({size=14,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+  Activity:({size=14,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>,
+  Folder:({size=16,...p})=><svg width={size} height={size} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" viewBox="0 0 24 24" aria-hidden="true" {...p}><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>,
+};
 
-// === SIGNALS (구매 신호 전용 페이지) ===
-function Sigs(){const{me,us,sigs,addSignal,delSignal,gU,setSu,setPg,fl}=useA();
-const[showNew,setShowNew]=useState(false);const[cat,setCat]=useState("");const[desc,setDesc]=useState("");
-const mySigs=sigs.filter(s=>s.uid===me?.id);const otherSigs=sigs.filter(s=>s.uid!==me?.id&&s.active);
-const cats=["포장재","IT솔루션","원자재","물류","마케팅","디자인","법률자문","HR/채용","컨설팅","SaaS","제조","기타"];
+/* ═══════════════════════════════════════════════════════════
+   SECTION: App Context & State Management
+   ═══════════════════════════════════════════════════════════ */
+const AppContext=createContext();
 
-return<div style={{padding:"0 20px",paddingTop:16}}>
-<div className="fi" style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-<h2 style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8}}>🔥 구매 신호</h2>
-<button onClick={()=>setShowNew(true)} className="bp" style={{padding:"8px 16px",fontSize:13}}>+ 신호 등록</button>
-</div>
+function AppProvider({children}){
+  const[allUsers,setAllUsers]=useState([]);
+  const[currentUser,setCurrentUser]=useState(null);
+  const[requests,setRequests]=useState([]);
+  const[contacts,setContacts]=useState([]);
+  const[notifications,setNotifications]=useState([]);
+  const[signals,setSignals]=useState([]);
+  const[intros,setIntros]=useState([]);
+  const[recentSearches,setRecentSearches]=useState([]);
+  const[activePage,setActivePage]=useState("home");
+  const[selectedUser,setSelectedUser]=useState(null);
+  const[selectedRequest,setSelectedRequest]=useState(null);
+  const[toastMessage,setToastMessage]=useState(null);
+  const[isReady,setIsReady]=useState(false);
 
-<div className="fi1" style={{background:"var(--accent-bg)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--accent-border)",marginBottom:20}}>
-<div style={{fontSize:13,color:"var(--accent)",fontWeight:600,lineHeight:1.6}}>💡 "지금 이런 업체를 찾고 있어요"를 알리면 관련 담당자가 먼저 연락해요. 구매 목적 수락률 <strong>80~95%</strong></div>
-</div>
+  // ═══════ Initialize ═══════
+  useEffect(()=>{
+    let users=loadFromStorage(STORAGE_KEYS.USERS,[]);
+    if(!loadFromStorage(STORAGE_KEYS.INITIALIZED)){
+      users=generateSeedUsers();
+      const seedSigs=generateSeedSignals(users);
+      saveToStorage(STORAGE_KEYS.USERS,users);
+      saveToStorage(STORAGE_KEYS.SIGNALS,seedSigs);
+      saveToStorage(STORAGE_KEYS.INITIALIZED,true);
+      setSignals(seedSigs);
+    }else{
+      setSignals(loadFromStorage(STORAGE_KEYS.SIGNALS,[]));
+    }
+    setAllUsers(users);
+    const saved=loadFromStorage(STORAGE_KEYS.CURRENT);
+    if(saved)setCurrentUser(saved);
+    setRequests(loadFromStorage(STORAGE_KEYS.REQUESTS,[]));
+    setContacts(loadFromStorage(STORAGE_KEYS.CONTACTS,[]));
+    setNotifications(loadFromStorage(STORAGE_KEYS.NOTIFICATIONS,[]));
+    setIntros(loadFromStorage(STORAGE_KEYS.INTROS,[]));
+    setRecentSearches(loadFromStorage(STORAGE_KEYS.RECENT_SEARCHES,[]));
+    setIsReady(true);
+  },[]);
 
-{/* My signals */}
-{mySigs.length>0&&<div className="fi1" style={{marginBottom:24}}>
-<div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>내가 올린 신호</div>
-{mySigs.map(s=><div key={s.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--orange-bg)",marginBottom:8,display:"flex",alignItems:"flex-start",gap:12}}>
-<div style={{flex:1}}><div style={{display:"inline-flex",background:"var(--orange-bg)",color:"var(--orange)",padding:"3px 10px",borderRadius:8,fontSize:12,fontWeight:700,marginBottom:6}}>🔥 {s.cat}</div><div style={{fontSize:13,color:"var(--text)",lineHeight:1.5}}>{s.desc}</div><div style={{fontSize:10,color:"var(--text3)",marginTop:4}}>{tAgo(s.at)}</div></div>
-<button onClick={()=>delSignal(s.id)} style={{background:"none",border:"none",color:"var(--text3)",cursor:"pointer",fontSize:12,fontFamily:"var(--font)",flexShrink:0}}>삭제</button>
-</div>)}
-</div>}
+  // ═══════ Persist Helpers ═══════
+  const persistUsers=useCallback(v=>{setAllUsers(v);saveToStorage(STORAGE_KEYS.USERS,v)},[]);
+  const persistCurrentUser=useCallback(v=>{setCurrentUser(v);if(v)saveToStorage(STORAGE_KEYS.CURRENT,v);else localStorage.removeItem(STORAGE_KEYS.CURRENT)},[]);
+  const persistRequests=useCallback(v=>{setRequests(v);saveToStorage(STORAGE_KEYS.REQUESTS,v)},[]);
+  const persistContacts=useCallback(v=>{setContacts(v);saveToStorage(STORAGE_KEYS.CONTACTS,v)},[]);
+  const persistNotifications=useCallback(v=>{setNotifications(v);saveToStorage(STORAGE_KEYS.NOTIFICATIONS,v)},[]);
+  const persistSignals=useCallback(v=>{setSignals(v);saveToStorage(STORAGE_KEYS.SIGNALS,v)},[]);
+  const persistIntros=useCallback(v=>{setIntros(v);saveToStorage(STORAGE_KEYS.INTROS,v)},[]);
 
-{/* Other people's signals */}
-<div className="fi2">
-<div style={{fontSize:11,fontWeight:700,color:"var(--text3)",letterSpacing:1,marginBottom:10}}>지금 업체를 찾고 있는 분들</div>
-{otherSigs.length===0?<div style={{textAlign:"center",padding:"32px 0",color:"var(--text3)"}}><div style={{fontSize:36,marginBottom:8}}>📢</div><div style={{fontSize:13}}>아직 등록된 신호가 없어요</div></div>
-:otherSigs.map(s=>{const owner=gU(s.uid);if(!owner)return null;return<div key={s.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",marginBottom:8,cursor:"pointer"}} onClick={()=>{setSu(owner);setPg("profile");}}>
-<div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
-<Av n={owner.name} l={owner.cl} sz={36}/>
-<div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{owner.name}</div><div style={{fontSize:11,color:"var(--text2)"}}>{owner.company} · {owner.dept}</div></div>
-<span style={{fontSize:10,color:"var(--text3)"}}>{tAgo(s.at)}</span>
-</div>
-<div style={{display:"inline-flex",background:"var(--orange-bg)",color:"var(--orange)",padding:"3px 10px",borderRadius:8,fontSize:12,fontWeight:700,marginBottom:6}}>🔥 {s.cat}</div>
-<div style={{fontSize:13,color:"var(--text)",lineHeight:1.5}}>{s.desc}</div>
-<div style={{fontSize:11,color:"var(--accent)",marginTop:8,fontWeight:600}}>→ 프로필 보기 · 연락처 요청</div>
-</div>})}
-</div>
+  const showToast=useCallback((message,type="success")=>{setToastMessage({message,type});setTimeout(()=>setToastMessage(null),3000)},[]);
 
-{/* New Signal Modal */}
-{showNew&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowNew(false)}><div onClick={e=>e.stopPropagation()} style={{background:"var(--bg)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .3s ease",maxHeight:"85vh",overflowY:"auto"}}>
-<div style={{width:40,height:4,borderRadius:2,background:"var(--border)",margin:"0 auto 22px"}}/>
-<h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,letterSpacing:-.5,margin:"0 0 6px"}}>🔥 구매 신호 등록</h3>
-<p style={{fontSize:13,color:"var(--text2)",margin:"0 0 22px"}}>"지금 이런 업체를 찾고 있어요"를 알리세요</p>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>어떤 분야? *</div>
-<div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:18}}>{cats.map(c=><button key={c} onClick={()=>setCat(c)} style={{background:cat===c?"var(--orange-bg)":"var(--card)",color:cat===c?"var(--orange)":"var(--text2)",border:"1px solid "+(cat===c?"transparent":"var(--border)"),borderRadius:"var(--radius-sm)",padding:"8px 14px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"var(--font)"}}>{c}</button>)}</div>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>구체적으로 *</div>
-<textarea className="inp" value={desc} onChange={e=>setDesc(e.target.value.slice(0,150))} placeholder="예) 친환경 포장재 공급업체. 월 500박스 규모" style={{height:80,resize:"none",marginBottom:4}}/>
-<div style={{fontSize:11,color:"var(--text3)",textAlign:"right",marginBottom:18}}>{desc.length}/150</div>
-<button className="bp" onClick={()=>{if(!cat||!desc){fl("분야와 상세 내용을 입력해주세요.","err");return;}addSignal(cat,desc);setShowNew(false);setCat("");setDesc("");}} style={{width:"100%",fontSize:15,background:"var(--orange)"}}>🔥 신호 등록하기</button>
-</div></div>}
-</div>;}
+  const addRecentSearch=useCallback((query)=>{
+    const updated=[query,...recentSearches.filter(s=>s!==query)].slice(0,5);
+    setRecentSearches(updated);saveToStorage(STORAGE_KEYS.RECENT_SEARCHES,updated);
+  },[recentSearches]);
 
-// === PROFILE ===
-function Prof(){const{me,su:u,setSu,setPg,sendReq,rq,myC,fl,ct,gU,sendIntro,sigs}=useA();const[sh,setSh]=useState(false);const[pu,setPu]=useState("");const[mg,setMg]=useState("");const[introTarget,setIntroTarget]=useState(null);const[introMsg,setIntroMsg]=useState("");
-if(!u)return null;const cn=myC.some(c=>c.cu===u.id);const pd=rq.some(r=>r.f===me.id&&r.t===u.id&&r.st==="P");const sf=u.id===me.id;
-// 2nd degree connections: people connected to this user but NOT connected to me
-const theirContacts=cn?ct.filter(c=>c.u===u.id).map(c=>gU(c.cu)).filter(x=>x&&x.id!==me.id&&!myC.some(mc=>mc.cu===x.id)):[];
-// This user's buying signals
-const userSigs=sigs.filter(s=>s.uid===u.id&&s.active);
-return<div style={{padding:"0 20px",paddingTop:16}}>
-<BB onClick={()=>{setSu(null);setPg("home");}}/>
-<div className="fi" style={{background:"linear-gradient(180deg,var(--accent-bg),var(--card))",borderRadius:"var(--radius-xl)",padding:28,border:"1px solid var(--border)",textAlign:"center"}}><Av n={u.name} l={u.cl} sz={72} st={{margin:"0 auto 16px",border:"3px solid var(--accent-border)"}}/><div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}><h2 style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.5}}>{u.name}</h2>{u.vf?<Ic.Vf z={16}/>:null}</div><div style={{fontSize:14,color:"var(--text2)",marginTop:4}}>{u.pos}</div><div style={{fontSize:14,color:"var(--text2)",marginTop:2}}>{u.company} · {u.dept}</div>{u.ind&&<div style={{display:"inline-flex",alignItems:"center",gap:4,fontSize:12,color:"var(--accent)",fontWeight:600,marginTop:10,background:"var(--accent-bg)",padding:"4px 12px",borderRadius:8}}>🏢 {u.ind}</div>}{u.bio&&<div style={{fontSize:13,color:"var(--text2)",marginTop:14,lineHeight:1.7}}>{u.bio}</div>}
-<div style={{marginTop:18,padding:"14px 18px",borderRadius:"var(--radius)",background:cn?"var(--green-bg)":"rgba(255,255,255,.03)",border:"1px solid "+(cn?"rgba(34,197,94,.25)":"var(--border)")}}><div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8}}><Ic.Ph z={18} style={{color:cn?"var(--green)":"var(--text3)"}}/><span style={{fontSize:17,fontWeight:800,letterSpacing:1.5,fontFamily:"var(--font-d)",color:cn?"var(--text)":"var(--text3)"}}>{cn?u.phone:mPh(u.phone)}</span></div>{cn&&<div style={{fontSize:11,color:"var(--green)",marginTop:6,fontWeight:700}}>✅ 연결됨</div>}{!cn&&!sf&&<div style={{fontSize:11,color:"var(--text3)",marginTop:6}}>🔒 수락 시 공개</div>}</div></div>
-{!sf&&!cn&&!pd&&<button className="bp fi1" onClick={()=>setSh(true)} style={{width:"100%",marginTop:16,display:"flex",alignItems:"center",justifyContent:"center",gap:8,fontSize:16}}><Ic.Sd z={18}/> 연락처 요청하기</button>}
-{pd&&<div className="fi1" style={{marginTop:16,textAlign:"center",padding:16,borderRadius:"var(--radius)",background:"var(--orange-bg)",color:"var(--orange)",fontWeight:700,fontSize:14,border:"1px solid rgba(245,158,11,.2)"}}>⏳ 응답 대기 중</div>}
-{cn&&<div className="fi1" style={{display:"flex",gap:10,marginTop:16}}><a href={"tel:"+u.phone?.replace(/-/g,"")} style={{flex:1,background:"var(--green)",color:"#fff",borderRadius:"var(--radius)",padding:14,textAlign:"center",fontWeight:700,fontSize:14,display:"flex",alignItems:"center",justifyContent:"center",gap:6}}><Ic.Ph z={16}/> 전화</a><a href={"sms:"+u.phone?.replace(/-/g,"")} style={{flex:1,background:"var(--card)",color:"var(--text)",borderRadius:"var(--radius)",padding:14,textAlign:"center",fontWeight:700,fontSize:14,border:"1px solid var(--border)",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}><Ic.Mg z={16}/> 메시지</a></div>}
+  // ═══════ Auth Actions ═══════
+  const handleSignup=useCallback((data)=>{
+    if(allUsers.find(u=>u.email===data.email)){showToast("이미 가입된 이메일입니다.","error");return false;}
+    const newUser={...data,id:'user_'+Date.now(),plan:'FREE',isSearchable:true,isVerified:false,joinedAt:new Date().toISOString(),lastActive:new Date().toISOString(),responseRate:100};
+    persistUsers([...allUsers,newUser]);persistCurrentUser(newUser);showToast("환영합니다! 🎉");setActivePage("home");return true;
+  },[allUsers,persistUsers,persistCurrentUser,showToast]);
 
-{/* FEATURE: User's Buying Signals */}
-{userSigs.length>0&&<div className="fi2" style={{marginTop:20}}>
-<div style={{fontSize:11,fontWeight:700,color:"var(--orange)",letterSpacing:1,marginBottom:10}}>🔥 지금 찾고 있어요</div>
-{userSigs.map(s=><div key={s.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--orange-bg)",marginBottom:8}}>
-<div style={{fontSize:13,fontWeight:700,color:"var(--orange)"}}>{s.cat}</div>
-<div style={{fontSize:12,color:"var(--text2)",marginTop:4,lineHeight:1.5}}>{s.desc}</div>
-<div style={{fontSize:10,color:"var(--text3)",marginTop:6}}>{tAgo(s.at)}</div>
-</div>)}
-</div>}
+  const handleLogin=useCallback((email,password)=>{
+    const user=allUsers.find(u=>u.email===email&&u.password===password);
+    if(!user){showToast("이메일 또는 비밀번호를 확인해주세요.","error");return false;}
+    persistCurrentUser(user);showToast(`${user.name}님, 환영합니다!`);setActivePage("home");return true;
+  },[allUsers,persistCurrentUser,showToast]);
 
-{/* FEATURE: 소개 체인 — 2촌 연결 */}
-{cn&&theirContacts.length>0&&<div className="fi2" style={{marginTop:20}}>
-<div style={{fontSize:11,fontWeight:700,color:"var(--purple)",letterSpacing:1,marginBottom:10}}>🤝 {u.name}님의 연결 — 소개 요청 가능</div>
-<div style={{display:"flex",flexDirection:"column",gap:8}}>
-{theirContacts.slice(0,5).map(tc=><div key={tc.id} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:14,border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:12}}>
-<Av n={tc.name} l={tc.cl} sz={40}/>
-<div style={{flex:1,minWidth:0}}>
-<div style={{fontWeight:700,fontSize:14}}>{tc.name}</div>
-<div style={{fontSize:12,color:"var(--text2)"}}>{tc.company} · {tc.dept}</div>
-</div>
-<button onClick={()=>{setIntroTarget(tc);setIntroMsg("");}} style={{background:"var(--purple-bg)",color:"var(--purple)",border:"none",borderRadius:8,padding:"8px 12px",fontSize:11,fontWeight:700,cursor:"pointer",fontFamily:"var(--font)",flexShrink:0}}>소개 요청</button>
-</div>)}
-</div>
-<div style={{fontSize:11,color:"var(--text3)",marginTop:8}}>💡 {u.name}님을 통해 소개받으면 수락률이 2~3배 높아져요</div>
-</div>}
+  const handleLogout=useCallback(()=>{persistCurrentUser(null);setActivePage("home");showToast("로그아웃 되었습니다.")},[persistCurrentUser,showToast]);
 
-<div className="fi2" style={{marginTop:20,fontSize:12,color:"var(--text3)",textAlign:"center"}}>가입일: {new Date(u.jn).toLocaleDateString("ko-KR")}</div>
+  // ═══════ Contact Request Actions ═══════
+  const sendContactRequest=useCallback((targetId,purpose,message)=>{
+    if(!currentUser)return;
+    if(requests.find(r=>r.fromUserId===currentUser.id&&r.toUserId===targetId&&r.status==="PENDING")){showToast("이미 요청을 보냈어요.","error");return;}
+    const purposeInfo=getPurposeById(purpose);
+    const newRequest={id:'req_'+Date.now(),fromUserId:currentUser.id,toUserId:targetId,purpose,message,status:"PENDING",createdAt:new Date().toISOString()};
+    const newNotification={id:'notif_'+Date.now(),userId:targetId,type:"REQUEST_RECEIVED",title:"연락처 요청",body:`${currentUser.name}(${currentUser.company} ${currentUser.department})님이 ${purposeInfo.label} 목적으로 연락처를 요청했어요.`,isRead:false,relatedId:newRequest.id,createdAt:new Date().toISOString()};
+    persistRequests([...requests,newRequest]);
+    persistNotifications([...notifications,newNotification]);
+    showToast("요청을 보냈습니다!");setSelectedUser(null);setActivePage("home");
+  },[currentUser,requests,notifications,persistRequests,persistNotifications,showToast]);
 
-{/* Intro Request Modal */}
-{introTarget&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setIntroTarget(null)}><div onClick={e=>e.stopPropagation()} style={{background:"var(--bg)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .3s ease"}}>
-<div style={{width:40,height:4,borderRadius:2,background:"var(--border)",margin:"0 auto 22px"}}/>
-<h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,letterSpacing:-.5,margin:"0 0 6px"}}>🤝 소개 요청</h3>
-<p style={{fontSize:13,color:"var(--text2)",margin:"0 0 20px"}}>{u.name}님을 통해 {introTarget.name}님을 소개받습니다</p>
-<div style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:16}}>
-<div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
-<Av n={me.name} l={me.cl} sz={32}/><span style={{fontSize:13,fontWeight:700}}>{me.name}</span>
-<span style={{color:"var(--purple)",fontSize:16}}>→</span>
-<Av n={u.name} l={u.cl} sz={32}/><span style={{fontSize:13,fontWeight:600,color:"var(--text2)"}}>{u.name}</span>
-<span style={{color:"var(--purple)",fontSize:16}}>→</span>
-<Av n={introTarget.name} l={introTarget.cl} sz={32}/><span style={{fontSize:13,fontWeight:700}}>{introTarget.name}</span>
-</div>
-<div style={{fontSize:11,color:"var(--text3)"}}>소개가 승인되면 {introTarget.name}님에게 자동으로 연락 요청이 전달됩니다</div>
-</div>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>소개 이유</div>
-<textarea className="inp" value={introMsg} onChange={e=>setIntroMsg(e.target.value.slice(0,100))} placeholder="ex) B2B 파트너십 논의를 위해 소개 부탁드립니다" style={{height:70,resize:"none",marginBottom:16}}/>
-<button className="bp" onClick={()=>{if(!introMsg.trim()){fl("소개 이유를 입력해주세요.","err");return;}sendIntro(u.id,introTarget.id,introMsg);setIntroTarget(null);}} style={{width:"100%",background:"var(--purple)",fontSize:15}}>🤝 소개 요청 보내기</button>
-</div></div>}
-{sh&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setSh(false)}><div onClick={e=>e.stopPropagation()} style={{background:"var(--bg)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .3s ease"}}><div style={{width:40,height:4,borderRadius:2,background:"var(--border)",margin:"0 auto 22px"}}/><h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,letterSpacing:-.5,margin:"0 0 4px"}}>연락처 요청</h3><p style={{fontSize:13,color:"var(--text2)",margin:"0 0 24px"}}>{u.name}님({u.company})에게 명함을 전달합니다</p>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>요청 목적 *</div><div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:22}}>{PU.map(p=><button key={p.id} onClick={()=>setPu(p.id)} style={{background:pu===p.id?p.bg:"var(--card)",color:pu===p.id?p.cl:"var(--text2)",border:"1px solid "+(pu===p.id?"transparent":"var(--border)"),borderRadius:"var(--radius-sm)",padding:"10px 14px",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:5,fontFamily:"var(--font)"}}>{p.ic} {p.lb}</button>)}</div>
-<div style={{fontSize:13,fontWeight:700,marginBottom:10}}>한줄 메시지 <span style={{fontWeight:400,color:"var(--text3)"}}>선택</span></div><textarea className="inp" value={mg} onChange={e=>setMg(e.target.value.slice(0,100))} placeholder="ex) 소스류 신규 공급업체를 찾고 있습니다" style={{height:80,resize:"none",marginBottom:4}}/><div style={{fontSize:11,color:"var(--text3)",textAlign:"right",marginBottom:18}}>{mg.length}/100</div>
-<div style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:22}}><div style={{fontSize:11,fontWeight:700,color:"var(--text3)",marginBottom:10}}>📱 상대방에게 보이는 화면</div><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><Av n={me.name} l={me.cl} sz={36}/><div><div style={{fontSize:14,fontWeight:700}}>{me.name}</div><div style={{fontSize:12,color:"var(--text2)"}}>{me.company} {me.dept}</div></div></div>{pu&&<PB p={pu}/>}{mg&&<div style={{fontSize:13,marginTop:8,fontStyle:"italic",color:"var(--text)",opacity:.75}}>"{mg}"</div>}</div>
-<button className="bp" onClick={()=>{if(!pu){fl("요청 목적을 선택해주세요.","err");return;}sendReq(u.id,pu,mg);setSh(false);}} style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"center",gap:8,fontSize:16}}><Ic.Sd z={18}/> 요청 보내기</button></div></div>}
-</div>;}
+  const respondToRequest=useCallback((requestId,accept)=>{
+    const request=requests.find(r=>r.id===requestId);if(!request)return;
+    persistRequests(requests.map(r=>r.id===requestId?{...r,status:accept?"ACCEPTED":"REJECTED",respondedAt:new Date().toISOString()}:r));
+    if(accept){
+      persistContacts([...contacts,
+        {id:'ct_'+Date.now()+'a',userId:currentUser.id,contactUserId:request.fromUserId,requestId,memo:"",isFavorite:false,createdAt:new Date().toISOString()},
+        {id:'ct_'+Date.now()+'b',userId:request.fromUserId,contactUserId:currentUser.id,requestId,memo:"",isFavorite:false,createdAt:new Date().toISOString()},
+      ]);
+      persistNotifications([...notifications,{id:'notif_'+Date.now(),userId:request.fromUserId,type:"REQUEST_ACCEPTED",title:"요청 승인! 🎉",body:`${currentUser.name}님이 연락처 요청을 수락했어요!`,isRead:false,relatedId:requestId,createdAt:new Date().toISOString()}]);
+      showToast("연락처가 교환되었습니다! 🤝");
+    }else{
+      persistNotifications([...notifications,{id:'notif_'+Date.now(),userId:request.fromUserId,type:"REQUEST_REJECTED",title:"요청 미연결",body:"이번에는 연결이 되지 않았어요.",isRead:false,relatedId:requestId,createdAt:new Date().toISOString()}]);
+      showToast("요청을 거부했습니다.");
+    }
+    setSelectedRequest(null);
+  },[currentUser,requests,contacts,notifications,persistRequests,persistContacts,persistNotifications,showToast]);
 
-// === INBOX ===
-function Ibx(){const{me,myR,myS,gU,setSu,setPg,setSr,sr,respond}=useA();const[tb,setTb]=useState("in");
-const pI=myR.filter(r=>r.st==="P");const dI=myR.filter(r=>r.st!=="P");const its=tb==="in"?[...pI,...dI]:myS.sort((a,b)=>new Date(b.at)-new Date(a.at));
-const RC=({r,sn})=>{const o=gU(sn?r.t:r.f);if(!o)return null;const ip=r.st==="P";return<div className="fi" onClick={()=>{if(!sn&&ip)setSr(r);else{setSu(o);setPg("profile");}}} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,cursor:"pointer",border:"1px solid "+(ip?"var(--accent-border)":"var(--border)"),marginBottom:8}} onMouseEnter={e=>{e.currentTarget.style.background="var(--card-h)"}} onMouseLeave={e=>{e.currentTarget.style.background="var(--card)"}}>
-<div style={{display:"flex",alignItems:"center",gap:12}}><Av n={o.name} l={o.cl} sz={44}/><div style={{flex:1,minWidth:0}}><div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",marginBottom:4}}><span style={{fontWeight:700,fontSize:14}}>{o.name}</span><PB p={r.pu} sm/></div><div style={{fontSize:12,color:"var(--text2)"}}>{o.company} · {o.dept}</div>{r.mg&&<div style={{fontSize:12,color:"var(--text)",opacity:.5,marginTop:4,fontStyle:"italic",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>"{r.mg}"</div>}</div><div style={{textAlign:"right",flexShrink:0}}><span className="badge" style={{background:ip?"var(--orange-bg)":r.st==="A"?"var(--green-bg)":"var(--red-bg)",color:ip?"var(--orange)":r.st==="A"?"var(--green)":"var(--red)"}}>{ip?"대기중":r.st==="A"?"승인":"거부"}</span><div style={{fontSize:10,color:"var(--text3)",marginTop:4}}>{tAgo(r.at)}</div></div></div></div>;};
+  // ═══════ Signal Actions (지시서 2-5) ═══════
+  const addBuyingSignal=useCallback((category,description)=>{
+    if(!currentUser)return;
+    const newSignal={id:'sig_'+Date.now(),userId:currentUser.id,category,description,isActive:true,createdAt:new Date().toISOString(),expiresAt:new Date(Date.now()+30*86400000).toISOString()};
+    persistSignals([newSignal,...signals]);
+    // Notify relevant seed users
+    const matches=allUsers.filter(u=>u.isSeeded&&u.id!==currentUser.id&&u.isSearchable).slice(0,3);
+    const newNotifs=matches.map((u,i)=>({id:'notif_'+Date.now()+i,userId:u.id,type:"BUYING_SIGNAL",title:"🔥 새 구매 신호",body:`${currentUser.name}(${currentUser.company})님이 '${category}' 관련 업체를 찾고 있어요.`,isRead:false,relatedId:newSignal.id,createdAt:new Date().toISOString()}));
+    persistNotifications([...notifications,...newNotifs]);
+    showToast("구매 신호가 등록되었습니다! 🔥");
+  },[currentUser,signals,allUsers,notifications,persistSignals,persistNotifications,showToast]);
 
-return<div style={{padding:"0 20px",paddingTop:16}}>
-<h2 className="fi" style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8,margin:"0 0 20px"}}>{tb==="in"?"📨 수신함":"📤 보낸 요청"}</h2>
-<div className="fi1" style={{display:"flex",gap:8,marginBottom:20}}>{[{id:"in",lb:"받은 요청",c:pI.length},{id:"out",lb:"보낸 요청",c:myS.filter(r=>r.st==="P").length}].map(t=><button key={t.id} onClick={()=>setTb(t.id)} style={{flex:1,background:tb===t.id?"var(--accent-bg)":"var(--card)",color:tb===t.id?"var(--accent)":"var(--text2)",border:"1px solid "+(tb===t.id?"var(--accent-border)":"var(--border)"),borderRadius:"var(--radius)",padding:12,fontSize:14,fontWeight:700,cursor:"pointer",fontFamily:"var(--font)"}}>{t.lb}{t.c>0&&<span style={{background:"var(--accent)",color:"#0b0b12",borderRadius:8,padding:"2px 7px",fontSize:11,marginLeft:4}}>{t.c}</span>}</button>)}</div>
-{its.length===0?<ES ic={tb==="in"?"📨":"📤"} tl={tb==="in"?"받은 요청이 없어요":"보낸 요청이 없어요"} ds={tb==="in"?"프로필을 완성하면 요청받기 쉬워져요!":"검색 후 첫 연락을 시작하세요!"} act={()=>setPg("home")} al="담당자 검색하기"/>:its.map(r=><RC key={r.id} r={r} sn={tb==="out"}/>)}
-{sr&&(()=>{const rq=sr;const o=gU(rq.f);if(!o)return null;
-return<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.7)",backdropFilter:"blur(10px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setSr(null)}><div onClick={e=>e.stopPropagation()} style={{background:"var(--bg)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .3s ease"}}><div style={{width:40,height:4,borderRadius:2,background:"var(--border)",margin:"0 auto 22px"}}/><h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,letterSpacing:-.5,margin:"0 0 20px"}}>연락 요청 상세</h3>
-<div style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:18}}><div style={{display:"flex",alignItems:"center",gap:12}}><Av n={o.name} l={o.cl} sz={52}/><div><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontWeight:800,fontSize:16}}>{o.name}</span>{o.vf?<Ic.Vf z={14}/>:null}</div><div style={{fontSize:13,color:"var(--text2)",marginTop:2}}>{o.company} · {o.dept}</div><div style={{fontSize:12,color:"var(--text3)"}}>{o.pos}</div></div></div></div>
-<div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:"var(--text3)",marginBottom:8}}>요청 목적</div><PB p={rq.pu}/></div>{rq.mg&&<div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:"var(--text3)",marginBottom:8}}>메시지</div><div style={{fontSize:14,fontStyle:"italic",color:"var(--text)",opacity:.8,lineHeight:1.6}}>"{rq.mg}"</div></div>}
-<div style={{background:"var(--accent-bg)",borderRadius:"var(--radius-sm)",padding:12,marginBottom:22,border:"1px solid var(--accent-border)"}}><div style={{fontSize:12,color:"var(--accent)",fontWeight:600}}>💡 수락하면 서로의 전화번호가 <strong>동시에</strong> 공개됩니다.</div></div>
-<div style={{display:"flex",gap:10}}><button onClick={()=>respond(rq.id,false)} style={{flex:1,background:"var(--red-bg)",color:"var(--red)",border:"1px solid rgba(239,68,68,.2)",borderRadius:"var(--radius)",padding:15,fontSize:15,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6,fontFamily:"var(--font)"}}><Ic.X z={16}/> 거부</button><button className="bp" onClick={()=>respond(rq.id,true)} style={{flex:2,background:"var(--green)",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}><Ic.Ck z={16}/> 수락</button></div></div></div>;})()}
-</div>;}
+  const removeBuyingSignal=useCallback((signalId)=>{persistSignals(signals.filter(s=>s.id!==signalId));showToast("신호를 삭제했습니다.")},[signals,persistSignals,showToast]);
 
-// === CONTACTS ===
-function Cts(){const{myC,gU,setSu,setPg}=useA();const[q,setQ]=useState("");
-const ls=myC.map(c=>({...c,u:gU(c.cu)})).filter(c=>c.u);const fl=q?ls.filter(c=>c.u.name.includes(q)||c.u.company.includes(q)):ls;
-return<div style={{padding:"0 20px",paddingTop:16}}>
-<h2 className="fi" style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8,margin:"0 0 20px"}}>📖 주소록 <span style={{color:"var(--accent)"}}>{myC.length}</span></h2>
-{myC.length>0&&<div className="fi1" style={{display:"flex",alignItems:"center",gap:10,background:"var(--card)",borderRadius:"var(--radius)",padding:"10px 16px",border:"1px solid var(--border)",marginBottom:16}}><Ic.S z={16} style={{color:"var(--text3)"}}/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="이름, 회사로 검색" style={{background:"none",border:"none",color:"var(--text)",fontSize:14,outline:"none",flex:1,fontFamily:"var(--font)"}}/></div>}
-{fl.length===0?<ES ic="📖" tl="연결된 연락처가 없어요" ds="검색 후 연락처를 요청해보세요!" act={()=>setPg("home")} al="담당자 검색하기"/>
-:<div style={{display:"flex",flexDirection:"column",gap:8}}>{fl.map(c=><div key={c.id} className="fi" onClick={()=>{setSu(c.u);setPg("profile");}} style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,cursor:"pointer",border:"1px solid var(--border)",display:"flex",alignItems:"center",gap:14}} onMouseEnter={e=>{e.currentTarget.style.borderColor="rgba(34,197,94,.2)"}} onMouseLeave={e=>{e.currentTarget.style.borderColor="var(--border)"}}>
-<Av n={c.u.name} l={c.u.cl} sz={46} st={{background:"linear-gradient(135deg,var(--green-bg),var(--blue-bg))"}}/><div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:15}}>{c.u.name}</div><div style={{fontSize:13,color:"var(--text2)",marginTop:2}}>{c.u.company} · {c.u.dept}</div><div style={{fontSize:13,color:"var(--green)",fontWeight:700,marginTop:3,fontFamily:"var(--font-d)",letterSpacing:.5}}>{c.u.phone}</div></div><a href={"tel:"+c.u.phone?.replace(/-/g,"")} onClick={e=>e.stopPropagation()} style={{width:38,height:38,borderRadius:10,background:"var(--green-bg)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--green)",flexShrink:0}}><Ic.Ph z={16}/></a></div>)}</div>}
-</div>;}
+  // ═══════ Intro Actions (지시서 2-6) ═══════
+  const sendIntroRequest=useCallback((bridgeUserId,targetUserId,message)=>{
+    if(!currentUser)return;
+    if(intros.find(i=>i.fromUserId===currentUser.id&&i.bridgeUserId===bridgeUserId&&i.targetUserId===targetUserId&&i.status==="PENDING")){showToast("이미 소개를 요청했어요.","error");return;}
+    const newIntro={id:'intro_'+Date.now(),fromUserId:currentUser.id,bridgeUserId,targetUserId,message,status:"PENDING",createdAt:new Date().toISOString()};
+    const targetUser=getUserById(targetUserId);
+    persistIntros([...intros,newIntro]);
+    persistNotifications([...notifications,{id:'notif_'+Date.now(),userId:bridgeUserId,type:"INTRO_REQUEST",title:"🤝 소개 요청",body:`${currentUser.name}님이 ${targetUser?.name}님에 대한 소개를 요청했어요.`,isRead:false,relatedId:newIntro.id,createdAt:new Date().toISOString()}]);
+    showToast("소개 요청을 보냈습니다!");
+  },[currentUser,intros,notifications,persistIntros,persistNotifications,showToast]);
 
-// === NOTIFS ===
-function Ntf(){const{myN,nt,me,pN,ur}=useA();const ma=()=>{pN(nt.map(n=>n.u===me.id?{...n,rd:1}:n))};const im={REQ:"📩",OK:"🎉",NO:"💬",SIG:"🔥",INTRO:"🤝",CHG:"⚡"};
-return<div style={{padding:"0 20px",paddingTop:16}}><div className="fi" style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}><h2 style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8,margin:0}}>🔔 알림</h2>{ur>0&&<button onClick={ma} style={{background:"var(--card)",border:"1px solid var(--border)",borderRadius:"var(--radius-sm)",padding:"6px 12px",fontSize:12,color:"var(--accent)",cursor:"pointer",fontWeight:600,fontFamily:"var(--font)"}}>모두 읽음</button>}</div>
-{myN.length===0?<ES ic="🔔" tl="알림이 없어요" ds="활동이 시작되면 여기에 표시됩니다"/>:myN.map((n,i)=><div key={n.id} className="fi" style={{background:n.rd?"var(--card)":"var(--accent-bg)",borderRadius:"var(--radius)",padding:14,marginBottom:8,border:"1px solid "+(n.rd?"var(--border)":"var(--accent-border)")}}><div style={{display:"flex",alignItems:"flex-start",gap:10}}><div style={{fontSize:20,marginTop:1}}>{im[n.tp]||"🔔"}</div><div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{n.tl}</div><div style={{fontSize:13,color:"var(--text2)",marginTop:4,lineHeight:1.6}}>{n.bd}</div><div style={{fontSize:11,color:"var(--text3)",marginTop:6}}>{tAgo(n.at)}</div></div>{!n.rd&&<div style={{width:8,height:8,borderRadius:4,background:"var(--accent)",flexShrink:0,marginTop:6}}/>}</div></div>)}</div>;}
+  const respondToIntro=useCallback((introId,accept)=>{
+    const intro=intros.find(i=>i.id===introId);if(!intro)return;
+    persistIntros(intros.map(i=>i.id===introId?{...i,status:accept?"ACCEPTED":"REJECTED"}:i));
+    const requester=getUserById(intro.fromUserId);const target=getUserById(intro.targetUserId);
+    if(accept){
+      const warmRequest={id:'req_'+Date.now(),fromUserId:intro.fromUserId,toUserId:intro.targetUserId,purpose:"COLLAB",message:`[${currentUser.name}님 소개] ${intro.message}`,status:"PENDING",createdAt:new Date().toISOString(),isIntro:true};
+      persistRequests([...requests,warmRequest]);
+      persistNotifications([...notifications,
+        {id:'notif_'+Date.now()+'a',userId:intro.fromUserId,type:"INTRO_ACCEPTED",title:"소개 승인!",body:`${currentUser.name}님이 ${target?.name}님 소개를 수락했어요! 🎉`,isRead:false,relatedId:introId,createdAt:new Date().toISOString()},
+        {id:'notif_'+Date.now()+'b',userId:intro.targetUserId,type:"REQUEST_RECEIVED",title:"🤝 소개 연락",body:`${requester?.name}님이 ${currentUser.name}님의 소개로 연락처를 요청했어요.`,isRead:false,relatedId:warmRequest.id,createdAt:new Date().toISOString()},
+      ]);showToast("소개를 승인했습니다! 🤝");
+    }else{
+      persistNotifications([...notifications,{id:'notif_'+Date.now(),userId:intro.fromUserId,type:"INTRO_REJECTED",title:"소개 미성사",body:"이번 소개는 성사되지 않았어요.",isRead:false,relatedId:introId,createdAt:new Date().toISOString()}]);
+      showToast("소개 요청을 거절했습니다.");
+    }
+  },[currentUser,intros,requests,notifications,persistIntros,persistRequests,persistNotifications,showToast]);
 
-// === ME ===
-function Me(){const{me,pM,us,pU,logout,myR,myS,myC,fl,updateProfile}=useA();const[ed,setEd]=useState(false);const[d,setD]=useState({});
-const se=()=>{setD({...me});setEd(true)};const sv2=()=>{updateProfile(d);setEd(false);};
-const fs=[me.name,me.company,me.dept,me.pos,me.phone,me.bio].filter(Boolean).length;const pc=Math.round(fs/6*100);
-return<div style={{padding:"0 20px",paddingTop:16}}>
-<h2 className="fi" style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,letterSpacing:-.8,margin:"0 0 20px"}}>내 프로필</h2>
-<div className="fi1" style={{background:"linear-gradient(180deg,var(--accent-bg),var(--card))",borderRadius:"var(--radius-xl)",padding:24,border:"1px solid var(--border)",textAlign:"center",marginBottom:16}}>
-<Av n={me.name} l={me.cl} sz={68} st={{margin:"0 auto 14px",border:"3px solid var(--accent-border)"}}/>
-{!ed?<><h3 style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900,margin:"0 0 4px"}}>{me.name}</h3><div style={{fontSize:14,color:"var(--text2)"}}>{me.pos||"직책 미입력"}</div><div style={{fontSize:14,color:"var(--text2)",marginTop:2}}>{me.company}{me.dept&&" · "+me.dept}</div><div style={{fontSize:13,color:"var(--green)",marginTop:8,fontWeight:600}}>{me.phone||"전화번호 미입력"}</div><button onClick={se} style={{marginTop:16,background:"var(--card)",border:"1px solid var(--border)",borderRadius:"var(--radius-sm)",padding:"10px 20px",fontSize:13,fontWeight:600,color:"var(--accent)",cursor:"pointer",fontFamily:"var(--font)"}}>프로필 편집</button></>
-:<div style={{textAlign:"left",display:"flex",flexDirection:"column",gap:10,marginTop:10}}><input className="inp" value={d.name||""} onChange={e=>setD({...d,name:e.target.value})} placeholder="이름"/><input className="inp" value={d.company||""} onChange={e=>setD({...d,company:e.target.value})} placeholder="회사"/><input className="inp" value={d.dept||""} onChange={e=>setD({...d,dept:e.target.value})} placeholder="부서"/><input className="inp" value={d.pos||""} onChange={e=>setD({...d,pos:e.target.value})} placeholder="직책"/><input className="inp" value={d.phone||""} onChange={e=>setD({...d,phone:e.target.value})} placeholder="전화번호"/><textarea className="inp" value={d.bio||""} onChange={e=>setD({...d,bio:e.target.value.slice(0,200)})} placeholder="자기소개 (200자)" style={{height:80,resize:"none"}}/><div style={{display:"flex",gap:10}}><button className="bs" onClick={()=>setEd(false)} style={{flex:1,padding:12}}>취소</button><button className="bp" onClick={sv2} style={{flex:2,padding:12}}>저장</button></div></div>}
-</div>
-<div className="fi2" style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:12}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><span style={{fontSize:13,fontWeight:700}}>프로필 완성도</span><span style={{fontSize:13,fontWeight:800,color:"var(--accent)",fontFamily:"var(--font-d)"}}>{pc}%</span></div><div style={{height:6,borderRadius:3,background:"var(--border)"}}><div style={{height:"100%",borderRadius:3,background:"linear-gradient(90deg,var(--accent),var(--accent2))",width:pc+"%",transition:"width .5s"}}/></div></div>
-<div className="fi3" style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:12}}><div style={{fontSize:13,fontWeight:800,marginBottom:14}}>📊 활동</div><div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>{[{l:"보낸 요청",v:myS.length,c:"var(--accent)"},{l:"받은 요청",v:myR.length,c:"var(--blue)"},{l:"승인",v:[...myS,...myR].filter(r=>r.st==="A").length,c:"var(--green)"},{l:"연결됨",v:myC.length,c:"var(--purple)"}].map((s,i)=><div key={i} style={{textAlign:"center"}}><div style={{fontFamily:"var(--font-d)",fontSize:24,fontWeight:900,color:s.c}}>{s.v}</div><div style={{fontSize:11,color:"var(--text2)",marginTop:2}}>{s.l}</div></div>)}</div></div>
-<div className="fi3" style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:12}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:13,fontWeight:700}}>현재 플랜</div><div style={{fontSize:12,color:"var(--text2)",marginTop:4}}>{me.plan==="FREE"?"무료 — 일 5회":"Pro — 무제한"}</div></div><span className="badge" style={{background:me.plan==="FREE"?"var(--border)":"var(--accent-bg)",color:me.plan==="FREE"?"var(--text2)":"var(--accent)"}}>{me.plan}</span></div></div>
-<div className="fi3" style={{background:"var(--card)",borderRadius:"var(--radius)",padding:16,border:"1px solid var(--border)",marginBottom:12}}><div style={{fontSize:13,fontWeight:800,marginBottom:12}}>🔒 프라이버시</div><div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><div><div style={{fontSize:13,fontWeight:600}}>검색 노출</div><div style={{fontSize:11,color:"var(--text3)",marginTop:4}}>끄면 검색 노출 안됨</div></div><button onClick={()=>{const u2={...me,vis:me.vis?0:1};pM(u2);sv(LS.U,us.map(u=>u.id===me.id?u2:u));pU(us.map(u=>u.id===me.id?u2:u));}} style={{width:50,height:28,borderRadius:14,border:"none",cursor:"pointer",position:"relative",background:me.vis?"var(--green)":"var(--border)",transition:"background .3s"}}><div style={{width:22,height:22,borderRadius:11,background:"#fff",position:"absolute",top:3,left:me.vis?25:3,transition:"left .3s"}}/></button></div></div>
-<button className="fi4" onClick={logout} style={{width:"100%",background:"var(--card)",border:"1px solid rgba(239,68,68,.2)",borderRadius:"var(--radius)",padding:15,fontSize:14,fontWeight:600,color:"var(--red)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:8,fontFamily:"var(--font)",marginBottom:20}}><Ic.Lo z={18}/> 로그아웃</button>
-<div style={{textAlign:"center",fontSize:11,color:"var(--text3)",paddingBottom:12}}>BizConnect v1.0</div></div>;}
+  // ═══════ Profile Update with Change Notification (지시서 2-4) ═══════
+  const updateUserProfile=useCallback((newData)=>{
+    if(!currentUser)return;
+    const changes=[];
+    if(newData.company&&newData.company!==currentUser.company)changes.push(`회사: ${currentUser.company} → ${newData.company}`);
+    if(newData.department&&newData.department!==currentUser.department)changes.push(`부서: ${currentUser.department} → ${newData.department}`);
+    if(newData.position&&newData.position!==currentUser.position)changes.push(`직책: ${currentUser.position} → ${newData.position}`);
+    const updated={...currentUser,...newData,lastActive:new Date().toISOString()};
+    const updatedUsers=allUsers.map(u=>u.id===currentUser.id?updated:u);
+    saveToStorage(STORAGE_KEYS.USERS,updatedUsers);persistUsers(updatedUsers);persistCurrentUser(updated);
+    if(changes.length>0){
+      const myContacts=contacts.filter(c=>c.userId===currentUser.id);
+      const changeNotifs=myContacts.map((c,i)=>({id:'notif_'+Date.now()+i,userId:c.contactUserId,type:"CONTACT_CHANGED",title:"⚡ 담당자 정보 변경",body:`${currentUser.name}님의 정보가 변경되었어요: ${changes.join(", ")}`,isRead:false,relatedId:currentUser.id,createdAt:new Date().toISOString()}));
+      persistNotifications([...notifications,...changeNotifs]);
+      showToast("프로필이 업데이트되었습니다! 변경 알림이 전송되었어요.");
+    }else{showToast("프로필이 업데이트되었습니다!");}
+  },[currentUser,allUsers,contacts,notifications,persistUsers,persistCurrentUser,persistNotifications,showToast]);
 
-// === ROOT ===
-function App(){const{me,pg,su,rdy}=useA();
-if(!rdy)return<div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100dvh",flexDirection:"column",gap:12}}><div style={{fontSize:52,animation:"pulse 1.5s infinite"}}>🤝</div><div style={{fontFamily:"var(--font-d)",fontSize:22,fontWeight:900}}><span style={{color:"var(--accent)"}}>Biz</span>Connect</div><div style={{fontSize:12,color:"var(--text3)"}}>로딩 중...</div></div>;
-if(!me)return<><Toast/><Land/></>;
-const pm={home:su?<Prof/>:<Home/>,profile:su?<Prof/>:<Home/>,signals:<Sigs/>,inbox:<Ibx/>,contacts:<Cts/>,notifs:<Ntf/>,me:<Me/>};
-return<><Toast/><div style={{height:"100dvh",display:"flex",flexDirection:"column"}}><div style={{flex:1,overflowY:"auto",paddingBottom:"var(--nav-h)"}}>{pm[pg]||<Home/>}</div><Nav/></div></>;}
+  // ═══════ Helper ═══════
+  const getUserById=useCallback(id=>allUsers.find(u=>u.id===id),[allUsers]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(<Prov><App/></Prov>);
+  // ═══════ Derived Data ═══════
+  const myReceivedRequests=useMemo(()=>currentUser?requests.filter(r=>r.toUserId===currentUser.id):[],[currentUser,requests]);
+  const mySentRequests=useMemo(()=>currentUser?requests.filter(r=>r.fromUserId===currentUser.id):[],[currentUser,requests]);
+  const myContacts=useMemo(()=>currentUser?contacts.filter(c=>c.userId===currentUser.id):[],[currentUser,contacts]);
+  const myNotifications=useMemo(()=>currentUser?notifications.filter(n=>n.userId===currentUser.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)):[],[currentUser,notifications]);
+  const unreadNotifCount=useMemo(()=>myNotifications.filter(n=>!n.isRead).length,[myNotifications]);
+  const pendingInboxCount=useMemo(()=>myReceivedRequests.filter(r=>r.status==="PENDING").length,[myReceivedRequests]);
+
+  const contextValue=useMemo(()=>({
+    allUsers,currentUser,requests,contacts,notifications,signals,intros,recentSearches,
+    activePage,selectedUser,selectedRequest,toastMessage,isReady,
+    myReceivedRequests,mySentRequests,myContacts,myNotifications,unreadNotifCount,pendingInboxCount,
+    setActivePage,setSelectedUser,setSelectedRequest,
+    persistUsers,persistCurrentUser,persistNotifications,persistContacts,persistRequests,
+    showToast,addRecentSearch,handleSignup,handleLogin,handleLogout,
+    sendContactRequest,respondToRequest,
+    addBuyingSignal,removeBuyingSignal,
+    sendIntroRequest,respondToIntro,
+    updateUserProfile,getUserById,
+  }),[allUsers,currentUser,requests,contacts,notifications,signals,intros,recentSearches,activePage,selectedUser,selectedRequest,toastMessage,isReady,myReceivedRequests,mySentRequests,myContacts,myNotifications,unreadNotifCount,pendingInboxCount]);
+
+  return <AppContext.Provider value={contextValue}>{children}</AppContext.Provider>;
+}
+
+const useApp=()=>useContext(AppContext);
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Common UI Components
+   ═══════════════════════════════════════════════════════════ */
+
+// Toast notification (지시서 1-5 성공/실패 애니메이션)
+function ToastNotification(){
+  const{toastMessage}=useApp();if(!toastMessage)return null;
+  return <div role="alert" aria-live="polite" style={{position:"fixed",top:16,left:"50%",transform:"translateX(-50%)",zIndex:9999,background:toastMessage.type==="error"?"var(--red)":"var(--emerald)",color:"#fff",padding:"13px 24px",borderRadius:"var(--radius)",fontSize:14,fontWeight:700,boxShadow:"var(--shadow-lg)",animation:"slideDown .2s ease",maxWidth:360,textAlign:"center"}}>{toastMessage.message}</div>;
+}
+
+// Avatar component
+function Avatar({name,logo,size=44,style:extraStyle}){
+  return <div aria-hidden="true" style={{width:size,height:size,borderRadius:size*.3,flexShrink:0,background:"linear-gradient(135deg,#EEF2FF,#E0E7FF)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*.42,color:"var(--navy)",...extraStyle}}>{logo||name?.[0]||"?"}</div>;
+}
+
+// Purpose badge
+function PurposeBadge({purposeId,isSmall}){
+  const purpose=getPurposeById(purposeId);
+  return <span className="badge" style={{background:purpose.bgColor,color:purpose.color,fontSize:isSmall?10:12,padding:isSmall?"2px 7px":"4px 10px"}}>{purpose.icon} {purpose.label}</span>;
+}
+
+// Back button (지시서 3-2 뒤로가기 항상 표시)
+function BackButton({onClick,label="뒤로"}){
+  return <button onClick={onClick} aria-label="뒤로가기" style={{background:"none",border:"none",color:"var(--gray-500)",cursor:"pointer",display:"flex",alignItems:"center",gap:6,fontSize:14,padding:"8px 0",marginBottom:12,fontFamily:"var(--font)",minHeight:44}}><Icon.ArrowLeft size={18}/> {label}</button>;
+}
+
+// Empty state (지시서 1-4 빈 상태)
+function EmptyState({icon,title,description,actionLabel,onAction}){
+  return <div className="fi" role="status" style={{textAlign:"center",padding:"48px 20px"}}><div style={{fontSize:48,marginBottom:12}}>{icon}</div><div style={{fontSize:16,fontWeight:700,color:"var(--navy)",marginBottom:8}}>{title}</div><div style={{fontSize:14,color:"var(--gray-500)",lineHeight:1.6,marginBottom:onAction?20:0}}>{description}</div>{onAction&&<button className="btn-primary" onClick={onAction}>{actionLabel}</button>}</div>;
+}
+
+// Skeleton card (지시서 1-5 스켈레톤 UI)
+function SkeletonCard(){
+  return <div style={{background:"var(--white)",borderRadius:"var(--radius)",padding:20,boxShadow:"var(--shadow-sm)",display:"flex",alignItems:"center",gap:14}}>
+    <div className="skel" style={{width:46,height:46,borderRadius:14}}/>
+    <div style={{flex:1}}><div className="skel" style={{height:14,width:"60%",marginBottom:8}}/><div className="skel" style={{height:12,width:"80%",marginBottom:6}}/><div className="skel" style={{height:10,width:"40%"}}/></div>
+  </div>;
+}
+
+// User card (지시서 2-2 검색 결과 카드 핵심 정보 3줄)
+function UserCard({user,onClick}){
+  return <div className="card fi" onClick={onClick} role="button" tabIndex={0} aria-label={`${user.name}, ${user.company} ${user.department} ${user.position}`}
+    onKeyDown={e=>{if(e.key==="Enter")onClick?.()}}
+    style={{display:"flex",alignItems:"center",gap:14,cursor:"pointer",padding:16}}>
+    <Avatar name={user.name} logo={user.companyLogo} size={46}/>
+    <div style={{flex:1,minWidth:0}}>
+      <div style={{display:"flex",alignItems:"center",gap:5}}>
+        <span style={{fontWeight:700,fontSize:15}}>{user.name}</span>
+        {user.isVerified&&<Icon.Verified size={13}/>}
+        <span style={{fontSize:13,color:"var(--gray-500)"}}>{user.position}</span>
+      </div>
+      <div style={{fontSize:13,color:"var(--gray-500)",marginTop:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{user.company} · {user.department}</div>
+      {user.bio&&<div style={{fontSize:12,color:"var(--gray-400)",marginTop:3,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{user.bio.split('.')[0]}</div>}
+    </div>
+    <Icon.ChevronRight size={14} style={{color:"var(--gray-400)",flexShrink:0}}/>
+  </div>;
+}
+
+// Bottom navigation (지시서 4-4)
+function BottomNavigation(){
+  const{activePage,setActivePage,setSelectedUser,setSelectedRequest,pendingInboxCount,unreadNotifCount}=useApp();
+  const tabs=[
+    {id:"home",icon:Icon.Search,label:"검색"},
+    {id:"signals",label:"구매신호",emoji:"🔥"},
+    {id:"inbox",icon:Icon.Inbox,label:"수신함",badge:pendingInboxCount},
+    {id:"contacts",icon:Icon.Book,label:"주소록"},
+    {id:"me",icon:Icon.User,label:"내 정보",badge:unreadNotifCount},
+  ];
+  return <nav role="navigation" aria-label="주요 메뉴" style={{position:"absolute",bottom:0,left:0,right:0,height:"var(--nav-h)",background:"rgba(255,255,255,.95)",backdropFilter:"blur(20px)",borderTop:"1px solid var(--gray-200)",display:"flex",justifyContent:"space-around",alignItems:"flex-start",paddingTop:8,zIndex:100}}>
+    {tabs.map(tab=>{
+      const isActive=activePage===tab.id||(activePage==="profile"&&tab.id==="home");
+      return <button key={tab.id} onClick={()=>{setActivePage(tab.id);setSelectedUser(null);setSelectedRequest(null);}}
+        aria-label={tab.label} aria-current={isActive?"page":undefined}
+        style={{background:"none",border:"none",color:isActive?"var(--emerald)":"var(--gray-400)",display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",padding:"4px 12px",fontFamily:"var(--font)",position:"relative",minWidth:48,minHeight:44}}>
+        <div style={{position:"relative"}}>
+          {tab.emoji?<span style={{fontSize:20,lineHeight:"22px"}}>{tab.emoji}</span>:<tab.icon size={22}/>}
+          {tab.badge>0&&<span style={{position:"absolute",top:-5,right:-10,background:"var(--red)",color:"#fff",fontSize:9,fontWeight:800,borderRadius:10,minWidth:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",border:"2px solid var(--white)"}}>{tab.badge>9?"9+":tab.badge}</span>}
+        </div>
+        <span style={{fontSize:10,fontWeight:isActive?700:500}}>{tab.label}</span>
+      </button>;
+    })}
+  </nav>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Landing Page (지시서 2-7 온보딩)
+   ═══════════════════════════════════════════════════════════ */
+function LandingPage(){
+  const{handleSignup,handleLogin,showToast,allUsers,persistCurrentUser,setActivePage}=useApp();
+  const[mode,setMode]=useState("landing");
+  const[email,setEmail]=useState("");const[password,setPassword]=useState("");
+  const[name,setName]=useState("");const[company,setCompany]=useState("");
+  const[department,setDepartment]=useState("");const[position,setPosition]=useState("");
+  const[phone,setPhone]=useState("");const[showPassword,setShowPassword]=useState(false);
+  // 인라인 검증 (지시서 1-4)
+  const[errors,setErrors]=useState({});
+
+  const validateField=(field,value)=>{
+    const newErrors={...errors};
+    if(field==="email"&&value&&!value.includes("@"))newErrors.email="올바른 이메일 형식이 아니에요";
+    else delete newErrors.email;
+    if(field==="password"&&value&&value.length<4)newErrors.password="4자 이상 입력해주세요";
+    else delete newErrors.password;
+    if(field==="name"&&value!==undefined&&!value.trim())newErrors.name="이름을 입력해주세요";
+    else delete newErrors.name;
+    setErrors(newErrors);
+  };
+
+  // 원클릭 체험 (지시서 2-7)
+  const handleQuickStart=()=>{
+    const testUser={email:'test@bizconnect.kr',password:'1234',name:'김테스트',company:'BizConnect',companyLogo:'🤝',department:'제품기획',position:'팀장',phone:'010-1234-5678',bio:'BizConnect 제품기획 팀장. 테스트 계정입니다.'};
+    const existing=allUsers.find(u=>u.email===testUser.email);
+    if(existing){persistCurrentUser(existing);showToast(existing.name+"님, 환영합니다!");setActivePage("home");}
+    else{handleSignup(testUser);}
+  };
+
+  if(mode==="landing") return <main style={{height:"100dvh",overflowY:"auto",padding:"0 24px"}}>
+    {/* Hero */}
+    <header className="fi" style={{paddingTop:56,textAlign:"center"}}>
+      <div style={{fontSize:48,marginBottom:8}}>🤝</div>
+      <h1 style={{fontSize:32,fontWeight:900,letterSpacing:-1.5,lineHeight:1.15}}><span style={{color:"var(--emerald)"}}>Biz</span>Connect</h1>
+      <p style={{color:"var(--gray-500)",fontSize:15,marginTop:12,lineHeight:1.7}}>모든 회사의 모든 부서 담당자를<br/><strong style={{color:"var(--navy)"}}>동의 하에</strong> 찾아 연락하는 플랫폼</p>
+    </header>
+
+    {/* How it works */}
+    <section className="fi1" style={{marginTop:36}} aria-label="서비스 소개">
+      <h2 style={{fontSize:12,fontWeight:800,color:"var(--emerald)",letterSpacing:2,marginBottom:16}}>HOW IT WORKS</h2>
+      {[{n:"01",t:"담당자 검색",d:"회사 · 부서 · 직책으로 정확히",ic:"🔍"},
+        {n:"02",t:"명함 전달",d:"목적을 밝히고 내 명함을 먼저",ic:"📤"},
+        {n:"03",t:"상대방 판단",d:"수락 또는 거부는 받는 사람의 권리",ic:"⚖️"},
+        {n:"04",t:"상호 공개",d:"수락 시 연락처 동시에 공개",ic:"✅"},
+      ].map((step,i)=><div key={i} style={{display:"flex",gap:14,alignItems:"center",padding:"14px 0",borderBottom:i<3?"1px solid var(--gray-100)":"none"}}>
+        <div style={{width:44,height:44,borderRadius:12,background:"var(--emerald-bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{step.ic}</div>
+        <div><div style={{display:"flex",alignItems:"baseline",gap:6}}><span style={{fontSize:11,fontWeight:700,color:"var(--emerald)",opacity:.7}}>{step.n}</span><span style={{fontWeight:700,fontSize:14}}>{step.t}</span></div><div style={{fontSize:13,color:"var(--gray-500)",marginTop:2}}>{step.d}</div></div>
+      </div>)}
+    </section>
+
+    {/* Stats */}
+    <section className="fi2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:32}} aria-label="서비스 통계">
+      {[{n:allUsers.length+"+",l:"등록 전문가"},{n:COMPANIES.length,l:"등록 기업"},{n:"100%",l:"동의 기반"},{n:"0건",l:"스팸 연락"}].map((stat,i)=>
+        <div key={i} className="card-sm" style={{textAlign:"center",padding:"16px 12px"}}>
+          <div style={{fontSize:22,fontWeight:900,color:"var(--emerald)"}}>{stat.n}</div>
+          <div style={{fontSize:12,color:"var(--gray-500)",marginTop:4}}>{stat.l}</div>
+        </div>)}
+    </section>
+
+    {/* Sample cards */}
+    <section className="fi3" style={{marginTop:32}} aria-label="등록된 명함 예시">
+      <h2 style={{fontSize:12,fontWeight:800,color:"var(--emerald)",letterSpacing:2,marginBottom:14}}>등록된 명함 예시</h2>
+      {allUsers.filter(u=>u.isSeeded).slice(0,4).map(u=>
+        <div key={u.id} className="card-sm" style={{display:"flex",alignItems:"center",gap:12,marginBottom:8,padding:14}}>
+          <Avatar name={u.name} logo={u.companyLogo} size={40}/>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontWeight:700,fontSize:14}}>{u.name}</span>{u.isVerified&&<Icon.Verified size={12}/>}<span style={{fontSize:12,color:"var(--gray-400)"}}>{u.position}</span></div>
+            <div style={{fontSize:12,color:"var(--gray-500)",marginTop:2}}>{u.company} · {u.department}</div>
+          </div>
+          <span style={{fontSize:10,color:"var(--gray-400)",background:"var(--gray-50)",padding:"3px 8px",borderRadius:6,fontWeight:600}}>🔒 수락 시 공개</span>
+        </div>
+      )}
+      <div style={{textAlign:"center",fontSize:12,color:"var(--gray-400)",marginTop:8}}>총 <strong style={{color:"var(--emerald)"}}>{allUsers.filter(u=>u.isSeeded).length}명</strong> 등록</div>
+    </section>
+
+    {/* CTAs */}
+    <section className="fi4" style={{marginTop:32,display:"flex",flexDirection:"column",gap:12,paddingBottom:40}}>
+      <button className="btn-primary" onClick={handleQuickStart} style={{fontSize:16,padding:"17px 28px"}}>⚡ 바로 체험하기</button>
+      <button className="btn-secondary" onClick={()=>setMode("signup")}>직접 가입하기</button>
+      <button onClick={()=>setMode("login")} style={{background:"none",border:"none",color:"var(--gray-500)",cursor:"pointer",fontSize:14,fontFamily:"var(--font)",padding:"10px 0",minHeight:44}}>이미 계정이 있어요</button>
+      <div style={{textAlign:"center",fontSize:11,color:"var(--gray-400)"}}>🔒 개인정보 암호화 · PIPA/GDPR 준수</div>
+    </section>
+  </main>;
+
+  if(mode==="login") return <main style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32}}>
+    <BackButton onClick={()=>setMode("landing")}/>
+    <div className="fi"><h2 style={{fontSize:26,fontWeight:900,letterSpacing:-1,margin:"0 0 8px"}}>로그인</h2><p style={{color:"var(--gray-500)",fontSize:14,margin:"0 0 32px"}}>계정 정보를 입력해주세요</p></div>
+    <div className="fi1" style={{display:"flex",flexDirection:"column",gap:14}}>
+      <div><input className={"input-field"+(errors.email?" input-error":"")} placeholder="이메일" type="email" value={email} onChange={e=>{setEmail(e.target.value);validateField("email",e.target.value)}} aria-label="이메일"/>{errors.email&&<div className="input-error-text">{errors.email}</div>}</div>
+      <div style={{position:"relative"}}><input className="input-field" placeholder="비밀번호" type={showPassword?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} aria-label="비밀번호" style={{paddingRight:44}}/><button onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?"비밀번호 숨기기":"비밀번호 보기"} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"var(--gray-400)",cursor:"pointer",padding:4,minWidth:44,minHeight:44,display:"flex",alignItems:"center",justifyContent:"center"}}>{showPassword?<Icon.EyeOff size={18}/>:<Icon.Eye size={18}/>}</button></div>
+      <button className="btn-primary" onClick={()=>handleLogin(email,password)} style={{marginTop:4}}>로그인</button>
+    </div>
+    <p style={{textAlign:"center",marginTop:28,fontSize:13,color:"var(--gray-500)"}}>계정이 없으신가요? <span onClick={()=>setMode("signup")} role="button" tabIndex={0} style={{color:"var(--emerald)",cursor:"pointer",fontWeight:700}}>가입하기</span></p>
+  </main>;
+
+  // Signup (지시서 2-7 3단계 온보딩은 향후 개선, 현재는 단일 폼)
+  return <main style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32,paddingBottom:40}}>
+    <BackButton onClick={()=>setMode("landing")}/>
+    <div className="fi"><h2 style={{fontSize:26,fontWeight:900,letterSpacing:-1,margin:"0 0 6px"}}>회원가입</h2><p style={{color:"var(--gray-500)",fontSize:14,margin:"0 0 24px"}}>60초면 시작할 수 있어요</p></div>
+    <div className="fi1" style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div><input className={"input-field"+(errors.email?" input-error":"")} placeholder="이메일 *" type="email" value={email} onChange={e=>{setEmail(e.target.value);validateField("email",e.target.value)}} aria-label="이메일 (필수)"/>{errors.email&&<div className="input-error-text">{errors.email}</div>}</div>
+      <div style={{position:"relative"}}><input className={"input-field"+(errors.password?" input-error":"")} placeholder="비밀번호 *" type={showPassword?"text":"password"} value={password} onChange={e=>{setPassword(e.target.value);validateField("password",e.target.value)}} aria-label="비밀번호 (필수)" style={{paddingRight:44}}/>{errors.password&&<div className="input-error-text">{errors.password}</div>}<button onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?"비밀번호 숨기기":"비밀번호 보기"} style={{position:"absolute",right:12,top:14,background:"none",border:"none",color:"var(--gray-400)",cursor:"pointer",padding:4}}>{showPassword?<Icon.EyeOff size={18}/>:<Icon.Eye size={18}/>}</button></div>
+      <div><input className={"input-field"+(errors.name?" input-error":"")} placeholder="이름 (실명) *" value={name} onChange={e=>{setName(e.target.value);validateField("name",e.target.value)}} aria-label="이름 (필수)"/>{errors.name&&<div className="input-error-text">{errors.name}</div>}</div>
+      <input className="input-field" placeholder="회사명 *" value={company} onChange={e=>setCompany(e.target.value)} aria-label="회사명 (필수)"/>
+      <div style={{display:"flex",gap:10}}>
+        <select className="input-field" value={department} onChange={e=>setDepartment(e.target.value)} aria-label="부서" style={{flex:1}}><option value="">부서</option>{DEPARTMENTS.map(d=><option key={d} value={d}>{d}</option>)}</select>
+        <select className="input-field" value={position} onChange={e=>setPosition(e.target.value)} aria-label="직책" style={{flex:1}}><option value="">직책</option>{POSITIONS.map(p=><option key={p} value={p}>{p}</option>)}</select>
+      </div>
+      <input className="input-field" placeholder="전화번호 (010-0000-0000)" value={phone} onChange={e=>setPhone(e.target.value)} aria-label="전화번호"/>
+      <button className="btn-primary" onClick={()=>{
+        if(!email||!password||!name||!company){showToast("필수 항목(*)을 입력해주세요.","error");return;}
+        if(password.length<4){showToast("비밀번호 4자 이상 입력해주세요.","error");return;}
+        handleSignup({email,password,name,company,companyLogo:company[0],department,position,phone,bio:`${company} ${department||""} ${position||""}`});
+      }} style={{marginTop:4}}>가입 완료</button>
+    </div>
+    <p style={{textAlign:"center",marginTop:24,fontSize:13,color:"var(--gray-500)"}}>이미 계정이 있으신가요? <span onClick={()=>setMode("login")} role="button" tabIndex={0} style={{color:"var(--emerald)",cursor:"pointer",fontWeight:700}}>로그인</span></p>
+    <p style={{textAlign:"center",fontSize:11,color:"var(--gray-400)",marginTop:8}}>가입 시 이용약관 및 개인정보처리방침에 동의합니다.</p>
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Home / Search Page (지시서 2-2 검색 UX)
+   핵심: 회사 검색 → 부서별 담당자 그룹 표시
+   ═══════════════════════════════════════════════════════════ */
+function HomePage(){
+  const{currentUser,allUsers,setActivePage,setSelectedUser,recentSearches,addRecentSearch}=useApp();
+  const[query,setQuery]=useState("");
+  const[results,setResults]=useState([]);
+  const[hasSearched,setHasSearched]=useState(false);
+  const[industryFilter,setIndustryFilter]=useState("");
+  const[showFilters,setShowFilters]=useState(false);
+  const[showSuggestions,setShowSuggestions]=useState(false);
+  const inputRef=useRef(null);
+
+  const industries=useMemo(()=>[...new Set(allUsers.map(u=>u.industry).filter(Boolean))],[allUsers]);
+  // Company directory for grid (지시서 2-2)
+  const companyDirectory=useMemo(()=>{
+    const map={};
+    allUsers.filter(u=>u.isSeeded&&u.isSearchable).forEach(u=>{
+      if(!map[u.company])map[u.company]={name:u.company,logo:u.companyLogo,industry:u.industry,count:0,verified:u.isVerified};
+      map[u.company].count++;
+    });
+    return Object.values(map).sort((a,b)=>b.count-a.count);
+  },[allUsers]);
+
+  // Search with chosung support (지시서 2-2)
+  const performSearch=(searchQuery)=>{
+    const term=(searchQuery||query).trim();
+    if(!term){setHasSearched(false);setResults([]);return;}
+    const lower=term.toLowerCase();
+    setHasSearched(true);
+    addRecentSearch(term);
+    const filtered=allUsers.filter(u=>{
+      if(u.id===currentUser?.id||!u.isSearchable)return false;
+      if(industryFilter&&u.industry!==industryFilter)return false;
+      // Regular text match
+      const textMatch=u.name.includes(lower)||u.company.toLowerCase().includes(lower)||u.department.includes(lower)||u.position.includes(lower)||(u.industry&&u.industry.toLowerCase().includes(lower));
+      // Chosung match (ㅅㅈ → 삼성전자)
+      const chosungMatch=matchesChosung(u.company,term)||matchesChosung(u.name,term);
+      return textMatch||chosungMatch;
+    });
+    setResults(filtered);
+    setShowSuggestions(false);
+  };
+
+  // Group results by Company > Department (지시서 2-2)
+  const groupedResults=useMemo(()=>{
+    const map={};
+    results.forEach(u=>{
+      if(!map[u.company])map[u.company]={name:u.company,logo:u.companyLogo,industry:u.industry,departments:{}};
+      if(!map[u.company].departments[u.department])map[u.company].departments[u.department]=[];
+      map[u.company].departments[u.department].push(u);
+    });
+    return Object.values(map);
+  },[results]);
+
+  // Autocomplete suggestions (지시서 2-2)
+  const suggestions=useMemo(()=>{
+    if(!query.trim()||query.length<1)return[];
+    const lower=query.toLowerCase();
+    const companyMatches=companyDirectory.filter(c=>c.name.toLowerCase().includes(lower)||matchesChosung(c.name,query)).slice(0,4);
+    return companyMatches;
+  },[query,companyDirectory]);
+
+  return <main style={{padding:"0 20px",paddingTop:20}} role="main">
+    {/* Header */}
+    <header className="fi" style={{textAlign:"center",marginBottom:24}}>
+      <p style={{fontSize:13,color:"var(--gray-400)",marginBottom:6}}>동의 기반 비즈니스 연락처</p>
+      <h1 style={{fontSize:24,fontWeight:900,letterSpacing:-.8}}>어떤 회사든 <span style={{color:"var(--emerald)"}}>검색</span>하세요</h1>
+      <p style={{fontSize:13,color:"var(--gray-400)",marginTop:6}}>등록된 <strong style={{color:"var(--gray-600)"}}>{allUsers.filter(u=>u.isSeeded).length}명</strong>의 담당자</p>
+    </header>
+
+    {/* Search Bar */}
+    <div className="fi1" style={{display:"flex",gap:8,marginBottom:16,position:"relative"}}>
+      <div style={{flex:1,display:"flex",alignItems:"center",gap:10,background:"var(--white)",borderRadius:"var(--radius)",padding:"13px 16px",border:"1.5px solid var(--gray-200)",transition:"border-color .15s",boxShadow:"var(--shadow-sm)"}} onFocus={()=>setShowSuggestions(true)}>
+        <Icon.Search size={18} style={{color:"var(--gray-400)",flexShrink:0}}/>
+        <input ref={inputRef} value={query} onChange={e=>{setQuery(e.target.value);setShowSuggestions(true)}} onKeyDown={e=>{if(e.key==="Enter"){performSearch();setShowSuggestions(false);}}}
+          onFocus={()=>setShowSuggestions(true)}
+          placeholder="회사명, 부서, 이름 (초성 ㅅㅈ 가능)" aria-label="담당자 검색"
+          style={{background:"none",border:"none",color:"var(--navy)",fontSize:15,outline:"none",flex:1,fontFamily:"var(--font)"}}/>
+        {query&&<button onClick={()=>{setQuery("");setHasSearched(false);setResults([]);setShowSuggestions(false)}} aria-label="검색어 지우기" style={{background:"none",border:"none",color:"var(--gray-400)",cursor:"pointer",padding:4,minWidth:32,minHeight:32,display:"flex",alignItems:"center",justifyContent:"center"}}><Icon.Close size={16}/></button>}
+      </div>
+      <button onClick={()=>setShowFilters(!showFilters)} aria-label="검색 필터" style={{background:showFilters?"var(--emerald-bg)":"var(--white)",border:"1.5px solid "+(showFilters?"var(--emerald-border)":"var(--gray-200)"),borderRadius:"var(--radius)",width:48,minHeight:48,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:showFilters?"var(--emerald)":"var(--gray-400)"}}><Icon.Filter/></button>
+
+      {/* Suggestions Dropdown (지시서 2-2 자동완성 + 최근 검색) */}
+      {showSuggestions&&!hasSearched&&<div style={{position:"absolute",top:"100%",left:0,right:56,marginTop:4,background:"var(--white)",borderRadius:"var(--radius)",boxShadow:"var(--shadow-lg)",zIndex:50,overflow:"hidden",border:"1px solid var(--gray-200)"}}>
+        {suggestions.length>0&&<div style={{padding:"8px 0"}}>{suggestions.map(c=><button key={c.name} onClick={()=>{setQuery(c.name);performSearch(c.name);setShowSuggestions(false);}} style={{width:"100%",display:"flex",alignItems:"center",gap:10,padding:"10px 16px",border:"none",background:"none",cursor:"pointer",fontFamily:"var(--font)",textAlign:"left",minHeight:44}} onMouseEnter={e=>{e.currentTarget.style.background="var(--gray-50)"}} onMouseLeave={e=>{e.currentTarget.style.background="none"}}>
+          <span style={{fontSize:16}}>{c.logo}</span><span style={{fontWeight:600,fontSize:14}}>{c.name}</span><span style={{fontSize:12,color:"var(--gray-400)",marginLeft:"auto"}}>{c.count}명</span>
+        </button>)}</div>}
+        {!query&&recentSearches.length>0&&<div style={{padding:"8px 0"}}><div style={{padding:"4px 16px 8px",fontSize:11,fontWeight:700,color:"var(--gray-400)"}}>최근 검색</div>{recentSearches.map(s=><button key={s} onClick={()=>{setQuery(s);performSearch(s);setShowSuggestions(false);}} style={{width:"100%",display:"flex",alignItems:"center",gap:8,padding:"10px 16px",border:"none",background:"none",cursor:"pointer",fontFamily:"var(--font)",textAlign:"left",fontSize:14,color:"var(--gray-600)",minHeight:44}}>
+          <Icon.Clock size={14} style={{color:"var(--gray-400)"}}/>{s}
+        </button>)}</div>}
+        {!query&&recentSearches.length===0&&suggestions.length===0&&null}
+      </div>}
+    </div>
+
+    {/* Industry Filters */}
+    {showFilters&&<div className="fi" style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:"var(--gray-500)",marginBottom:8}}>산업 필터</div><div style={{display:"flex",flexWrap:"wrap",gap:6}}><button onClick={()=>setIndustryFilter("")} className={!industryFilter?"btn-primary":"btn-secondary"} style={{padding:"6px 14px",fontSize:12,minHeight:36}}>전체</button>{industries.map(ind=><button key={ind} onClick={()=>setIndustryFilter(ind===industryFilter?"":ind)} className={industryFilter===ind?"btn-primary":"btn-secondary"} style={{padding:"6px 14px",fontSize:12,minHeight:36}}>{ind}</button>)}</div></div>}
+
+    {/* Before search: Company Directory Grid */}
+    {!hasSearched&&<section aria-label="등록 기업 디렉토리">
+      <div className="fi2" style={{marginBottom:24}}>
+        <h2 style={{fontSize:12,fontWeight:700,color:"var(--gray-400)",letterSpacing:1,marginBottom:12}}>등록 기업 디렉토리</h2>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
+          {companyDirectory.map(company=><button key={company.name} onClick={()=>{setQuery(company.name);performSearch(company.name);setShowSuggestions(false);}}
+            className="card-sm" style={{textAlign:"left",cursor:"pointer",padding:14,border:"none",width:"100%",fontFamily:"var(--font)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+              <span style={{fontSize:18}}>{company.logo}</span>
+              <span style={{fontWeight:700,fontSize:14,flex:1,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{company.name}</span>
+            </div>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <span style={{fontSize:11,color:"var(--gray-400)"}}>{company.industry}</span>
+              <span style={{fontSize:12,color:"var(--emerald)",fontWeight:700}}>{company.count}명</span>
+            </div>
+          </button>)}
+        </div>
+      </div>
+      <div className="fi3 card-sm" style={{textAlign:"center",padding:16}}>
+        <p style={{fontSize:13,color:"var(--gray-500)"}}>💡 회사명을 검색하면 <strong style={{color:"var(--navy)"}}>부서별 담당자</strong>를 한눈에 볼 수 있어요</p>
+      </div>
+    </section>}
+
+    {/* Search Results: Grouped by Company > Department */}
+    {hasSearched&&<section aria-label="검색 결과">
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+        <h2 style={{fontSize:16,fontWeight:800}}>검색 결과 <span style={{color:"var(--emerald)"}}>{results.length}명</span></h2>
+        <button onClick={()=>{setHasSearched(false);setQuery("");setResults([]);setIndustryFilter("")}} style={{background:"none",border:"none",color:"var(--gray-500)",cursor:"pointer",fontSize:13,fontFamily:"var(--font)",minHeight:44}}>초기화</button>
+      </div>
+      {results.length===0?<EmptyState icon="🔍" title="검색 결과가 없어요" description="다른 회사명이나 부서, 직책으로 검색해보세요. 초성 검색(ㅅㅈ)도 가능합니다." actionLabel="기업 디렉토리 보기" onAction={()=>{setHasSearched(false);setQuery("")}}/>
+      :<div style={{display:"flex",flexDirection:"column",gap:16}}>
+        {groupedResults.map(company=><article key={company.name} className="fi">
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+            <span style={{fontSize:18}}>{company.logo}</span>
+            <h3 style={{fontWeight:800,fontSize:16}}>{company.name}</h3>
+            <span style={{fontSize:11,color:"var(--gray-400)"}}>{company.industry}</span>
+          </div>
+          {Object.entries(company.departments).map(([deptName,users])=><div key={deptName} style={{marginBottom:12}}>
+            <div style={{display:"flex",alignItems:"center",gap:4,fontSize:12,fontWeight:700,color:"var(--emerald)",marginBottom:6,paddingLeft:4}}>
+              <Icon.Folder size={14}/> {deptName}
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:6}}>
+              {users.map(user=><UserCard key={user.id} user={user} onClick={()=>{setSelectedUser(user);setActivePage("profile");}}/>)}
+            </div>
+          </div>)}
+        </article>)}
+      </div>}
+    </section>}
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Profile Detail (지시서 2-3 신뢰 지표 + 2-6 소개 체인)
+   ═══════════════════════════════════════════════════════════ */
+function ProfilePage(){
+  const{currentUser,selectedUser,setSelectedUser,setActivePage,sendContactRequest,requests,myContacts,showToast,contacts,getUserById,sendIntroRequest,signals}=useApp();
+  const[showRequestModal,setShowRequestModal]=useState(false);
+  const[purpose,setPurpose]=useState("");const[message,setMessage]=useState("");
+  const[introTarget,setIntroTarget]=useState(null);const[introMessage,setIntroMessage]=useState("");
+
+  const user=selectedUser;if(!user)return null;
+  const isConnected=myContacts.some(c=>c.contactUserId===user.id);
+  const isPending=requests.some(r=>r.fromUserId===currentUser.id&&r.toUserId===user.id&&r.status==="PENDING");
+  const isSelf=user.id===currentUser.id;
+  // 2촌 연결 (소개 가능)
+  const secondDegreeContacts=isConnected?contacts.filter(c=>c.userId===user.id).map(c=>getUserById(c.contactUserId)).filter(x=>x&&x.id!==currentUser.id&&!myContacts.some(mc=>mc.contactUserId===x.id)):[];
+  const userSignals=signals.filter(s=>s.userId===user.id&&s.isActive);
+  // 공통점 표시 (지시서 2-3)
+  const commonPoints=[];
+  if(user.industry===currentUser.industry)commonPoints.push("같은 업종");
+  const mutualCount=myContacts.filter(mc=>{return contacts.some(c=>c.userId===user.id&&c.contactUserId===mc.contactUserId)}).length;
+  if(mutualCount>0)commonPoints.push(`공통 연결 ${mutualCount}명`);
+
+  return <main style={{padding:"0 20px",paddingTop:16}}>
+    <BackButton onClick={()=>{setSelectedUser(null);setActivePage("home");}}/>
+
+    {/* Profile Card */}
+    <article className="card fi" style={{textAlign:"center",padding:28}}>
+      <Avatar name={user.name} logo={user.companyLogo} size={72} style={{margin:"0 auto 16px",border:"3px solid var(--emerald-border)"}}/>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
+        <h2 style={{fontSize:22,fontWeight:900}}>{user.name}</h2>
+        {user.isVerified&&<Icon.Verified size={16}/>}
+      </div>
+      <p style={{fontSize:14,color:"var(--gray-500)",marginTop:4}}>{user.position}</p>
+      <p style={{fontSize:14,color:"var(--gray-500)",marginTop:2}}>{user.company} · {user.department}</p>
+      {user.industry&&<span className="badge" style={{background:"var(--emerald-bg)",color:"var(--emerald)",marginTop:10}}>🏢 {user.industry}</span>}
+
+      {/* 신뢰 지표 (지시서 2-3) */}
+      <div style={{display:"flex",justifyContent:"center",gap:16,marginTop:16,padding:"12px 0",borderTop:"1px solid var(--gray-100)",borderBottom:"1px solid var(--gray-100)"}}>
+        <div style={{textAlign:"center"}}><div style={{fontSize:11,color:"var(--gray-400)"}}>가입일</div><div style={{fontSize:13,fontWeight:700,marginTop:2}}>{new Date(user.joinedAt).toLocaleDateString("ko-KR",{year:"2-digit",month:"short"})}</div></div>
+        <div style={{textAlign:"center"}}><div style={{fontSize:11,color:"var(--gray-400)"}}>응답률</div><div style={{fontSize:13,fontWeight:700,marginTop:2,color:"var(--emerald)"}}>{user.responseRate||80}%</div></div>
+        <div style={{textAlign:"center"}}><div style={{fontSize:11,color:"var(--gray-400)"}}>최근 활동</div><div style={{fontSize:13,fontWeight:700,marginTop:2}}>{formatTimeAgo(user.lastActive||user.joinedAt)}</div></div>
+      </div>
+
+      {/* 공통점 (지시서 2-3) */}
+      {commonPoints.length>0&&<div style={{display:"flex",justifyContent:"center",gap:6,marginTop:12,flexWrap:"wrap"}}>{commonPoints.map(cp=><span key={cp} className="badge" style={{background:"var(--blue-bg)",color:"var(--blue)"}}>{cp}</span>)}</div>}
+
+      {user.bio&&<p style={{fontSize:13,color:"var(--gray-500)",marginTop:14,lineHeight:1.7}}>{user.bio}</p>}
+
+      {/* Phone display */}
+      <div style={{marginTop:18,padding:"14px 18px",borderRadius:"var(--radius)",background:isConnected?"var(--emerald-bg)":"var(--gray-50)",border:"1px solid "+(isConnected?"var(--emerald-border)":"var(--gray-200)")}}>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"center",gap:8}}>
+          <Icon.Phone size={18} style={{color:isConnected?"var(--emerald)":"var(--gray-400)"}}/>
+          <span style={{fontSize:17,fontWeight:800,letterSpacing:1,color:isConnected?"var(--navy)":"var(--gray-400)"}}>{isConnected?user.phone:maskPhoneNumber(user.phone)}</span>
+        </div>
+        {isConnected&&<div style={{fontSize:11,color:"var(--emerald)",marginTop:6,fontWeight:700}}>✅ 연결됨 — 연락처 공개</div>}
+        {!isConnected&&!isSelf&&<div style={{fontSize:11,color:"var(--gray-400)",marginTop:6}}>🔒 상대방 수락 시 공개</div>}
+      </div>
+    </article>
+
+    {/* Action Buttons */}
+    {!isSelf&&!isConnected&&!isPending&&<button className="btn-primary fi1" onClick={()=>setShowRequestModal(true)} style={{width:"100%",marginTop:16,fontSize:16}}><Icon.Send size={18}/> 연락처 요청하기</button>}
+    {isPending&&<div className="fi1" style={{marginTop:16,textAlign:"center",padding:16,borderRadius:"var(--radius)",background:"var(--orange-bg)",color:"var(--orange)",fontWeight:700,fontSize:14}}>⏳ 응답 대기 중</div>}
+    {isConnected&&<div className="fi1" style={{display:"flex",gap:10,marginTop:16}}>
+      <a href={"tel:"+user.phone?.replace(/-/g,"")} className="btn-primary" style={{flex:1,fontSize:14,textDecoration:"none"}}><Icon.Phone size={16}/> 전화</a>
+      <a href={"sms:"+user.phone?.replace(/-/g,"")} className="btn-secondary" style={{flex:1,display:"flex",alignItems:"center",justifyContent:"center",gap:6,fontSize:14,textDecoration:"none"}}><Icon.Message size={16}/> 메시지</a>
+    </div>}
+
+    {/* 구매 신호 표시 */}
+    {userSignals.length>0&&<section className="fi2" style={{marginTop:20}}>
+      <h3 style={{fontSize:12,fontWeight:700,color:"var(--orange)",marginBottom:10}}>🔥 지금 찾고 있어요</h3>
+      {userSignals.map(sig=><div key={sig.id} className="card-sm" style={{marginBottom:8,borderLeft:"3px solid var(--orange)"}}>
+        <div style={{fontSize:13,fontWeight:700,color:"var(--orange)"}}>{sig.category}</div>
+        <div style={{fontSize:12,color:"var(--gray-500)",marginTop:4,lineHeight:1.5}}>{sig.description}</div>
+        <div style={{fontSize:10,color:"var(--gray-400)",marginTop:6}}>{formatTimeAgo(sig.createdAt)}</div>
+      </div>)}
+    </section>}
+
+    {/* 소개 체인 — 2촌 연결 (지시서 2-6) */}
+    {isConnected&&secondDegreeContacts.length>0&&<section className="fi2" style={{marginTop:20}}>
+      <h3 style={{fontSize:12,fontWeight:700,color:"var(--purple)",marginBottom:10}}>🤝 {user.name}님을 통해 소개 가능</h3>
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        {secondDegreeContacts.slice(0,5).map(contact=><div key={contact.id} className="card-sm" style={{display:"flex",alignItems:"center",gap:12}}>
+          <Avatar name={contact.name} logo={contact.companyLogo} size={40}/>
+          <div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:14}}>{contact.name}</div><div style={{fontSize:12,color:"var(--gray-500)"}}>{contact.company} · {contact.department}</div></div>
+          <button onClick={()=>{setIntroTarget(contact);setIntroMessage("")}} className="btn-secondary" style={{padding:"8px 12px",fontSize:11,fontWeight:700,minHeight:36,color:"var(--purple)"}}>소개 요청</button>
+        </div>)}
+      </div>
+      <p style={{fontSize:11,color:"var(--gray-400)",marginTop:8}}>💡 소개를 통하면 수락률이 2~3배 높아져요</p>
+    </section>}
+
+    {/* Request Modal */}
+    {showRequestModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowRequestModal(false)}>
+      <div role="dialog" aria-label="연락처 요청" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .25s ease"}}>
+        <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
+        <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 4px"}}>연락처 요청</h3>
+        <p style={{fontSize:13,color:"var(--gray-500)",margin:"0 0 22px"}}>{user.name}님({user.company})에게 명함을 전달합니다</p>
+
+        <h4 style={{fontSize:13,fontWeight:700,marginBottom:10}}>요청 목적 *</h4>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:20}}>
+          {PURPOSE_OPTIONS.map(p=><button key={p.id} onClick={()=>setPurpose(p.id)} style={{background:purpose===p.id?p.bgColor:"var(--gray-50)",color:purpose===p.id?p.color:"var(--gray-500)",border:"1.5px solid "+(purpose===p.id?"transparent":"var(--gray-200)"),borderRadius:"var(--radius-sm)",padding:"10px 14px",fontSize:13,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:5,fontFamily:"var(--font)",minHeight:44,transition:"all .15s"}}>{p.icon} {p.label}</button>)}
+        </div>
+
+        <h4 style={{fontSize:13,fontWeight:700,marginBottom:10}}>한줄 메시지 <span style={{fontWeight:400,color:"var(--gray-400)"}}>선택</span></h4>
+        <textarea className="input-field" value={message} onChange={e=>setMessage(e.target.value.slice(0,100))} placeholder={`안녕하세요, ${currentUser.company} ${currentUser.department}의 ${currentUser.name}입니다.`} style={{height:80,resize:"none",marginBottom:4}} aria-label="요청 메시지"/>
+        <div style={{fontSize:11,color:"var(--gray-400)",textAlign:"right",marginBottom:18}}>{message.length}/100</div>
+
+        {/* Preview (지시서 2-3) */}
+        <div className="card-sm" style={{marginBottom:22,border:"1px solid var(--gray-200)"}}>
+          <div style={{fontSize:11,fontWeight:700,color:"var(--gray-400)",marginBottom:10}}>📱 상대방에게 이렇게 보여요</div>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}><Avatar name={currentUser.name} logo={currentUser.companyLogo} size={36}/><div><div style={{fontSize:14,fontWeight:700}}>{currentUser.name}</div><div style={{fontSize:12,color:"var(--gray-500)"}}>{currentUser.company} {currentUser.department}</div></div></div>
+          {purpose&&<PurposeBadge purposeId={purpose}/>}
+          {message&&<div style={{fontSize:13,marginTop:8,fontStyle:"italic",color:"var(--gray-600)"}}>"{message}"</div>}
+        </div>
+
+        <button className="btn-primary" onClick={()=>{if(!purpose){showToast("요청 목적을 선택해주세요.","error");return;}sendContactRequest(user.id,purpose,message);setShowRequestModal(false);}} style={{width:"100%",fontSize:16}}><Icon.Send size={18}/> 요청 보내기</button>
+      </div>
+    </div>}
+
+    {/* Intro Modal */}
+    {introTarget&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setIntroTarget(null)}>
+      <div role="dialog" aria-label="소개 요청" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .25s ease"}}>
+        <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
+        <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 6px"}}>🤝 소개 요청</h3>
+        <p style={{fontSize:13,color:"var(--gray-500)",margin:"0 0 20px"}}>{user.name}님을 통해 {introTarget.name}님을 소개받습니다</p>
+        <div className="card-sm" style={{marginBottom:16,border:"1px solid var(--gray-200)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+            <Avatar name={currentUser.name} logo={currentUser.companyLogo} size={30}/><span style={{fontSize:12,fontWeight:600}}>나</span>
+            <span style={{color:"var(--purple)",fontSize:14}}>→</span>
+            <Avatar name={user.name} logo={user.companyLogo} size={30}/><span style={{fontSize:12,fontWeight:600,color:"var(--gray-500)"}}>{user.name}</span>
+            <span style={{color:"var(--purple)",fontSize:14}}>→</span>
+            <Avatar name={introTarget.name} logo={introTarget.companyLogo} size={30}/><span style={{fontSize:12,fontWeight:600}}>{introTarget.name}</span>
+          </div>
+        </div>
+        <h4 style={{fontSize:13,fontWeight:700,marginBottom:10}}>소개 이유</h4>
+        <textarea className="input-field" value={introMessage} onChange={e=>setIntroMessage(e.target.value.slice(0,100))} placeholder="ex) B2B 파트너십 논의를 위해 소개 부탁드립니다" style={{height:70,resize:"none",marginBottom:16}} aria-label="소개 이유"/>
+        <button className="btn-primary" onClick={()=>{if(!introMessage.trim()){showToast("소개 이유를 입력해주세요.","error");return;}sendIntroRequest(user.id,introTarget.id,introMessage);setIntroTarget(null);}} style={{width:"100%",background:"var(--purple)"}}>🤝 소개 요청 보내기</button>
+      </div>
+    </div>}
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Signals Page (지시서 2-5 구매 인텐트)
+   ═══════════════════════════════════════════════════════════ */
+function SignalsPage(){
+  const{currentUser,allUsers,signals,addBuyingSignal,removeBuyingSignal,getUserById,setSelectedUser,setActivePage,showToast}=useApp();
+  const[showNewModal,setShowNewModal]=useState(false);
+  const[category,setCategory]=useState("");const[description,setDescription]=useState("");
+  const mySignals=signals.filter(s=>s.userId===currentUser?.id);
+  const otherSignals=signals.filter(s=>s.userId!==currentUser?.id&&s.isActive);
+
+  return <main style={{padding:"0 20px",paddingTop:16}}>
+    <div className="fi" style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+      <h2 style={{fontSize:22,fontWeight:900}}>🔥 구매 신호</h2>
+      <button className="btn-primary" onClick={()=>setShowNewModal(true)} style={{padding:"8px 16px",fontSize:13,minHeight:40}}>+ 등록</button>
+    </div>
+
+    <div className="fi1 card-sm" style={{background:"var(--orange-bg)",border:"1px solid rgba(245,158,11,.15)",marginBottom:20}}>
+      <p style={{fontSize:13,color:"var(--orange)",fontWeight:600,lineHeight:1.6}}>💡 "지금 이런 업체를 찾고 있어요"를 알리면 관련 담당자가 먼저 연락해요. 구매 수락률 <strong>80~95%</strong></p>
+    </div>
+
+    {/* My Signals */}
+    {mySignals.length>0&&<section className="fi1" style={{marginBottom:24}} aria-label="내가 올린 신호">
+      <h3 style={{fontSize:12,fontWeight:700,color:"var(--gray-400)",letterSpacing:1,marginBottom:10}}>내가 올린 신호</h3>
+      {mySignals.map(sig=><div key={sig.id} className="card-sm" style={{marginBottom:8,display:"flex",alignItems:"flex-start",gap:12,borderLeft:"3px solid var(--orange)"}}>
+        <div style={{flex:1}}><span className="badge" style={{background:"var(--orange-bg)",color:"var(--orange)",marginBottom:6}}>🔥 {sig.category}</span><div style={{fontSize:13,lineHeight:1.5,marginTop:4}}>{sig.description}</div><div style={{fontSize:10,color:"var(--gray-400)",marginTop:4}}>{formatTimeAgo(sig.createdAt)}</div></div>
+        <button onClick={()=>removeBuyingSignal(sig.id)} aria-label="신호 삭제" style={{background:"none",border:"none",color:"var(--gray-400)",cursor:"pointer",fontSize:12,fontFamily:"var(--font)",minWidth:44,minHeight:44,display:"flex",alignItems:"center",justifyContent:"center"}}>삭제</button>
+      </div>)}
+    </section>}
+
+    {/* Other Signals */}
+    <section className="fi2" aria-label="구매 신호 목록">
+      <h3 style={{fontSize:12,fontWeight:700,color:"var(--gray-400)",letterSpacing:1,marginBottom:10}}>지금 업체를 찾고 있는 분들</h3>
+      {otherSignals.length===0?<EmptyState icon="📢" title="아직 등록된 신호가 없어요" description="구매 신호를 등록하면 관련 영업 담당자가 먼저 연락해요"/>
+      :otherSignals.map(sig=>{const owner=getUserById(sig.userId);if(!owner)return null;return<div key={sig.id} className="card" onClick={()=>{setSelectedUser(owner);setActivePage("profile");}} role="button" tabIndex={0} style={{marginBottom:8,cursor:"pointer",padding:16}}>
+        <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+          <Avatar name={owner.name} logo={owner.companyLogo} size={36}/>
+          <div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{owner.name}</div><div style={{fontSize:11,color:"var(--gray-500)"}}>{owner.company} · {owner.department}</div></div>
+          <span style={{fontSize:10,color:"var(--gray-400)"}}>{formatTimeAgo(sig.createdAt)}</span>
+        </div>
+        <span className="badge" style={{background:"var(--orange-bg)",color:"var(--orange)",marginBottom:6}}>🔥 {sig.category}</span>
+        <div style={{fontSize:13,lineHeight:1.5,marginTop:4}}>{sig.description}</div>
+        <div style={{fontSize:11,color:"var(--emerald)",marginTop:8,fontWeight:600}}>→ 프로필 보기 · 연락처 요청</div>
+      </div>})}
+    </section>
+
+    {/* New Signal Modal (지시서 2-5) */}
+    {showNewModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowNewModal(false)}>
+      <div role="dialog" aria-label="구매 신호 등록" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .25s ease"}}>
+        <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
+        <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 6px"}}>🔥 구매 신호 등록</h3>
+        <p style={{fontSize:13,color:"var(--gray-500)",margin:"0 0 22px"}}>"지금 이런 업체를 찾고 있어요"를 알리세요. 30일 후 자동 만료됩니다.</p>
+        <h4 style={{fontSize:13,fontWeight:700,marginBottom:10}}>어떤 분야? *</h4>
+        <div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:18}}>{SIGNAL_CATEGORIES.map(cat=><button key={cat} onClick={()=>setCategory(cat)} style={{background:category===cat?"var(--orange-bg)":"var(--gray-50)",color:category===cat?"var(--orange)":"var(--gray-500)",border:"1.5px solid "+(category===cat?"transparent":"var(--gray-200)"),borderRadius:"var(--radius-sm)",padding:"8px 14px",fontSize:13,fontWeight:600,cursor:"pointer",fontFamily:"var(--font)",minHeight:40}}>{cat}</button>)}</div>
+        <h4 style={{fontSize:13,fontWeight:700,marginBottom:10}}>구체적으로 *</h4>
+        <textarea className="input-field" value={description} onChange={e=>setDescription(e.target.value.slice(0,150))} placeholder="예) 친환경 포장재 공급업체. 월 500박스 규모, 단가 경쟁력 필요" style={{height:80,resize:"none",marginBottom:4}} aria-label="구매 신호 상세 설명"/>
+        <div style={{fontSize:11,color:"var(--gray-400)",textAlign:"right",marginBottom:18}}>{description.length}/150</div>
+        <button className="btn-primary" onClick={()=>{if(!category||!description){showToast("분야와 상세 내용을 입력해주세요.","error");return;}addBuyingSignal(category,description);setShowNewModal(false);setCategory("");setDescription("");}} style={{width:"100%",fontSize:15,background:"var(--orange)"}}>🔥 신호 등록하기</button>
+      </div>
+    </div>}
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Inbox (지시서 2-4 연락처 관리, 2-8 알림)
+   ═══════════════════════════════════════════════════════════ */
+function InboxPage(){
+  const{currentUser,myReceivedRequests,mySentRequests,getUserById,setSelectedUser,setActivePage,setSelectedRequest,selectedRequest,respondToRequest}=useApp();
+  const[tab,setTab]=useState("received");
+  const pendingReceived=myReceivedRequests.filter(r=>r.status==="PENDING");
+  const processedReceived=myReceivedRequests.filter(r=>r.status!=="PENDING");
+  const items=tab==="received"?[...pendingReceived,...processedReceived]:mySentRequests.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+
+  const RequestCard=({request,isSent})=>{
+    const otherUser=getUserById(isSent?request.toUserId:request.fromUserId);if(!otherUser)return null;
+    const isPending=request.status==="PENDING";
+    return <div className="card fi" onClick={()=>{if(!isSent&&isPending)setSelectedRequest(request);else{setSelectedUser(otherUser);setActivePage("profile");}}} role="button" tabIndex={0} aria-label={`${otherUser.name}님의 연락처 요청`}
+      style={{marginBottom:8,cursor:"pointer",padding:16,borderLeft:isPending?"3px solid var(--emerald)":"none"}}>
+      <div style={{display:"flex",alignItems:"center",gap:12}}>
+        <Avatar name={otherUser.name} logo={otherUser.companyLogo} size={44}/>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap",marginBottom:3}}>
+            <span style={{fontWeight:700,fontSize:14}}>{otherUser.name}</span>
+            <PurposeBadge purposeId={request.purpose} isSmall/>
+            {request.isIntro&&<span className="badge" style={{background:"var(--purple-bg)",color:"var(--purple)"}}>소개</span>}
+          </div>
+          <div style={{fontSize:12,color:"var(--gray-500)"}}>{otherUser.company} · {otherUser.department}</div>
+          {request.message&&<div style={{fontSize:12,color:"var(--gray-400)",marginTop:3,fontStyle:"italic",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>"{request.message}"</div>}
+        </div>
+        <div style={{textAlign:"right",flexShrink:0}}>
+          <span className="badge" style={{background:isPending?"var(--orange-bg)":request.status==="ACCEPTED"?"var(--emerald-bg)":"var(--red-bg)",color:isPending?"var(--orange)":request.status==="ACCEPTED"?"var(--emerald)":"var(--red)"}}>{isPending?"대기중":request.status==="ACCEPTED"?"승인":"거부"}</span>
+          <div style={{fontSize:10,color:"var(--gray-400)",marginTop:4}}>{formatTimeAgo(request.createdAt)}</div>
+        </div>
+      </div>
+    </div>;
+  };
+
+  return <main style={{padding:"0 20px",paddingTop:16}}>
+    <h2 className="fi" style={{fontSize:22,fontWeight:900,margin:"0 0 20px"}}>{tab==="received"?"📨 수신함":"📤 보낸 요청"}</h2>
+    <div className="fi1" style={{display:"flex",gap:8,marginBottom:20}}>{[{id:"received",label:"받은 요청",count:pendingReceived.length},{id:"sent",label:"보낸 요청",count:mySentRequests.filter(r=>r.status==="PENDING").length}].map(t=>
+      <button key={t.id} onClick={()=>setTab(t.id)} className={tab===t.id?"btn-primary":"btn-secondary"} style={{flex:1,padding:12,fontSize:14,gap:4}}>{t.label}{t.count>0&&<span style={{background:tab===t.id?"rgba(255,255,255,.3)":"var(--emerald)",color:tab===t.id?"#fff":"#fff",borderRadius:8,padding:"2px 7px",fontSize:11,marginLeft:4}}>{t.count}</span>}</button>)}
+    </div>
+    {items.length===0?<EmptyState icon={tab==="received"?"📨":"📤"} title={tab==="received"?"받은 요청이 없어요":"보낸 요청이 없어요"} description={tab==="received"?"프로필을 완성하면 요청받기 쉬워져요!":"검색 후 첫 연락을 시작하세요!"} actionLabel="담당자 검색하기" onAction={()=>setActivePage("home")}/>
+    :items.map(r=><RequestCard key={r.id} request={r} isSent={tab==="sent"}/>)}
+
+    {/* Detail Modal */}
+    {selectedRequest&&(()=>{const req=selectedRequest;const requester=getUserById(req.fromUserId);if(!requester)return null;
+      return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setSelectedRequest(null)}>
+        <div role="dialog" aria-label="요청 상세" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .25s ease"}}>
+          <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
+          <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 20px"}}>연락 요청 상세</h3>
+          <div className="card-sm" style={{marginBottom:18,border:"1px solid var(--gray-200)"}}>
+            <div style={{display:"flex",alignItems:"center",gap:12}}>
+              <Avatar name={requester.name} logo={requester.companyLogo} size={52}/>
+              <div><div style={{display:"flex",alignItems:"center",gap:6}}><span style={{fontWeight:800,fontSize:16}}>{requester.name}</span>{requester.isVerified&&<Icon.Verified size={14}/>}</div><div style={{fontSize:13,color:"var(--gray-500)",marginTop:2}}>{requester.company} · {requester.department}</div><div style={{fontSize:12,color:"var(--gray-400)"}}>{requester.position}</div></div>
+            </div>
+          </div>
+          <div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:"var(--gray-400)",marginBottom:8}}>요청 목적</div><PurposeBadge purposeId={req.purpose}/></div>
+          {req.message&&<div style={{marginBottom:14}}><div style={{fontSize:12,fontWeight:700,color:"var(--gray-400)",marginBottom:8}}>메시지</div><div style={{fontSize:14,fontStyle:"italic",color:"var(--gray-600)",lineHeight:1.6}}>"{req.message}"</div></div>}
+          <div className="card-sm" style={{background:"var(--emerald-bg)",border:"1px solid var(--emerald-border)",marginBottom:22}}>
+            <p style={{fontSize:12,color:"var(--emerald)",fontWeight:600}}>💡 수락하면 서로의 전화번호가 <strong>동시에</strong> 공개됩니다.</p>
+          </div>
+          <div style={{display:"flex",gap:10}}>
+            <button onClick={()=>respondToRequest(req.id,false)} className="btn-secondary" style={{flex:1,color:"var(--red)",borderColor:"rgba(239,68,68,.2)"}}><Icon.Close size={16}/> 거부</button>
+            <button onClick={()=>respondToRequest(req.id,true)} className="btn-primary" style={{flex:2}}><Icon.Check size={16}/> 수락</button>
+          </div>
+        </div>
+      </div>;
+    })()}
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Contacts / Address Book (지시서 2-4)
+   ═══════════════════════════════════════════════════════════ */
+function ContactsPage(){
+  const{myContacts,getUserById,setSelectedUser,setActivePage}=useApp();
+  const[query,setQuery]=useState("");
+  const contactList=myContacts.map(c=>({...c,user:getUserById(c.contactUserId)})).filter(c=>c.user);
+  const filtered=query?contactList.filter(c=>c.user.name.includes(query)||c.user.company.includes(query)):contactList;
+
+  return <main style={{padding:"0 20px",paddingTop:16}}>
+    <h2 className="fi" style={{fontSize:22,fontWeight:900,margin:"0 0 20px"}}>📖 주소록 <span style={{color:"var(--emerald)"}}>{myContacts.length}</span></h2>
+    {myContacts.length>0&&<div className="fi1" style={{display:"flex",alignItems:"center",gap:10,background:"var(--white)",borderRadius:"var(--radius)",padding:"10px 16px",border:"1.5px solid var(--gray-200)",marginBottom:16,boxShadow:"var(--shadow-sm)"}}>
+      <Icon.Search size={16} style={{color:"var(--gray-400)"}}/>
+      <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="이름, 회사로 검색" aria-label="연락처 검색" style={{background:"none",border:"none",color:"var(--navy)",fontSize:14,outline:"none",flex:1,fontFamily:"var(--font)"}}/>
+    </div>}
+    {filtered.length===0?<EmptyState icon="📖" title="연결된 연락처가 없어요" description="검색 후 연락처를 요청해보세요!" actionLabel="담당자 검색하기" onAction={()=>setActivePage("home")}/>
+    :<div style={{display:"flex",flexDirection:"column",gap:8}}>
+      {filtered.map(c=><div key={c.id} className="card fi" onClick={()=>{setSelectedUser(c.user);setActivePage("profile");}} role="button" tabIndex={0} aria-label={`${c.user.name} 연락처`} style={{display:"flex",alignItems:"center",gap:14,cursor:"pointer",padding:16}}>
+        <Avatar name={c.user.name} logo={c.user.companyLogo} size={46} style={{background:"linear-gradient(135deg,var(--emerald-bg),var(--blue-bg))"}}/>
+        <div style={{flex:1,minWidth:0}}>
+          <div style={{fontWeight:700,fontSize:15}}>{c.user.name}</div>
+          <div style={{fontSize:13,color:"var(--gray-500)",marginTop:2}}>{c.user.company} · {c.user.department}</div>
+          <div style={{fontSize:13,color:"var(--emerald)",fontWeight:700,marginTop:3,letterSpacing:.5}}>{c.user.phone}</div>
+        </div>
+        <a href={"tel:"+c.user.phone?.replace(/-/g,"")} onClick={e=>e.stopPropagation()} aria-label="전화하기" style={{width:44,height:44,borderRadius:"var(--radius-sm)",background:"var(--emerald-bg)",display:"flex",alignItems:"center",justifyContent:"center",color:"var(--emerald)",flexShrink:0}}><Icon.Phone size={18}/></a>
+      </div>)}
+    </div>}
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: My Page / Settings (지시서 2-8 알림 + 2-9 프리미엄)
+   ═══════════════════════════════════════════════════════════ */
+function MyPage(){
+  const{currentUser,persistCurrentUser,allUsers,persistUsers,handleLogout,myReceivedRequests,mySentRequests,myContacts,myNotifications,notifications,persistNotifications,showToast,unreadNotifCount,updateUserProfile}=useApp();
+  const[isEditing,setIsEditing]=useState(false);const[editData,setEditData]=useState({});
+  const[activeTab,setActiveTab]=useState("profile"); // profile|notifs|settings
+
+  const startEdit=()=>{setEditData({...currentUser});setIsEditing(true)};
+  const saveEdit=()=>{updateUserProfile(editData);setIsEditing(false)};
+  const markAllRead=()=>{persistNotifications(notifications.map(n=>n.userId===currentUser.id?{...n,isRead:true}:n))};
+
+  const profileFields=[currentUser.name,currentUser.company,currentUser.department,currentUser.position,currentUser.phone,currentUser.bio].filter(Boolean).length;
+  const completenessPercent=Math.round(profileFields/6*100);
+  const notifIcons={REQUEST_RECEIVED:"📩",REQUEST_ACCEPTED:"🎉",REQUEST_REJECTED:"💬",BUYING_SIGNAL:"🔥",INTRO_REQUEST:"🤝",INTRO_ACCEPTED:"🤝",INTRO_REJECTED:"💬",CONTACT_CHANGED:"⚡"};
+
+  return <main style={{padding:"0 20px",paddingTop:16}}>
+    {/* Sub tabs */}
+    <div className="fi" style={{display:"flex",gap:0,marginBottom:20,background:"var(--gray-100)",borderRadius:"var(--radius)",padding:3}}>
+      {[{id:"profile",label:"프로필"},{id:"notifs",label:`알림${unreadNotifCount>0?" ("+unreadNotifCount+")":""}`},{id:"settings",label:"설정"}].map(t=>
+        <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,background:activeTab===t.id?"var(--white)":"transparent",border:"none",borderRadius:"var(--radius-sm)",padding:"10px 8px",fontSize:13,fontWeight:activeTab===t.id?700:500,color:activeTab===t.id?"var(--navy)":"var(--gray-500)",cursor:"pointer",fontFamily:"var(--font)",boxShadow:activeTab===t.id?"var(--shadow-sm)":"none",minHeight:40,transition:"all .15s"}}>{t.label}</button>)}
+    </div>
+
+    {/* PROFILE TAB */}
+    {activeTab==="profile"&&<>
+      <article className="card fi1" style={{textAlign:"center",marginBottom:16,padding:24}}>
+        <Avatar name={currentUser.name} logo={currentUser.companyLogo} size={68} style={{margin:"0 auto 14px",border:"3px solid var(--emerald-border)"}}/>
+        {!isEditing?<>
+          <h2 style={{fontSize:20,fontWeight:900,margin:"0 0 4px"}}>{currentUser.name}</h2>
+          <p style={{fontSize:14,color:"var(--gray-500)"}}>{currentUser.position||"직책 미입력"}</p>
+          <p style={{fontSize:14,color:"var(--gray-500)",marginTop:2}}>{currentUser.company}{currentUser.department&&" · "+currentUser.department}</p>
+          <p style={{fontSize:13,color:"var(--emerald)",marginTop:8,fontWeight:600}}>{currentUser.phone||"전화번호 미입력"}</p>
+          <button className="btn-secondary" onClick={startEdit} style={{marginTop:16,padding:"10px 20px",fontSize:13}}>프로필 편집</button>
+        </>:<div style={{textAlign:"left",display:"flex",flexDirection:"column",gap:10,marginTop:10}}>
+          <input className="input-field" value={editData.name||""} onChange={e=>setEditData({...editData,name:e.target.value})} placeholder="이름" aria-label="이름"/>
+          <input className="input-field" value={editData.company||""} onChange={e=>setEditData({...editData,company:e.target.value})} placeholder="회사" aria-label="회사"/>
+          <input className="input-field" value={editData.department||""} onChange={e=>setEditData({...editData,department:e.target.value})} placeholder="부서" aria-label="부서"/>
+          <input className="input-field" value={editData.position||""} onChange={e=>setEditData({...editData,position:e.target.value})} placeholder="직책" aria-label="직책"/>
+          <input className="input-field" value={editData.phone||""} onChange={e=>setEditData({...editData,phone:e.target.value})} placeholder="전화번호" aria-label="전화번호"/>
+          <textarea className="input-field" value={editData.bio||""} onChange={e=>setEditData({...editData,bio:e.target.value.slice(0,200)})} placeholder="자기소개 (200자)" aria-label="자기소개" style={{height:80,resize:"none"}}/>
+          <div style={{display:"flex",gap:10}}><button className="btn-secondary" onClick={()=>setIsEditing(false)} style={{flex:1,padding:12}}>취소</button><button className="btn-primary" onClick={saveEdit} style={{flex:2,padding:12}}>저장</button></div>
+        </div>}
+      </article>
+
+      {/* Completeness (지시서 2-7) */}
+      <div className="card-sm fi2" style={{marginBottom:12}}>
+        <div style={{display:"flex",justifyContent:"space-between",marginBottom:8}}><span style={{fontSize:13,fontWeight:700}}>프로필 완성도</span><span style={{fontSize:13,fontWeight:800,color:"var(--emerald)"}}>{completenessPercent}%</span></div>
+        <div style={{height:6,borderRadius:3,background:"var(--gray-200)"}}><div style={{height:"100%",borderRadius:3,background:"var(--emerald)",width:completenessPercent+"%",transition:"width .5s"}}/></div>
+        {completenessPercent<100&&<p style={{fontSize:11,color:"var(--gray-400)",marginTop:6}}>💡 프로필 100% 달성 시 검색 노출 3배 증가!</p>}
+      </div>
+
+      {/* Stats */}
+      <div className="card-sm fi3" style={{marginBottom:12}}>
+        <h3 style={{fontSize:13,fontWeight:800,marginBottom:14}}>📊 활동 통계</h3>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+          {[{label:"보낸 요청",value:mySentRequests.length,color:"var(--emerald)"},{label:"받은 요청",value:myReceivedRequests.length,color:"var(--blue)"},{label:"승인됨",value:[...mySentRequests,...myReceivedRequests].filter(r=>r.status==="ACCEPTED").length,color:"var(--emerald)"},{label:"연결됨",value:myContacts.length,color:"var(--purple)"}].map((stat,i)=><div key={i} style={{textAlign:"center"}}><div style={{fontSize:22,fontWeight:900,color:stat.color}}>{stat.value}</div><div style={{fontSize:11,color:"var(--gray-400)",marginTop:2}}>{stat.label}</div></div>)}
+        </div>
+      </div>
+
+      {/* Plan (지시서 2-9) */}
+      <div className="card-sm fi3" style={{marginBottom:12}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div><div style={{fontSize:13,fontWeight:700}}>현재 플랜</div><div style={{fontSize:12,color:"var(--gray-500)",marginTop:4}}>{currentUser.plan==="FREE"?"무료 — 월 5건 요청":"Pro — 월 50건 요청"}</div></div>
+          <span className="badge" style={{background:currentUser.plan==="FREE"?"var(--gray-100)":"var(--emerald-bg)",color:currentUser.plan==="FREE"?"var(--gray-500)":"var(--emerald)"}}>{currentUser.plan}</span>
+        </div>
+      </div>
+    </>}
+
+    {/* NOTIFICATIONS TAB */}
+    {activeTab==="notifs"&&<>
+      {unreadNotifCount>0&&<div className="fi" style={{display:"flex",justifyContent:"flex-end",marginBottom:12}}><button onClick={markAllRead} className="btn-secondary" style={{padding:"6px 12px",fontSize:12,minHeight:36}}>모두 읽음</button></div>}
+      {myNotifications.length===0?<EmptyState icon="🔔" title="알림이 없어요" description="활동이 시작되면 여기에 표시됩니다"/>
+      :myNotifications.map((notif,i)=><div key={notif.id} className="fi card-sm" style={{marginBottom:8,background:notif.isRead?"var(--white)":"var(--emerald-bg)",border:notif.isRead?"none":"1px solid var(--emerald-border)"}}>
+        <div style={{display:"flex",alignItems:"flex-start",gap:10}}>
+          <span style={{fontSize:18,marginTop:1}} aria-hidden="true">{notifIcons[notif.type]||"🔔"}</span>
+          <div style={{flex:1}}><div style={{fontWeight:700,fontSize:13}}>{notif.title}</div><div style={{fontSize:13,color:"var(--gray-500)",marginTop:4,lineHeight:1.6}}>{notif.body}</div><div style={{fontSize:11,color:"var(--gray-400)",marginTop:6}}>{formatTimeAgo(notif.createdAt)}</div></div>
+          {!notif.isRead&&<div style={{width:8,height:8,borderRadius:4,background:"var(--emerald)",flexShrink:0,marginTop:6}}/>}
+        </div>
+      </div>)}
+    </>}
+
+    {/* SETTINGS TAB */}
+    {activeTab==="settings"&&<>
+      <div className="card-sm fi1" style={{marginBottom:12}}>
+        <h3 style={{fontSize:13,fontWeight:800,marginBottom:12}}>🔒 프라이버시</h3>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div><div style={{fontSize:13,fontWeight:600}}>검색 노출 허용</div><div style={{fontSize:11,color:"var(--gray-400)",marginTop:4}}>끄면 다른 사용자 검색에 노출되지 않습니다</div></div>
+          <button onClick={()=>{const updated={...currentUser,isSearchable:!currentUser.isSearchable};persistCurrentUser(updated);saveToStorage(STORAGE_KEYS.USERS,allUsers.map(u=>u.id===currentUser.id?updated:u));persistUsers(allUsers.map(u=>u.id===currentUser.id?updated:u));}} aria-label="검색 노출 토글" style={{width:50,height:28,borderRadius:14,border:"none",cursor:"pointer",position:"relative",background:currentUser.isSearchable?"var(--emerald)":"var(--gray-300)",transition:"background .3s",minWidth:50}}>
+            <div style={{width:22,height:22,borderRadius:11,background:"#fff",position:"absolute",top:3,left:currentUser.isSearchable?25:3,transition:"left .3s",boxShadow:"var(--shadow-sm)"}}/>
+          </button>
+        </div>
+      </div>
+
+      {/* Data export (지시서 1-6) */}
+      <div className="card-sm fi2" style={{marginBottom:12}}>
+        <h3 style={{fontSize:13,fontWeight:800,marginBottom:12}}>📦 데이터 관리</h3>
+        <button className="btn-secondary" onClick={()=>{
+          const data={contacts:myContacts.map(c=>({...c,user:getUserById(c.contactUserId)})),requests:mySentRequests};
+          const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+          const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="bizconnect-data.json";a.click();URL.revokeObjectURL(url);
+          showToast("데이터를 내보냈습니다!");
+        }} style={{width:"100%",padding:"10px 16px",fontSize:13}}>📥 내 데이터 내보내기 (JSON)</button>
+      </div>
+
+      <button className="fi3 btn-secondary" onClick={handleLogout} style={{width:"100%",color:"var(--red)",borderColor:"rgba(239,68,68,.2)",marginBottom:20,gap:8}}><Icon.LogOut size={18}/> 로그아웃</button>
+      <p style={{textAlign:"center",fontSize:11,color:"var(--gray-400)",paddingBottom:12}}>BizConnect v2.0</p>
+    </>}
+  </main>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: Loading Screen
+   ═══════════════════════════════════════════════════════════ */
+function LoadingScreen(){
+  return <div role="status" aria-label="로딩 중" style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100dvh",flexDirection:"column",gap:12,background:"var(--bg)"}}>
+    <div style={{fontSize:48}}>🤝</div>
+    <div style={{fontSize:22,fontWeight:900}}><span style={{color:"var(--emerald)"}}>Biz</span>Connect</div>
+    <div style={{display:"flex",gap:6,marginTop:8}}><div className="skel" style={{width:8,height:8,borderRadius:4}}/><div className="skel" style={{width:8,height:8,borderRadius:4,animationDelay:".2s"}}/><div className="skel" style={{width:8,height:8,borderRadius:4,animationDelay:".4s"}}/></div>
+  </div>;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SECTION: App Root & Mount
+   ═══════════════════════════════════════════════════════════ */
+function App(){
+  const{currentUser,activePage,selectedUser,isReady}=useApp();
+
+  if(!isReady)return <LoadingScreen/>;
+  if(!currentUser)return <><ToastNotification/><LandingPage/></>;
+
+  const pageComponents={
+    home:selectedUser?<ProfilePage/>:<HomePage/>,
+    profile:selectedUser?<ProfilePage/>:<HomePage/>,
+    signals:<SignalsPage/>,
+    inbox:<InboxPage/>,
+    contacts:<ContactsPage/>,
+    me:<MyPage/>,
+  };
+
+  return <>
+    <ToastNotification/>
+    <div style={{height:"100dvh",display:"flex",flexDirection:"column"}}>
+      <div className="safe-bottom" style={{flex:1,overflowY:"auto"}}>
+        {pageComponents[activePage]||<HomePage/>}
+      </div>
+      <BottomNavigation/>
+    </div>
+  </>;
+}
+
+// Mount
+const root=ReactDOM.createRoot(document.getElementById("root"));
+root.render(<AppProvider><App/></AppProvider>);
 </script>
 </body>
 </html>
