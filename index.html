@@ -5,43 +5,47 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>BizConnect — 동의 기반 비즈니스 연락처</title>
 <meta name="description" content="모든 회사의 모든 부서 담당자를 동의하에 연락하는 플랫폼">
-<meta name="theme-color" content="#0D1F35">
+<meta name="theme-color" content="#0b0b14">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤝</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   SECTION: CSS Reset & Variables
-   BizConnect Color: Navy + Emerald (지시서 4-1)
+   BizConnect v3 — Dark Premium Theme
    ═══════════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  /* Primary Colors */
-  --navy:#0D1F35;--navy-light:#1A3150;--navy-50:rgba(13,31,53,.05);--navy-10:rgba(13,31,53,.1);
-  --emerald:#10B981;--emerald-light:#34D399;--emerald-bg:rgba(16,185,129,.08);--emerald-border:rgba(16,185,129,.2);
-  /* Status */
-  --orange:#F59E0B;--orange-bg:rgba(245,158,11,.08);
-  --red:#EF4444;--red-bg:rgba(239,68,68,.08);
-  --blue:#3B82F6;--blue-bg:rgba(59,130,246,.08);
-  --purple:#8B5CF6;--purple-bg:rgba(139,92,246,.08);
-  --pink:#EC4899;--pink-bg:rgba(236,72,153,.08);
-  /* Neutrals */
-  --bg:#F8FAFC;--white:#FFFFFF;
-  --gray-50:#F9FAFB;--gray-100:#F3F4F6;--gray-200:#E5E7EB;--gray-300:#D1D5DB;
-  --gray-400:#9CA3AF;--gray-500:#6B7280;--gray-600:#4B5563;--gray-700:#374151;--gray-800:#1F2937;
+  /* Dark Background Layers */
+  --bg:#0b0b14;--bg2:#0f0f1a;
+  --white:#151524;--white-hover:#1c1c30;
+  /* Grays (inverted for dark mode) */
+  --gray-50:#1a1a2c;--gray-100:#1f1f34;--gray-200:#282845;--gray-300:#353558;
+  --gray-400:#6a6a88;--gray-500:#8a8aa5;--gray-600:#a8a8c0;--gray-700:#c4c4d8;--gray-800:#e0e0ef;
+  /* Primary — Emerald (works beautifully on dark) */
+  --emerald:#34d399;--emerald-light:#6ee7b7;--emerald-bg:rgba(52,211,153,.08);--emerald-border:rgba(52,211,153,.2);
+  /* Navy repurposed as light text */
+  --navy:#e8e8f2;
+  /* Status Colors */
+  --orange:#fbbf24;--orange-bg:rgba(251,191,36,.08);
+  --red:#f87171;--red-bg:rgba(248,113,113,.08);
+  --blue:#60a5fa;--blue-bg:rgba(96,165,250,.08);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,.08);
+  --pink:#f472b6;--pink-bg:rgba(244,114,182,.08);
   /* Sizing */
-  --radius:12px;--radius-sm:8px;--radius-lg:16px;--radius-xl:20px;
-  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
-  --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
-  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
-  --shadow-lg:0 10px 15px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.05);
+  --radius:14px;--radius-sm:10px;--radius-lg:18px;--radius-xl:22px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.3);
+  --shadow:0 2px 8px rgba(0,0,0,.3),0 1px 3px rgba(0,0,0,.2);
+  --shadow-md:0 4px 12px rgba(0,0,0,.35);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.4);
   /* Font */
-  --font:'Noto Sans KR',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font:'Pretendard',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-display:'Outfit','Pretendard',sans-serif;
   /* Safe Areas */
   --sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px);
-  --sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px);
   --nav-h:calc(64px + var(--sab));
 }
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
@@ -52,27 +56,23 @@ input,textarea,select,button{font-family:var(--font);outline:none;-webkit-appear
 a{text-decoration:none;color:inherit}
 #root{max-width:480px;margin:0 auto;height:100dvh;position:relative;overflow:hidden;background:var(--bg)}
 
-/* ═══════ Focus Indicators (지시서 1-3 접근성) ═══════ */
 :focus-visible{outline:3px solid var(--emerald);outline-offset:2px;border-radius:4px}
 button:focus:not(:focus-visible){outline:none}
 
-/* ═══════ Animations (지시서 1-1, 4-5) — transform/opacity only ═══════ */
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 @keyframes slideUp{from{opacity:0;transform:translateY(100%)}to{opacity:1;transform:translateY(0)}}
-@keyframes slideRight{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
 @keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
-@keyframes skeletonPulse{0%,100%{opacity:.6}50%{opacity:.3}}
-@keyframes checkmark{from{stroke-dashoffset:24}to{stroke-dashoffset:0}}
+@keyframes skeletonPulse{0%,100%{opacity:.6}50%{opacity:.25}}
+@keyframes glow{0%,100%{box-shadow:0 0 16px rgba(52,211,153,.12)}50%{box-shadow:0 0 32px rgba(52,211,153,.25)}}
 .fi{animation:fadeIn .35s ease both}
 .fi1{animation:fadeIn .35s ease .05s both}
 .fi2{animation:fadeIn .35s ease .1s both}
 .fi3{animation:fadeIn .35s ease .15s both}
 .fi4{animation:fadeIn .35s ease .2s both}
-.skel{background:var(--gray-200);border-radius:var(--radius-sm);animation:skeletonPulse 1.5s ease-in-out infinite}
+.skel{background:var(--gray-100);border-radius:var(--radius-sm);animation:skeletonPulse 1.5s ease-in-out infinite}
 
-/* ═══════ Common Components ═══════ */
 .input-field{
-  background:var(--white);border:1.5px solid var(--gray-200);border-radius:var(--radius);
+  background:var(--gray-50);border:1.5px solid var(--gray-200);border-radius:var(--radius);
   padding:14px 16px;font-size:15px;color:var(--navy);width:100%;transition:border-color .15s;
 }
 .input-field:focus{border-color:var(--emerald);box-shadow:0 0 0 3px var(--emerald-bg)}
@@ -80,10 +80,10 @@ button:focus:not(:focus-visible){outline:none}
 .input-error-text{color:var(--red);font-size:12px;margin-top:4px;font-weight:500}
 
 .btn-primary{
-  background:var(--emerald);color:#fff;border:none;border-radius:var(--radius);
+  background:var(--emerald);color:#0b0b14;border:none;border-radius:var(--radius);
   padding:15px 28px;font-size:15px;font-weight:700;cursor:pointer;
   transition:transform .1s,opacity .1s;display:flex;align-items:center;justify-content:center;gap:8px;
-  min-height:48px;
+  min-height:48px;letter-spacing:-.2px;
 }
 .btn-primary:active{transform:scale(.97);opacity:.85}
 .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
@@ -93,17 +93,20 @@ button:focus:not(:focus-visible){outline:none}
   border-radius:var(--radius);padding:15px 28px;font-size:15px;font-weight:600;
   cursor:pointer;transition:all .15s;min-height:48px;
 }
-.btn-secondary:hover{border-color:var(--emerald-border);background:var(--emerald-bg)}
+.btn-secondary:hover{border-color:var(--emerald-border);background:var(--white-hover)}
 .btn-secondary:active{transform:scale(.97)}
 
 .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:var(--radius-sm);font-size:12px;font-weight:700}
-.card{background:var(--white);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);transition:box-shadow .15s,transform .15s}
-.card:hover{box-shadow:var(--shadow-md)}
-.card-sm{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm)}
+.card{background:var(--white);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border:1px solid var(--gray-100);transition:border-color .15s,transform .1s}
+.card:hover{border-color:var(--gray-200)}
+.card-sm{background:var(--white);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100)}
 
-/* ═══════ Safe Area Padding ═══════ */
 .safe-top{padding-top:var(--sat)}
 .safe-bottom{padding-bottom:calc(var(--nav-h) + 8px)}
+
+/* Noise overlay for texture */
+body::before{content:'';position:fixed;inset:0;opacity:.018;pointer-events:none;z-index:9998;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 </style>
 </head>
 <body>
@@ -123,7 +126,7 @@ const STORAGE_KEYS={
   USERS:'bc2_users', CURRENT:'bc2_current', REQUESTS:'bc2_requests',
   CONTACTS:'bc2_contacts', NOTIFICATIONS:'bc2_notifs',
   SIGNALS:'bc2_signals', INTROS:'bc2_intros',
-  RECENT_SEARCHES:'bc2_recent', INITIALIZED:'bc2_init_v1'
+  RECENT_SEARCHES:'bc2_recent', INITIALIZED:'bc2_init_v3'
 };
 
 function loadFromStorage(key, fallback=null){
@@ -480,7 +483,7 @@ function ToastNotification(){
 
 // Avatar component
 function Avatar({name,logo,size=44,style:extraStyle}){
-  return <div aria-hidden="true" style={{width:size,height:size,borderRadius:size*.3,flexShrink:0,background:"linear-gradient(135deg,#EEF2FF,#E0E7FF)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*.42,color:"var(--navy)",...extraStyle}}>{logo||name?.[0]||"?"}</div>;
+  return <div aria-hidden="true" style={{width:size,height:size,borderRadius:size*.3,flexShrink:0,background:"linear-gradient(135deg,rgba(52,211,153,.12),rgba(167,139,250,.1))",display:"flex",alignItems:"center",justifyContent:"center",fontSize:size*.42,color:"var(--navy)",...extraStyle}}>{logo||name?.[0]||"?"}</div>;
 }
 
 // Purpose badge
@@ -536,7 +539,7 @@ function BottomNavigation(){
     {id:"contacts",icon:Icon.Book,label:"주소록"},
     {id:"me",icon:Icon.User,label:"내 정보",badge:unreadNotifCount},
   ];
-  return <nav role="navigation" aria-label="주요 메뉴" style={{position:"absolute",bottom:0,left:0,right:0,height:"var(--nav-h)",background:"rgba(255,255,255,.95)",backdropFilter:"blur(20px)",borderTop:"1px solid var(--gray-200)",display:"flex",justifyContent:"space-around",alignItems:"flex-start",paddingTop:8,zIndex:100}}>
+  return <nav role="navigation" aria-label="주요 메뉴" style={{position:"absolute",bottom:0,left:0,right:0,height:"var(--nav-h)",background:"rgba(11,11,20,.94)",backdropFilter:"blur(20px)",borderTop:"1px solid var(--gray-100)",display:"flex",justifyContent:"space-around",alignItems:"flex-start",paddingTop:8,zIndex:100}}>
     {tabs.map(tab=>{
       const isActive=activePage===tab.id||(activePage==="profile"&&tab.id==="home");
       return <button key={tab.id} onClick={()=>{setActivePage(tab.id);setSelectedUser(null);setSelectedRequest(null);}}
@@ -544,7 +547,7 @@ function BottomNavigation(){
         style={{background:"none",border:"none",color:isActive?"var(--emerald)":"var(--gray-400)",display:"flex",flexDirection:"column",alignItems:"center",gap:2,cursor:"pointer",padding:"4px 12px",fontFamily:"var(--font)",position:"relative",minWidth:48,minHeight:44}}>
         <div style={{position:"relative"}}>
           {tab.emoji?<span style={{fontSize:20,lineHeight:"22px"}}>{tab.emoji}</span>:<tab.icon size={22}/>}
-          {tab.badge>0&&<span style={{position:"absolute",top:-5,right:-10,background:"var(--red)",color:"#fff",fontSize:9,fontWeight:800,borderRadius:10,minWidth:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",border:"2px solid var(--white)"}}>{tab.badge>9?"9+":tab.badge}</span>}
+          {tab.badge>0&&<span style={{position:"absolute",top:-5,right:-10,background:"var(--red)",color:"#fff",fontSize:9,fontWeight:800,borderRadius:10,minWidth:16,height:16,display:"flex",alignItems:"center",justifyContent:"center",padding:"0 3px",border:"2px solid var(--bg)"}}>{tab.badge>9?"9+":tab.badge}</span>}
         </div>
         <span style={{fontSize:10,fontWeight:isActive?700:500}}>{tab.label}</span>
       </button>;
@@ -562,21 +565,14 @@ function LandingPage(){
   const[name,setName]=useState("");const[company,setCompany]=useState("");
   const[department,setDepartment]=useState("");const[position,setPosition]=useState("");
   const[phone,setPhone]=useState("");const[showPassword,setShowPassword]=useState(false);
-  // 인라인 검증 (지시서 1-4)
   const[errors,setErrors]=useState({});
+  // Live demo search state
+  const[demoQuery,setDemoQuery]=useState("");
+  const[demoResults,setDemoResults]=useState([]);
+  const[demoTyping,setDemoTyping]=useState(false);
 
-  const validateField=(field,value)=>{
-    const newErrors={...errors};
-    if(field==="email"&&value&&!value.includes("@"))newErrors.email="올바른 이메일 형식이 아니에요";
-    else delete newErrors.email;
-    if(field==="password"&&value&&value.length<4)newErrors.password="4자 이상 입력해주세요";
-    else delete newErrors.password;
-    if(field==="name"&&value!==undefined&&!value.trim())newErrors.name="이름을 입력해주세요";
-    else delete newErrors.name;
-    setErrors(newErrors);
-  };
+  const validateField=(field,value)=>{const e={...errors};if(field==="email"&&value&&!value.includes("@"))e.email="올바른 이메일 형식이 아니에요";else delete e.email;if(field==="password"&&value&&value.length<4)e.password="4자 이상 입력해주세요";else delete e.password;setErrors(e)};
 
-  // 원클릭 체험 (지시서 2-7)
   const handleQuickStart=()=>{
     const testUser={email:'test@bizconnect.kr',password:'1234',name:'김테스트',company:'BizConnect',companyLogo:'🤝',department:'제품기획',position:'팀장',phone:'010-1234-5678',bio:'BizConnect 제품기획 팀장. 테스트 계정입니다.'};
     const existing=allUsers.find(u=>u.email===testUser.email);
@@ -584,55 +580,149 @@ function LandingPage(){
     else{handleSignup(testUser);}
   };
 
-  if(mode==="landing") return <main style={{height:"100dvh",overflowY:"auto",padding:"0 24px"}}>
-    {/* Hero */}
-    <header className="fi" style={{paddingTop:56,textAlign:"center"}}>
-      <div style={{fontSize:48,marginBottom:8}}>🤝</div>
-      <h1 style={{fontSize:32,fontWeight:900,letterSpacing:-1.5,lineHeight:1.15}}><span style={{color:"var(--emerald)"}}>Biz</span>Connect</h1>
-      <p style={{color:"var(--gray-500)",fontSize:15,marginTop:12,lineHeight:1.7}}>모든 회사의 모든 부서 담당자를<br/><strong style={{color:"var(--navy)"}}>동의 하에</strong> 찾아 연락하는 플랫폼</p>
+  // Live demo search (체험 before signup)
+  const handleDemoSearch=(q)=>{
+    setDemoQuery(q);
+    if(!q.trim()){setDemoResults([]);return;}
+    const lower=q.toLowerCase();
+    const results=allUsers.filter(u=>u.isSeeded&&(u.company.toLowerCase().includes(lower)||u.name.includes(lower)||u.department.includes(lower)||matchesChosung(u.company,q)||matchesChosung(u.name,q))).slice(0,4);
+    setDemoResults(results);
+  };
+
+  // Auto-type demo effect
+  const demoRef=useRef(null);
+  useEffect(()=>{
+    if(mode!=="landing")return;
+    const phrases=["삼성전자 구매팀","네이버 기술개발","토스 재무","쿠팡 마케팅","ㅅㅈ"];
+    let pIdx=0,cIdx=0,typing=true,timer;
+    const tick=()=>{
+      const phrase=phrases[pIdx];
+      if(typing){
+        cIdx++;handleDemoSearch(phrase.slice(0,cIdx));
+        if(cIdx>=phrase.length){typing=false;timer=setTimeout(tick,2000);return;}
+      }else{
+        cIdx--;handleDemoSearch(phrase.slice(0,cIdx));
+        if(cIdx<=0){typing=true;pIdx=(pIdx+1)%phrases.length;timer=setTimeout(tick,500);return;}
+      }
+      timer=setTimeout(tick,typing?80:40);
+    };
+    timer=setTimeout(tick,1500);
+    return()=>clearTimeout(timer);
+  },[mode]);
+
+  if(mode==="landing") return <main style={{height:"100dvh",overflowY:"auto",padding:"0 20px"}}>
+
+    {/* ═══════ HERO: 서로를 찾고 있다 ═══════ */}
+    <header className="fi" style={{paddingTop:44,textAlign:"center"}}>
+      <div style={{fontSize:13,fontWeight:700,color:"var(--emerald)",letterSpacing:2,marginBottom:14}}>BIZCONNECT</div>
+      <h1 style={{fontFamily:"var(--font-display)",fontSize:26,fontWeight:900,letterSpacing:-1,lineHeight:1.3,color:"var(--navy)"}}>
+        비즈니스 세계에서<br/>서로를 <span style={{color:"var(--emerald)"}}>찾고 있습니다</span>
+      </h1>
+      <p style={{color:"var(--gray-500)",fontSize:14,marginTop:12,lineHeight:1.7}}>
+        동의 기반으로 연결되는 비즈니스 연락처.<br/>
+        <strong style={{color:"var(--navy)"}}>찾는 사람</strong>과 <strong style={{color:"var(--navy)"}}>찾아지는 사람</strong>, 모두에게 가치있는 연결.
+      </p>
     </header>
 
-    {/* How it works */}
-    <section className="fi1" style={{marginTop:36}} aria-label="서비스 소개">
-      <h2 style={{fontSize:12,fontWeight:800,color:"var(--emerald)",letterSpacing:2,marginBottom:16}}>HOW IT WORKS</h2>
-      {[{n:"01",t:"담당자 검색",d:"회사 · 부서 · 직책으로 정확히",ic:"🔍"},
-        {n:"02",t:"명함 전달",d:"목적을 밝히고 내 명함을 먼저",ic:"📤"},
-        {n:"03",t:"상대방 판단",d:"수락 또는 거부는 받는 사람의 권리",ic:"⚖️"},
-        {n:"04",t:"상호 공개",d:"수락 시 연락처 동시에 공개",ic:"✅"},
-      ].map((step,i)=><div key={i} style={{display:"flex",gap:14,alignItems:"center",padding:"14px 0",borderBottom:i<3?"1px solid var(--gray-100)":"none"}}>
-        <div style={{width:44,height:44,borderRadius:12,background:"var(--emerald-bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{step.ic}</div>
-        <div><div style={{display:"flex",alignItems:"baseline",gap:6}}><span style={{fontSize:11,fontWeight:700,color:"var(--emerald)",opacity:.7}}>{step.n}</span><span style={{fontWeight:700,fontSize:14}}>{step.t}</span></div><div style={{fontSize:13,color:"var(--gray-500)",marginTop:2}}>{step.d}</div></div>
-      </div>)}
+    {/* ═══════ BILATERAL MATCHING: 서로를 찾는 관계들 ═══════ */}
+    <section className="fi1" style={{marginTop:28}} aria-label="양방향 매칭">
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        {[
+          {left:"투자 심사역",leftIcon:"💰",leftSub:"유망한 스타트업을 찾고",right:"CFO / 대표",rightIcon:"📊",rightSub:"투자자를 만나고 싶고",color:"var(--pink)"},
+          {left:"구매 담당자",leftIcon:"🛒",leftSub:"새로운 공급업체를 찾고",right:"영업 담당자",rightIcon:"💼",rightSub:"구매처를 찾고 있고",color:"var(--blue)"},
+          {left:"해외 무역상",leftIcon:"🌏",leftSub:"국내 제조사를 찾고",right:"제조사 수출팀",rightIcon:"🏭",rightSub:"해외 바이어를 찾고",color:"var(--purple)"},
+          {left:"인사 담당자",leftIcon:"👤",leftSub:"핵심 인재를 찾고",right:"구직자 / 이직자",rightIcon:"💻",rightSub:"실무자를 직접 만나고 싶고",color:"var(--orange)"},
+        ].map((pair,i)=><div key={i} className={`fi${Math.min(i+1,4)}`} style={{background:"var(--white)",borderRadius:"var(--radius)",padding:"14px 16px",border:"1px solid var(--gray-100)",display:"flex",alignItems:"center",gap:8}}>
+          <div style={{flex:1,textAlign:"right"}}>
+            <div style={{fontSize:13,fontWeight:700}}>{pair.left}</div>
+            <div style={{fontSize:11,color:"var(--gray-400)",marginTop:2}}>{pair.leftSub}</div>
+          </div>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",flexShrink:0,padding:"0 4px"}}>
+            <div style={{display:"flex",alignItems:"center",gap:4}}>
+              <span style={{fontSize:16}}>{pair.leftIcon}</span>
+              <span style={{color:pair.color,fontSize:16,fontWeight:900}}>⟷</span>
+              <span style={{fontSize:16}}>{pair.rightIcon}</span>
+            </div>
+          </div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:700}}>{pair.right}</div>
+            <div style={{fontSize:11,color:"var(--gray-400)",marginTop:2}}>{pair.rightSub}</div>
+          </div>
+        </div>)}
+      </div>
+      <div style={{textAlign:"center",marginTop:12}}>
+        <p style={{fontSize:13,color:"var(--gray-500)",lineHeight:1.6}}>모두가 <strong style={{color:"var(--emerald)"}}>상대를 찾고</strong> 있습니다.<br/>BizConnect는 이 <strong style={{color:"var(--emerald)"}}>양방향 니즈</strong>를 연결합니다.</p>
+      </div>
     </section>
 
-    {/* Stats */}
-    <section className="fi2" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginTop:32}} aria-label="서비스 통계">
-      {[{n:allUsers.length+"+",l:"등록 전문가"},{n:COMPANIES.length,l:"등록 기업"},{n:"100%",l:"동의 기반"},{n:"0건",l:"스팸 연락"}].map((stat,i)=>
-        <div key={i} className="card-sm" style={{textAlign:"center",padding:"16px 12px"}}>
-          <div style={{fontSize:22,fontWeight:900,color:"var(--emerald)"}}>{stat.n}</div>
-          <div style={{fontSize:12,color:"var(--gray-500)",marginTop:4}}>{stat.l}</div>
+    {/* ═══════ LIVE DEMO: 검색 체험 ═══════ */}
+    <section className="fi2" style={{marginTop:24}} aria-label="실시간 검색 체험">
+      <div style={{background:"var(--white)",borderRadius:"var(--radius-lg)",padding:20,border:"1px solid var(--emerald-border)",boxShadow:"0 0 24px rgba(52,211,153,.06)"}}>
+        <div style={{fontSize:11,fontWeight:700,color:"var(--emerald)",letterSpacing:1,marginBottom:12}}>⚡ 지금 바로 검색해보세요</div>
+        <div style={{display:"flex",alignItems:"center",gap:10,background:"var(--gray-50)",borderRadius:"var(--radius)",padding:"12px 14px",border:"1px solid var(--gray-200)",marginBottom:12}}>
+          <Icon.Search size={16} style={{color:"var(--gray-400)",flexShrink:0}}/>
+          <input value={demoQuery} onChange={e=>handleDemoSearch(e.target.value)} placeholder="회사명을 입력해보세요 (초성 ㅅㅈ 가능)"
+            style={{background:"none",border:"none",color:"var(--navy)",fontSize:14,outline:"none",flex:1,fontFamily:"var(--font)"}} aria-label="검색 체험"/>
+        </div>
+        {demoResults.length>0?<div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {demoResults.map((u,i)=><div key={u.id} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",borderRadius:"var(--radius-sm)",background:"var(--gray-50)",animation:`fadeIn .2s ease ${i*.05}s both`}}>
+            <Avatar name={u.name} logo={u.companyLogo} size={36}/>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{display:"flex",alignItems:"center",gap:4}}>
+                <span style={{fontWeight:700,fontSize:13}}>{u.name}</span>
+                {u.isVerified&&<Icon.Verified size={11}/>}
+                <span style={{fontSize:11,color:"var(--gray-400)"}}>{u.position}</span>
+              </div>
+              <div style={{fontSize:11,color:"var(--gray-500)",marginTop:1}}>{u.company} · {u.department}</div>
+            </div>
+            <div style={{fontSize:11,color:"var(--gray-400)",letterSpacing:.5}}>010-••••-••••</div>
+          </div>)}
+          <div style={{textAlign:"center",padding:"8px 0"}}>
+            <span style={{fontSize:12,color:"var(--emerald)",fontWeight:700,cursor:"pointer"}} onClick={handleQuickStart}>전화번호 확인하려면 →</span>
+          </div>
+        </div>
+        :<div style={{textAlign:"center",padding:"16px 0",color:"var(--gray-400)",fontSize:13}}>
+          {demoQuery?"검색 중...":"회사명을 입력하면 담당자가 바로 나타납니다"}
+        </div>}
+      </div>
+    </section>
+
+    {/* ═══════ HOW: 핵심 원리 3줄 ═══════ */}
+    <section className="fi3" style={{marginTop:24}} aria-label="이용 방법">
+      <div style={{background:"var(--white)",borderRadius:"var(--radius)",padding:"18px 20px",border:"1px solid var(--gray-100)"}}>
+        {[{t:"검색",d:"회사·부서·직책으로 담당자 찾기",ic:"🔍"},
+          {t:"요청",d:"내 명함을 먼저 보내고 연락처 요청",ic:"📤"},
+          {t:"연결",d:"상대가 수락하면 번호 상호 공개",ic:"✅"},
+        ].map((step,i)=><div key={i} style={{display:"flex",gap:12,alignItems:"center",padding:"10px 0",borderBottom:i<2?"1px solid var(--gray-100)":"none"}}>
+          <div style={{width:34,height:34,borderRadius:10,background:"var(--emerald-bg)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:15,flexShrink:0}}>{step.ic}</div>
+          <div><span style={{fontWeight:700,fontSize:14}}>{step.t}</span><span style={{fontSize:13,color:"var(--gray-400)",marginLeft:8}}>{step.d}</span></div>
+        </div>)}
+      </div>
+    </section>
+
+    {/* ═══════ KEY DIFFERENCE ═══════ */}
+    <section className="fi3" style={{marginTop:20,textAlign:"center"}} aria-label="핵심 차별점">
+      <div style={{background:"var(--white)",borderRadius:"var(--radius)",padding:"18px 20px",border:"1px solid var(--gray-100)"}}>
+        <p style={{fontSize:14,fontWeight:700,color:"var(--navy)",lineHeight:1.6}}>
+          "내 <span style={{color:"var(--emerald)"}}>명함을 먼저</span> 건네고,<br/>
+          상대가 <span style={{color:"var(--emerald)"}}>수락해야</span> 번호를 받는다"
+        </p>
+        <p style={{fontSize:12,color:"var(--gray-400)",marginTop:8}}>스팸 제로. 전 세계 어디에도 없는 방식.</p>
+      </div>
+    </section>
+
+    {/* ═══════ STATS ═══════ */}
+    <section className="fi4" style={{marginTop:20,display:"flex",justifyContent:"center",gap:24,padding:"16px 0"}} aria-label="서비스 규모">
+      {[{n:allUsers.filter(u=>u.isSeeded).length+"+",l:"등록 담당자"},{n:COMPANIES.length,l:"기업"},{n:"0건",l:"스팸"}].map((s,i)=>
+        <div key={i} style={{textAlign:"center"}}>
+          <div style={{fontFamily:"var(--font-display)",fontSize:22,fontWeight:900,color:"var(--emerald)"}}>{s.n}</div>
+          <div style={{fontSize:11,color:"var(--gray-400)",marginTop:2}}>{s.l}</div>
         </div>)}
     </section>
 
-    {/* Sample cards */}
-    <section className="fi3" style={{marginTop:32}} aria-label="등록된 명함 예시">
-      <h2 style={{fontSize:12,fontWeight:800,color:"var(--emerald)",letterSpacing:2,marginBottom:14}}>등록된 명함 예시</h2>
-      {allUsers.filter(u=>u.isSeeded).slice(0,4).map(u=>
-        <div key={u.id} className="card-sm" style={{display:"flex",alignItems:"center",gap:12,marginBottom:8,padding:14}}>
-          <Avatar name={u.name} logo={u.companyLogo} size={40}/>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{display:"flex",alignItems:"center",gap:4}}><span style={{fontWeight:700,fontSize:14}}>{u.name}</span>{u.isVerified&&<Icon.Verified size={12}/>}<span style={{fontSize:12,color:"var(--gray-400)"}}>{u.position}</span></div>
-            <div style={{fontSize:12,color:"var(--gray-500)",marginTop:2}}>{u.company} · {u.department}</div>
-          </div>
-          <span style={{fontSize:10,color:"var(--gray-400)",background:"var(--gray-50)",padding:"3px 8px",borderRadius:6,fontWeight:600}}>🔒 수락 시 공개</span>
-        </div>
-      )}
-      <div style={{textAlign:"center",fontSize:12,color:"var(--gray-400)",marginTop:8}}>총 <strong style={{color:"var(--emerald)"}}>{allUsers.filter(u=>u.isSeeded).length}명</strong> 등록</div>
-    </section>
-
-    {/* CTAs */}
-    <section className="fi4" style={{marginTop:32,display:"flex",flexDirection:"column",gap:12,paddingBottom:40}}>
-      <button className="btn-primary" onClick={handleQuickStart} style={{fontSize:16,padding:"17px 28px"}}>⚡ 바로 체험하기</button>
+    {/* ═══════ CTAs ═══════ */}
+    <section className="fi4" style={{marginTop:24,display:"flex",flexDirection:"column",gap:12,paddingBottom:40}}>
+      <button className="btn-primary" onClick={handleQuickStart} style={{fontSize:16,padding:"17px 28px",animation:"glow 3s infinite"}}>⚡ 바로 체험하기</button>
       <button className="btn-secondary" onClick={()=>setMode("signup")}>직접 가입하기</button>
       <button onClick={()=>setMode("login")} style={{background:"none",border:"none",color:"var(--gray-500)",cursor:"pointer",fontSize:14,fontFamily:"var(--font)",padding:"10px 0",minHeight:44}}>이미 계정이 있어요</button>
       <div style={{textAlign:"center",fontSize:11,color:"var(--gray-400)"}}>🔒 개인정보 암호화 · PIPA/GDPR 준수</div>
@@ -641,7 +731,7 @@ function LandingPage(){
 
   if(mode==="login") return <main style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32}}>
     <BackButton onClick={()=>setMode("landing")}/>
-    <div className="fi"><h2 style={{fontSize:26,fontWeight:900,letterSpacing:-1,margin:"0 0 8px"}}>로그인</h2><p style={{color:"var(--gray-500)",fontSize:14,margin:"0 0 32px"}}>계정 정보를 입력해주세요</p></div>
+    <div className="fi"><h2 style={{fontFamily:"var(--font-display)",fontSize:26,fontWeight:900,letterSpacing:-1,margin:"0 0 8px"}}>로그인</h2><p style={{color:"var(--gray-500)",fontSize:14,margin:"0 0 32px"}}>계정 정보를 입력해주세요</p></div>
     <div className="fi1" style={{display:"flex",flexDirection:"column",gap:14}}>
       <div><input className={"input-field"+(errors.email?" input-error":"")} placeholder="이메일" type="email" value={email} onChange={e=>{setEmail(e.target.value);validateField("email",e.target.value)}} aria-label="이메일"/>{errors.email&&<div className="input-error-text">{errors.email}</div>}</div>
       <div style={{position:"relative"}}><input className="input-field" placeholder="비밀번호" type={showPassword?"text":"password"} value={password} onChange={e=>setPassword(e.target.value)} aria-label="비밀번호" style={{paddingRight:44}}/><button onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?"비밀번호 숨기기":"비밀번호 보기"} style={{position:"absolute",right:12,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"var(--gray-400)",cursor:"pointer",padding:4,minWidth:44,minHeight:44,display:"flex",alignItems:"center",justifyContent:"center"}}>{showPassword?<Icon.EyeOff size={18}/>:<Icon.Eye size={18}/>}</button></div>
@@ -653,7 +743,7 @@ function LandingPage(){
   // Signup (지시서 2-7 3단계 온보딩은 향후 개선, 현재는 단일 폼)
   return <main style={{height:"100dvh",overflowY:"auto",padding:"0 24px",paddingTop:32,paddingBottom:40}}>
     <BackButton onClick={()=>setMode("landing")}/>
-    <div className="fi"><h2 style={{fontSize:26,fontWeight:900,letterSpacing:-1,margin:"0 0 6px"}}>회원가입</h2><p style={{color:"var(--gray-500)",fontSize:14,margin:"0 0 24px"}}>60초면 시작할 수 있어요</p></div>
+    <div className="fi"><h2 style={{fontFamily:"var(--font-display)",fontSize:26,fontWeight:900,letterSpacing:-1,margin:"0 0 6px"}}>회원가입</h2><p style={{color:"var(--gray-500)",fontSize:14,margin:"0 0 24px"}}>60초면 시작할 수 있어요</p></div>
     <div className="fi1" style={{display:"flex",flexDirection:"column",gap:12}}>
       <div><input className={"input-field"+(errors.email?" input-error":"")} placeholder="이메일 *" type="email" value={email} onChange={e=>{setEmail(e.target.value);validateField("email",e.target.value)}} aria-label="이메일 (필수)"/>{errors.email&&<div className="input-error-text">{errors.email}</div>}</div>
       <div style={{position:"relative"}}><input className={"input-field"+(errors.password?" input-error":"")} placeholder="비밀번호 *" type={showPassword?"text":"password"} value={password} onChange={e=>{setPassword(e.target.value);validateField("password",e.target.value)}} aria-label="비밀번호 (필수)" style={{paddingRight:44}}/>{errors.password&&<div className="input-error-text">{errors.password}</div>}<button onClick={()=>setShowPassword(!showPassword)} aria-label={showPassword?"비밀번호 숨기기":"비밀번호 보기"} style={{position:"absolute",right:12,top:14,background:"none",border:"none",color:"var(--gray-400)",cursor:"pointer",padding:4}}>{showPassword?<Icon.EyeOff size={18}/>:<Icon.Eye size={18}/>}</button></div>
@@ -916,10 +1006,10 @@ function ProfilePage(){
     </section>}
 
     {/* Request Modal */}
-    {showRequestModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowRequestModal(false)}>
-      <div role="dialog" aria-label="연락처 요청" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .25s ease"}}>
+    {showRequestModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowRequestModal(false)}>
+      <div role="dialog" aria-label="연락처 요청" onClick={e=>e.stopPropagation()} style={{background:"var(--bg2)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .25s ease"}}>
         <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
-        <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 4px"}}>연락처 요청</h3>
+        <h3 style={{fontFamily:"var(--font-display)",fontSize:20,fontWeight:900,margin:"0 0 4px"}}>연락처 요청</h3>
         <p style={{fontSize:13,color:"var(--gray-500)",margin:"0 0 22px"}}>{user.name}님({user.company})에게 명함을 전달합니다</p>
 
         <h4 style={{fontSize:13,fontWeight:700,marginBottom:10}}>요청 목적 *</h4>
@@ -944,8 +1034,8 @@ function ProfilePage(){
     </div>}
 
     {/* Intro Modal */}
-    {introTarget&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setIntroTarget(null)}>
-      <div role="dialog" aria-label="소개 요청" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .25s ease"}}>
+    {introTarget&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setIntroTarget(null)}>
+      <div role="dialog" aria-label="소개 요청" onClick={e=>e.stopPropagation()} style={{background:"var(--bg2)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .25s ease"}}>
         <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
         <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 6px"}}>🤝 소개 요청</h3>
         <p style={{fontSize:13,color:"var(--gray-500)",margin:"0 0 20px"}}>{user.name}님을 통해 {introTarget.name}님을 소개받습니다</p>
@@ -1012,8 +1102,8 @@ function SignalsPage(){
     </section>
 
     {/* New Signal Modal (지시서 2-5) */}
-    {showNewModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowNewModal(false)}>
-      <div role="dialog" aria-label="구매 신호 등록" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .25s ease"}}>
+    {showNewModal&&<div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setShowNewModal(false)}>
+      <div role="dialog" aria-label="구매 신호 등록" onClick={e=>e.stopPropagation()} style={{background:"var(--bg2)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,maxHeight:"85vh",overflowY:"auto",animation:"slideUp .25s ease"}}>
         <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
         <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 6px"}}>🔥 구매 신호 등록</h3>
         <p style={{fontSize:13,color:"var(--gray-500)",margin:"0 0 22px"}}>"지금 이런 업체를 찾고 있어요"를 알리세요. 30일 후 자동 만료됩니다.</p>
@@ -1063,7 +1153,7 @@ function InboxPage(){
   };
 
   return <main style={{padding:"0 20px",paddingTop:16}}>
-    <h2 className="fi" style={{fontSize:22,fontWeight:900,margin:"0 0 20px"}}>{tab==="received"?"📨 수신함":"📤 보낸 요청"}</h2>
+    <h2 className="fi" style={{fontFamily:"var(--font-display)",fontSize:22,fontWeight:900,margin:"0 0 20px"}}>{tab==="received"?"📨 수신함":"📤 보낸 요청"}</h2>
     <div className="fi1" style={{display:"flex",gap:8,marginBottom:20}}>{[{id:"received",label:"받은 요청",count:pendingReceived.length},{id:"sent",label:"보낸 요청",count:mySentRequests.filter(r=>r.status==="PENDING").length}].map(t=>
       <button key={t.id} onClick={()=>setTab(t.id)} className={tab===t.id?"btn-primary":"btn-secondary"} style={{flex:1,padding:12,fontSize:14,gap:4}}>{t.label}{t.count>0&&<span style={{background:tab===t.id?"rgba(255,255,255,.3)":"var(--emerald)",color:tab===t.id?"#fff":"#fff",borderRadius:8,padding:"2px 7px",fontSize:11,marginLeft:4}}>{t.count}</span>}</button>)}
     </div>
@@ -1072,8 +1162,8 @@ function InboxPage(){
 
     {/* Detail Modal */}
     {selectedRequest&&(()=>{const req=selectedRequest;const requester=getUserById(req.fromUserId);if(!requester)return null;
-      return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.4)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setSelectedRequest(null)}>
-        <div role="dialog" aria-label="요청 상세" onClick={e=>e.stopPropagation()} style={{background:"var(--white)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .25s ease"}}>
+      return <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.6)",backdropFilter:"blur(8px)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={()=>setSelectedRequest(null)}>
+        <div role="dialog" aria-label="요청 상세" onClick={e=>e.stopPropagation()} style={{background:"var(--bg2)",borderRadius:"var(--radius-xl) var(--radius-xl) 0 0",padding:"24px 20px 36px",width:"100%",maxWidth:480,animation:"slideUp .25s ease"}}>
           <div style={{width:40,height:4,borderRadius:2,background:"var(--gray-200)",margin:"0 auto 22px"}}/>
           <h3 style={{fontSize:20,fontWeight:900,margin:"0 0 20px"}}>연락 요청 상세</h3>
           <div className="card-sm" style={{marginBottom:18,border:"1px solid var(--gray-200)"}}>
@@ -1107,7 +1197,7 @@ function ContactsPage(){
   const filtered=query?contactList.filter(c=>c.user.name.includes(query)||c.user.company.includes(query)):contactList;
 
   return <main style={{padding:"0 20px",paddingTop:16}}>
-    <h2 className="fi" style={{fontSize:22,fontWeight:900,margin:"0 0 20px"}}>📖 주소록 <span style={{color:"var(--emerald)"}}>{myContacts.length}</span></h2>
+    <h2 className="fi" style={{fontFamily:"var(--font-display)",fontSize:22,fontWeight:900,margin:"0 0 20px"}}>📖 주소록 <span style={{color:"var(--emerald)"}}>{myContacts.length}</span></h2>
     {myContacts.length>0&&<div className="fi1" style={{display:"flex",alignItems:"center",gap:10,background:"var(--white)",borderRadius:"var(--radius)",padding:"10px 16px",border:"1.5px solid var(--gray-200)",marginBottom:16,boxShadow:"var(--shadow-sm)"}}>
       <Icon.Search size={16} style={{color:"var(--gray-400)"}}/>
       <input value={query} onChange={e=>setQuery(e.target.value)} placeholder="이름, 회사로 검색" aria-label="연락처 검색" style={{background:"none",border:"none",color:"var(--navy)",fontSize:14,outline:"none",flex:1,fontFamily:"var(--font)"}}/>
@@ -1115,7 +1205,7 @@ function ContactsPage(){
     {filtered.length===0?<EmptyState icon="📖" title="연결된 연락처가 없어요" description="검색 후 연락처를 요청해보세요!" actionLabel="담당자 검색하기" onAction={()=>setActivePage("home")}/>
     :<div style={{display:"flex",flexDirection:"column",gap:8}}>
       {filtered.map(c=><div key={c.id} className="card fi" onClick={()=>{setSelectedUser(c.user);setActivePage("profile");}} role="button" tabIndex={0} aria-label={`${c.user.name} 연락처`} style={{display:"flex",alignItems:"center",gap:14,cursor:"pointer",padding:16}}>
-        <Avatar name={c.user.name} logo={c.user.companyLogo} size={46} style={{background:"linear-gradient(135deg,var(--emerald-bg),var(--blue-bg))"}}/>
+        <Avatar name={c.user.name} logo={c.user.companyLogo} size={46} style={{background:"linear-gradient(135deg,rgba(52,211,153,.1),rgba(96,165,250,.08))"}}/>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontWeight:700,fontSize:15}}>{c.user.name}</div>
           <div style={{fontSize:13,color:"var(--gray-500)",marginTop:2}}>{c.user.company} · {c.user.department}</div>
@@ -1145,7 +1235,7 @@ function MyPage(){
 
   return <main style={{padding:"0 20px",paddingTop:16}}>
     {/* Sub tabs */}
-    <div className="fi" style={{display:"flex",gap:0,marginBottom:20,background:"var(--gray-100)",borderRadius:"var(--radius)",padding:3}}>
+    <div className="fi" style={{display:"flex",gap:0,marginBottom:20,background:"var(--gray-50)",borderRadius:"var(--radius)",padding:3}}>
       {[{id:"profile",label:"프로필"},{id:"notifs",label:`알림${unreadNotifCount>0?" ("+unreadNotifCount+")":""}`},{id:"settings",label:"설정"}].map(t=>
         <button key={t.id} onClick={()=>setActiveTab(t.id)} style={{flex:1,background:activeTab===t.id?"var(--white)":"transparent",border:"none",borderRadius:"var(--radius-sm)",padding:"10px 8px",fontSize:13,fontWeight:activeTab===t.id?700:500,color:activeTab===t.id?"var(--navy)":"var(--gray-500)",cursor:"pointer",fontFamily:"var(--font)",boxShadow:activeTab===t.id?"var(--shadow-sm)":"none",minHeight:40,transition:"all .15s"}}>{t.label}</button>)}
     </div>
@@ -1155,7 +1245,7 @@ function MyPage(){
       <article className="card fi1" style={{textAlign:"center",marginBottom:16,padding:24}}>
         <Avatar name={currentUser.name} logo={currentUser.companyLogo} size={68} style={{margin:"0 auto 14px",border:"3px solid var(--emerald-border)"}}/>
         {!isEditing?<>
-          <h2 style={{fontSize:20,fontWeight:900,margin:"0 0 4px"}}>{currentUser.name}</h2>
+          <h2 style={{fontFamily:"var(--font-display)",fontSize:20,fontWeight:900,margin:"0 0 4px"}}>{currentUser.name}</h2>
           <p style={{fontSize:14,color:"var(--gray-500)"}}>{currentUser.position||"직책 미입력"}</p>
           <p style={{fontSize:14,color:"var(--gray-500)",marginTop:2}}>{currentUser.company}{currentUser.department&&" · "+currentUser.department}</p>
           <p style={{fontSize:13,color:"var(--emerald)",marginTop:8,fontWeight:600}}>{currentUser.phone||"전화번호 미입력"}</p>
